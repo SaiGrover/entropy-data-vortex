@@ -1,0 +1,11 @@
+DATA VORTEX - CLEANING LOG
+==================================================
+
+1. Replaced 24 "NULL" strings in "text_content" with NaN
+2. Removed 360 exact duplicate rows
+3. Cleaned HTML entities/tags from 974 text entries
+4. Fixed 306 mojibake occurrences
+5. Standardized 12000 timestamps to datetime; 0 unparsed
+6. Converted 509 negative likes to absolute values
+7. 1784 missing platform values retained as NaN (no imputation basis)
+8. Standardized 1711 empty/whitespace text entries to NaN

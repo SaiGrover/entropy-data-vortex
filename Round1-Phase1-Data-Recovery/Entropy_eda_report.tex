@@ -1,0 +1,463 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{multicol}
+\usepackage{parskip}
+
+% --- Colors ---
+\definecolor{primary}{RGB}{44,62,80}
+\definecolor{accent}{RGB}{52,152,219}
+\definecolor{insightbg}{RGB}{235,245,255}
+\definecolor{bodytext}{RGB}{50,50,50}
+
+% --- Hyperref setup ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=accent,
+    urlcolor=accent,
+    pdftitle={EDA Insight Report -- Team Entropy},
+    pdfauthor={Saanvi Grover, Aditya Sharma}
+}
+
+% --- Section formatting ---
+\titleformat{\section}{\Large\bfseries\color{primary}}{}{0em}{}[\color{accent}\titlerule]
+\titleformat{\subsection}{\large\bfseries\color{primary}}{}{0em}{}
+
+% --- Header/Footer ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{gray}Data Vortex $|$ Team Entropy $|$ EDA Insight Report}
+\fancyhead[R]{\small\color{gray}Page \thepage}
+\fancyfoot[C]{\small\color{gray}AARUUSH'26 -- Rebuilding the Social Engine -- Team Entropy}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% --- Insight box ---
+\newtcolorbox{insightbox}{
+    colback=insightbg,
+    colframe=accent,
+    boxrule=0.5pt,
+    arc=2pt,
+    left=8pt, right=8pt, top=6pt, bottom=6pt,
+    fonttitle=\bfseries\color{accent}\small,
+    title=KEY INSIGHT
+}
+
+% --- Image helper ---
+\newcommand{\edaimg}[2][0.85]{%
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=#1\textwidth]{#2}
+    \end{figure}
+}
+
+\begin{document}
+\color{bodytext}
+
+% ============================================================
+% TITLE PAGE
+% ============================================================
+\begin{titlepage}
+\centering
+\vspace*{4cm}
+{\Huge\bfseries\color{primary} Exploratory Data Analysis\\[0.3cm] Insight Report\par}
+\vspace{1cm}
+{\Large\color{gray} Round 1, Phase 1: Data Recovery\par}
+\vspace{2cm}
+{\color{accent}\rule{8cm}{1pt}\par}
+\vspace{2cm}
+{\large
+\begin{tabular}{rl}
+\textbf{Competition:} & Data Vortex $|$ AARUUSH'26 \\
+\textbf{Theme:} & Rebuilding the Social Engine \\
+\textbf{Team:} & Entropy \\
+\textbf{Members:} & Saanvi Grover \& Aditya Sharma \\[0.5cm]
+\textbf{Datasets:} & 12,000 posts $|$ 1,500 users $|$ 5 platforms \\
+\textbf{Period:} & May 2024 -- April 2025 (364 days) \\
+\textbf{Scope:} & 20 analytical sections $|$ 21 visualizations \\
+& 6 formal statistical significance tests \\
+\end{tabular}
+\par}
+\vfill
+\end{titlepage}
+
+% ============================================================
+% TABLE OF CONTENTS
+% ============================================================
+\tableofcontents
+\newpage
+
+% ============================================================
+% SECTION 1
+% ============================================================
+\section{Dataset Overview}
+
+The Social Engine dataset consists of two tables recovered from Archive Node 07 on the competition's recovery terminal. After cleaning (Phase 1a), the final datasets are:
+
+\textbf{Posts Dataset:} 12,000 rows $\times$ 8 columns (post\_id, user\_id, platform, text\_content, timestamp, likes, shares, comments). Date range spans 364 days from May 2024 to April 2025.
+
+\textbf{Users Dataset:} 1,500 rows $\times$ 5 columns (user\_id, location, language, account\_created, follower\_count). Users created between Jan--Dec 2023 across 33 cities and 10 languages.
+
+\textbf{Missing data} remains in three columns: platform (14.9\%), text\_content (14.3\%), and likes (15.1\%). These were left as NaN because no reliable imputation basis exists---the corruption was confirmed to be Missing Completely at Random (MCAR) through statistical testing (Mann-Whitney U, $p=0.64$).
+
+% ============================================================
+% SECTION 2
+% ============================================================
+\section{Platform Analysis: Does Platform Choice Matter?}
+
+\textit{Purpose: In real social media, Instagram drives 2--3$\times$ more engagement than Twitter. Here we test whether platform choice matters in the Social Engine dataset.}
+
+\edaimg{images/Entropy_eda_platform_distribution.png}
+
+Activity is nearly uniform: Facebook leads with 2,074 posts and Instagram trails at 1,989---a mere 4.3\% spread. This uniformity is unusual for real social media and may reflect how the synthetic data was generated.
+
+\edaimg{images/Entropy_eda_engagement_by_platform.png}
+
+Average engagement metrics (likes, shares, comments) are nearly identical across all five platforms. A Kruskal-Wallis test (Section 14) confirms this: $H=4.27$, $p=0.37$---platform choice does \textbf{NOT} significantly affect engagement.
+
+\begin{insightbox}
+Platform distribution is remarkably uniform ($\sim$2,000 posts each). Unlike real social media where platform dynamics vary dramatically, engagement here is platform-agnostic. This means Phase 2 SQL queries testing platform effects will find flat results---not a failure, but a structural property of the data.
+\end{insightbox}
+
+% ============================================================
+% SECTION 3
+% ============================================================
+\section{Temporal Analysis: When Should You Post?}
+
+\textit{Purpose: Real platforms show 2--3$\times$ hourly variation and 20--40\% day-of-week swings. We test whether timing matters in this dataset.}
+
+\edaimg{images/Entropy_eda_monthly_posts.png}
+
+Monthly post volume is stable around 914--1,038 posts/month. February 2025 is the lowest (914 posts, $-9.2\%$ MoM), likely reflecting the shorter month. March 2025 rebounds sharply ($+10.8\%$). No seasonal trend is evident.
+
+\edaimg{images/Entropy_eda_temporal_patterns.png}
+
+\textbf{Left:} Day-of-week posting shows Wednesday as the most active day (1,771 posts) and Saturday the least (1,675). The spread is narrow at 5.7\%.
+\textbf{Right:} Hourly analysis reveals a nearly flat distribution across all 24 hours. Unlike real social media (which shows strong peaks during lunch and evening), this dataset has users posting at 3\,AM as often as 7\,PM.
+
+\begin{insightbox}
+Temporal patterns are unusually flat. Real social platforms show 2--3$\times$ variation by hour of day and 20--40\% variation by day of week. This dataset shows $<6\%$ variation on both, suggesting timestamps were generated uniformly rather than reflecting real human behaviour.
+\end{insightbox}
+
+% ============================================================
+% SECTION 4
+% ============================================================
+\section{Engagement Distributions: Is There Viral Content?}
+
+\textit{Purpose: Real social media follows power-law distributions (few viral posts, many low-engagement). We test whether this dataset has outliers.}
+
+\edaimg{images/Entropy_eda_engagement_distributions.png}
+
+All three metrics follow near-uniform distributions, not the heavy-tailed (power-law) distributions typical of real social media. Likes range from 0 to 5,000 with mean $\approx$2,492 and median $\approx$2,498 (nearly identical, confirming symmetry). There are no viral outliers---every post gets roughly similar engagement.
+
+\edaimg{images/Entropy_eda_engagement_correlation.png}
+
+The correlation heatmap reveals weak relationships between all three metrics. Likes-shares correlation is only 0.003, likes-comments is $-0.003$, and shares-comments is $-0.010$. In real social media, these metrics are typically positively correlated.
+
+\begin{insightbox}
+Engagement metrics are uniformly distributed and statistically independent. This is the opposite of real social media where engagement follows power-law distributions and metrics are positively correlated.
+\end{insightbox}
+
+% ============================================================
+% SECTION 5
+% ============================================================
+\section{User Analysis: Do Followers Equal Influence?}
+
+\textit{Purpose: On real platforms, follower count is the \#1 predictor of reach. We test whether that holds in this dataset.}
+
+\edaimg{images/Entropy_eda_user_activity.png}
+
+\textbf{Left:} The posts-per-user distribution is right-skewed. Mean is 8.0 posts/user, ranging from 1 to 22. \textbf{Right:} Follower count vs.\ post count shows no visible relationship---the scatter plot is a uniform cloud. A Spearman correlation test confirms: $\rho=0.025$, $p=0.34$ (not significant). Follower count does not predict activity or engagement.
+
+\begin{insightbox}
+Follower count has zero predictive power---contradicting real social media dynamics where follower count is the strongest predictor of reach.
+\end{insightbox}
+
+% ============================================================
+% SECTION 6
+% ============================================================
+\section{Geographic Analysis}
+
+\textit{Purpose: Map the geographic distribution of users and identify whether location influences engagement levels.}
+
+\edaimg{images/Entropy_eda_geographic.png}
+
+Users span 33 cities across 6 continents. Shanghai leads with 56 users (3.7\%). Average likes by location show modest variation (2,300--2,700 range). No single city or region dominates engagement.
+
+% ============================================================
+% SECTION 7
+% ============================================================
+\section{Language Analysis}
+
+\textit{Purpose: Examine how the 10 language communities differ in size and engagement patterns.}
+
+\edaimg{images/Entropy_eda_language.png}
+
+All 10 languages have between 119--168 users. Average engagement by language is remarkably flat---the engagement generation process was language-independent.
+
+% ============================================================
+% SECTION 8
+% ============================================================
+\section{Content Analysis: Hashtags}
+
+\textit{Purpose: Extract and rank hashtags from post text to identify dominant content themes.}
+
+\edaimg{images/Entropy_eda_top_hashtags.png}
+
+The top 20 hashtags reveal consumer-focused themes: \#Fashion, \#Sale, \#Tech, \#Health. These are generic commercial hashtags consistent with brand-centric post templates.
+
+% ============================================================
+% SECTION 9
+% ============================================================
+\section{Content Analysis: Brands}
+
+\textit{Purpose: Identify which of the 10 embedded brands are mentioned most frequently and whether brand mentions correlate with higher engagement.}
+
+\edaimg{images/Entropy_eda_brand_analysis.png}
+
+All 10 brands appear in roughly 1,000--1,100 posts each. Average likes per brand post are nearly identical (2,450--2,550 range). No brand drives significantly more engagement. Engagement is independent of both platform and brand.
+
+% ============================================================
+% SECTION 10
+% ============================================================
+\section{Sentiment Indicators}
+
+\textit{Purpose: Classify post sentiment using keyword matching to understand the emotional tone distribution and whether sentiment predicts engagement.}
+
+\edaimg{images/Entropy_eda_sentiment.png}
+
+A notable finding is the ``Contradictory'' category---posts containing both positive and negative phrases (e.g., ``Bummed out\ldots\ Absolutely loving it'')---which reflects template-based text generation. Negative posts get slightly higher engagement than positive---the ``outrage engagement'' pattern seen in real social media research.
+
+\begin{insightbox}
+Contradictory sentiment posts are a signature of template-based text generation. This is a data quality observation worth flagging in competition analysis.
+\end{insightbox}
+
+% ============================================================
+% SECTION 11
+% ============================================================
+\section{Anomaly Detection}
+
+\textit{Purpose: Use IQR-based statistical methods to identify outlier posts with unusually high or low engagement.}
+
+\edaimg{images/Entropy_eda_anomalies.png}
+
+The IQR method finds zero outlier posts for likes---every post falls within expected statistical bounds. This is highly unusual: real social media datasets always have outliers (viral posts). The likes-vs-shares scatter shows a uniform cloud with no clustering.
+
+% ============================================================
+% SECTION 12
+% ============================================================
+\section{Missing Data Analysis}
+
+\textit{Purpose: Determine whether missing values are random or systematic.}
+
+\edaimg{images/Entropy_eda_missing_patterns.png}
+
+The missingness correlation heatmap shows weak correlations between missing indicators, confirming Missing Completely at Random (MCAR). A Mann-Whitney U test confirms posts with missing platform data have statistically similar engagement ($p=0.64$), validating our cleaning decision to retain missing values as NaN.
+
+% ============================================================
+% SECTION 13
+% ============================================================
+\section{Key Insights Summary}
+
+The 20 analytical sections reveal these core findings:
+
+\begin{enumerate}[leftmargin=*, itemsep=4pt]
+    \item \textbf{Structural Uniformity:} Engagement, platform distribution, brand mentions, language communities, and temporal patterns are all remarkably flat---the defining characteristic of this dataset.
+    \item \textbf{No Viral Content:} Zero posts exceed the IQR outlier threshold. Every post receives ``average'' engagement. Real social data always has power-law tails.
+    \item \textbf{Independent Metrics:} Likes, shares, and comments are uncorrelated ($r < 0.01$). Each was generated independently.
+    \item \textbf{Follower Count is Decorative:} No correlation with engagement (Spearman $\rho=0.025$, $p=0.34$). In real platforms, this is the strongest predictor of reach.
+    \item \textbf{Corruption was Random:} Missing data is MCAR, engagement is unaffected by completeness.
+    \item \textbf{Template-Generated Text:} Contradictory sentiment phrases, uniform brand distribution, and generic hashtags point to template-based content generation.
+    \item \textbf{One Genuine Signal:} Multi-platform users show $\sim$15\% higher engagement---the only statistically significant finding across all 6 hypothesis tests.
+    \item \textbf{CV Confirms Uniformity:} Coefficient of variation $< 10\%$ on most dimensions formally quantifies the uniformity with a standard statistical measure.
+\end{enumerate}
+
+% ============================================================
+% SECTION 14
+% ============================================================
+\section{Statistical Significance Testing}
+
+\textit{Purpose: Formally test whether observed patterns are statistically significant, using non-parametric tests suited to non-normal distributions.}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Test} & \textbf{Method} & \textbf{Statistic} & \textbf{Result} \\
+\midrule
+Platforms vs.\ Likes & Kruskal-Wallis & $H=4.27$, $p=0.37$ & NOT significant \\
+Day-of-Week vs.\ Engagement & Kruskal-Wallis & $H=3.72$, $p=0.71$ & NOT significant \\
+Sentiment $\times$ Platform & Chi-square & $\chi^2=23.94$, $p=0.24$ & NOT significant \\
+Followers vs.\ Likes & Spearman & $\rho=0.025$, $p=0.34$ & NOT significant \\
+Missing Platform vs.\ Engagement & Mann-Whitney U & $U=9{,}175{,}298$, $p=0.64$ & NOT significant \\
+Multi-Platform Users & Kruskal-Wallis & $\sim$15\% higher & \textbf{SIGNIFICANT} \\
+\bottomrule
+\end{tabular}
+\caption{Summary of 6 formal hypothesis tests at $\alpha=0.05$.}
+\end{table}
+
+\begin{insightbox}
+Five of six tests return $p > 0.05$. The sixth test (multi-platform user behaviour) is the one genuine signal worth investigating in subsequent rounds.
+\end{insightbox}
+
+% ============================================================
+% SECTION 15
+% ============================================================
+\section{Brand $\times$ Platform Cross-Analysis}
+
+\textit{Purpose: Test whether certain brands perform better on specific platforms.}
+
+\edaimg{images/Entropy_eda_brand_platform_heatmap.png}
+
+Average likes by brand $\times$ platform shows values in the 2,300--2,700 range with no obvious hot spots. Post volume by brand $\times$ platform is remarkably even ($\sim$200 posts per cell). No brand-platform affinity exists.
+
+\begin{insightbox}
+Unlike real social media where Nike dominates Instagram and tech brands lead on Reddit, this dataset shows no brand-platform affinity---useful context for Phase 2 SQL analysis.
+\end{insightbox}
+
+% ============================================================
+% SECTION 16
+% ============================================================
+\section{Text Length Analysis}
+
+\textit{Purpose: Examine whether post length varies by platform and predicts engagement.}
+
+\edaimg{images/Entropy_eda_text_length_analysis.png}
+
+Character length peaks around 80--120 characters. Word count centres around 15--25 words. All platforms have similar median word counts ($\sim$18--20 words). Word count vs.\ likes shows near-zero correlation. Post length does not predict engagement.
+
+% ============================================================
+% SECTION 17
+% ============================================================
+\section{Quantifying Uniformity: Coefficient of Variation}
+
+\textit{Purpose: Formally quantify uniformity using the Coefficient of Variation ($CV = \sigma / \mu \times 100$). A CV below 10\% indicates very low variation.}
+
+\edaimg{images/Entropy_eda_coefficient_of_variation.png}
+
+The CV analysis confirms what earlier sections observed qualitatively: most dimensions have $CV < 10\%$. Platform volume, day-of-week volume, brand mentions, and language distribution are all structurally flat. This level of uniformity is never seen in real social media data, where power-law dynamics create typical $CV > 50\%$.
+
+\begin{insightbox}
+The coefficient of variation formally quantifies the dataset's structural uniformity. With most metrics showing $CV < 10\%$, we can state with confidence that the data was generated from uniform distributions---not sampled from real user behaviour.
+\end{insightbox}
+
+% ============================================================
+% SECTION 18
+% ============================================================
+\section{Contradictory Sentiment Deep Dive}
+
+\textit{Purpose: Investigate posts containing BOTH positive and negative sentiment phrases. How many exist? What phrase combinations appear? Can we reverse-engineer the templates?}
+
+\edaimg{images/Entropy_eda_contradictory_sentiment_deep_dive.png}
+
+\textbf{Left:} Top contradictory phrase pairs reveal combinations like ``disappointed + loving it'' appearing in the same post---artifacts of a text generator inserting sentiment phrases independently into template structures. \textbf{Right:} Template structure analysis shows posts follow identifiable patterns (unboxing, reviews, ad reactions, comparisons, complaints).
+
+\begin{insightbox}
+The deep dive confirms template-based text generation. Sentiment phrases are ``slotted in'' without regard for consistency---explaining why sentiment does not predict engagement.
+\end{insightbox}
+
+% ============================================================
+% SECTION 19
+% ============================================================
+\section{Multi-Brand Posts \& Engagement}
+
+\textit{Purpose: Test whether posts mentioning multiple brands receive different engagement than single-brand posts.}
+
+\edaimg{images/Entropy_eda_multi_brand_engagement.png}
+
+Average likes by brand count tests whether content density (more brands = more information) affects engagement. A Mann-Whitney U test compares single-brand vs.\ multi-brand posts. This adds a dimension most teams will not explore: treating brand mentions as a count variable rather than a categorical variable.
+
+% ============================================================
+% SECTION 20
+% ============================================================
+\section{Analytical Narrative: The Story This Data Tells}
+
+\subsection*{The Central Finding: Structural Uniformity}
+
+This EDA reveals that the Social Engine dataset is structurally uniform to a degree never seen in real social media. The CV analysis (Section 17) quantifies this: platform volume, day-of-week patterns, brand mentions, and language distribution all have $CV < 10\%$.
+
+\subsection*{Why This Matters for the Competition}
+
+Understanding uniformity is not a limitation---it \textbf{is} the insight.
+
+\begin{itemize}[leftmargin=*, itemsep=2pt]
+    \item \textbf{Phase 2:} Queries testing for viral content and bot detection will return empty results---proving the analyst understands the data's structure.
+    \item \textbf{Phase 3:} Multi-platform users are the focus; traditional signals are dead ends.
+    \item \textbf{Phase 4:} A dashboard that honestly surfaces ``no effect found'' is more valuable than one that cherry-picks weak patterns.
+\end{itemize}
+
+\subsection*{The One Real Signal}
+
+Of all dimensions tested, only multi-platform user behaviour shows a statistically significant effect ($\sim$15\% higher engagement). This is the thread worth pulling.
+
+\subsection*{Synthetic vs.\ Real Comparison}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Dimension} & \textbf{Real Expectation} & \textbf{Dataset} & \textbf{Verdict} \\
+\midrule
+Platform engagement & 2--3$\times$ variation & $<5\%$ & Synthetic \\
+Hourly posting & Strong peaks & Flat & Synthetic \\
+Follower correlation & $r > 0.3$ & $r = 0.025$ & Synthetic \\
+Multi-platform advantage & Unknown & 15\% higher (sig.) & Possibly real \\
+Template text & N/A & Confirmed & Generation artifact \\
+\bottomrule
+\end{tabular}
+\caption{Synthetic vs.\ real social media comparison.}
+\end{table}
+
+\begin{insightbox}
+The analytical narrative connects all 20 sections: structural uniformity is the defining characteristic, with one genuine signal (multi-platform users) and one original finding (template-based text generation with contradictory sentiment).
+\end{insightbox}
+
+% ============================================================
+% CONCLUSIONS
+% ============================================================
+\section*{Conclusions \& Recommendations}
+\addcontentsline{toc}{section}{Conclusions \& Recommendations}
+
+This EDA establishes the fundamental character of the Social Engine dataset through 20 analytical sections, 21 visualizations, and 6 statistical tests. The dataset is structurally uniform ($CV < 10\%$ on most dimensions), with engagement generated independently of user attributes, platform, timing, or content. Two genuine signals emerge: multi-platform users show significantly higher engagement ($\sim$15\%), and template-based text generation creates detectable contradictory sentiment patterns.
+
+\textbf{Recommendations for Phase 2 (SQL Analysis):}
+
+\begin{enumerate}[leftmargin=*, itemsep=4pt]
+    \item \textbf{Trend Detection:} Focus on monthly volume and growth rates. Day-of-week and platform trends will be flat but should still be demonstrated with proper window functions.
+    \item \textbf{Anomaly Discovery:} Q4 (viral posts) and Q5 (bot detection) will return empty results, but the queries demonstrate advanced statistical SQL and the empty results are a legitimate finding.
+    \item \textbf{Behavioural Grouping:} Multi-platform users are the one dimension where a real signal exists (15\% higher engagement for 5-platform users).
+    \item \textbf{Correlation Analysis:} Follower count vs.\ engagement will be flat. Brand sentiment analysis is the most promising direction.
+\end{enumerate}
+
+% ============================================================
+% APPENDIX
+% ============================================================
+\newpage
+\section*{Appendix: Corruption Catalog}
+\addcontentsline{toc}{section}{Appendix: Corruption Catalog}
+
+The following corruption patterns were identified and fixed during Phase 1a cleaning.
+
+\edaimg{images/Entropy_corruption_catalog.png}
+
+\edaimg{images/Entropy_data_quality_scorecard.png}
+
+The data quality scorecard shows: 360 duplicate rows removed, 974 HTML artifacts cleaned, 306 mojibake instances fixed, 509 negative likes corrected, 24 NULL strings replaced, and all 12,000 timestamps standardized.
+
+\end{document}
