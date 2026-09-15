@@ -93,25 +93,13 @@ Round1-Phase2-Analytical-Core/
 |-- Entropy_Phase2_SQL_Queries.pdf         # Deliverable 1
 |-- Entropy_Phase2_Logic_Explanation.pdf   # Deliverable 3
 |-- Entropy_Phase2_Insight_Report.pdf      # Deliverable 4
-|-- Entropy_Phase2_SQL_Queries.tex         # LaTeX sources
-|-- Entropy_Phase2_Logic_Explanation.tex
-|-- Entropy_Phase2_Insight_Report.tex
-|-- Entropy_phase2_common.tex              # Shared LaTeX preamble
-|-- Entropy_run_queries.py                 # Renders screenshots + charts from the query result sets
-|-- Entropy_build_notebook.py              # Generates and executes the notebook
 |-- Entropy_README.md
 ```
 
 ## Reproduce
 
-```bash
-python Entropy_build_notebook.py          # rebuild DB + execute notebook
-python Entropy_run_queries.py             # screenshots + charts
-pdflatex Entropy_Phase2_SQL_Queries.tex && pdflatex Entropy_Phase2_SQL_Queries.tex
-pdflatex Entropy_Phase2_Logic_Explanation.tex && pdflatex Entropy_Phase2_Logic_Explanation.tex
-pdflatex Entropy_Phase2_Insight_Report.tex && pdflatex Entropy_Phase2_Insight_Report.tex
-```
+Open and run `Entropy_01_SQL_Analysis.ipynb` top to bottom: it rebuilds `Entropy_social_engine.db` from the Phase 1 cleaned CSVs, executes the three queries in `queries/`, and prints every statistic quoted in the reports.
 
 ## Tools
 
-Python 3, sqlite3, pandas, scipy.stats, matplotlib, Jupyter, LaTeX (MiKTeX / pdflatex, `listings` for SQL).
+Python 3, sqlite3, pandas, scipy.stats, matplotlib, Jupyter, LaTeX (pdflatex).

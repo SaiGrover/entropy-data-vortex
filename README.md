@@ -30,7 +30,6 @@ Data Vortex/
 |   |-- Entropy_01_Data_Cleaning.ipynb          # 10-step cleaning pipeline with before/after examples
 |   |-- Entropy_02_EDA_Report.ipynb             # 20-section EDA, 21 visualizations, 6 statistical tests
 |   |-- Entropy_Phase1_EDA_Report.pdf           # Standalone EDA insight report (LaTeX)
-|   |-- Entropy_eda_report.tex                  # LaTeX source for the PDF report
 |   |-- Entropy_Social_Engine_Cleaned.csv       # Single merged submission file (12,000 rows x 12 cols)
 |   |-- Entropy_Social_Engine_Posts_Cleaned.csv # Cleaned posts (12,000 rows)
 |   |-- Entropy_Social_Engine_Users_Cleaned.csv # Cleaned users (1,500 rows)
@@ -49,9 +48,6 @@ Data Vortex/
 |   |-- Entropy_social_engine.db                # SQLite database (PK/FK, CHECK constraints, indexes, view)
 |   |-- queries/                                # The 3 final .sql files
 |   |-- images/                                 # Output screenshots + 4 insight charts
-|   |-- Entropy_*.tex                           # LaTeX sources for the three PDFs
-|   |-- Entropy_run_queries.py                  # Renders screenshots and charts from query results
-|   |-- Entropy_build_notebook.py               # Generates and executes the notebook
 |   |-- Entropy_README.md
 |
 |-- README.md                         # This file
@@ -92,6 +88,6 @@ Data Vortex/
 - **Data Processing:** pandas, numpy, sqlite3
 - **Statistics:** scipy.stats (Kruskal-Wallis, Chi-square, Spearman, Mann-Whitney U)
 - **Visualization:** matplotlib, seaborn
-- **Reporting:** LaTeX (pdflatex), fpdf2
+- **Reporting:** LaTeX (pdflatex)
 - **Notebooks:** Jupyter
 - **Database:** SQLite
