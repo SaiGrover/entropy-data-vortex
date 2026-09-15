@@ -1,0 +1,76 @@
+\documentclass[11pt,a4paper]{article}
+\input{Entropy_phase2_common.tex}
+\hypersetup{pdftitle={Phase 2 SQL Queries -- Team Entropy}}
+
+\begin{document}
+\color{bodytext}
+\entropytitle{SQL Queries}{Final queries for E3, M4 and H4}
+
+\section{Database Schema}
+
+All three queries run against the two-table SQLite schema built in the notebook from the Phase 1 cleaned CSVs. Constraints are enforced at the DDL level (not just in pandas), so every query can rely on them.
+
+\begin{lstlisting}
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE users (
+    user_id         TEXT PRIMARY KEY,
+    location        TEXT NOT NULL,
+    language        TEXT NOT NULL,
+    account_created DATE NOT NULL,
+    follower_count  INTEGER NOT NULL CHECK (follower_count >= 0)
+);
+
+CREATE TABLE posts (
+    post_id      TEXT PRIMARY KEY,
+    user_id      TEXT NOT NULL REFERENCES users(user_id),
+    platform     TEXT,                       -- NULL where corrupted (14.9%)
+    text_content TEXT,                       -- NULL where corrupted (14.3%)
+    timestamp    DATETIME NOT NULL,
+    likes        INTEGER CHECK (likes >= 0), -- NULL where corrupted (15.1%)
+    shares       INTEGER NOT NULL CHECK (shares >= 0),
+    comments     INTEGER NOT NULL CHECK (comments >= 0)
+);
+
+CREATE INDEX idx_posts_user_id   ON posts(user_id);
+CREATE INDEX idx_posts_platform  ON posts(platform);
+CREATE INDEX idx_posts_timestamp ON posts(timestamp);
+CREATE INDEX idx_users_language  ON users(language);
+CREATE INDEX idx_users_location  ON users(location);
+\end{lstlisting}
+
+\textbf{Row counts:} \texttt{users} = 1,500; \texttt{posts} = 12,000. Three columns keep the NULLs introduced by the corruption because Phase 1 showed they are Missing Completely at Random (Mann--Whitney U, $p = 0.64$); each query below states explicitly how it treats them.
+
+\section{E3 -- Average Engagement by Platform (Easy)}
+
+\textbf{Challenge.} Calculate the average likes, shares, and comments for each platform. Which platform generates the highest average total engagement?
+
+\lstinputlisting{queries/Entropy_E3_average_engagement_by_platform.sql}
+
+\textbf{Output columns.} \texttt{rank}, \texttt{platform}, \texttt{post\_count}, \texttt{avg\_likes}, \texttt{avg\_shares}, \texttt{avg\_comments}, \texttt{avg\_total\_engagement}, \texttt{pct\_vs\_overall}. Returns 5 rows; Instagram ranks first at 4,040.0.
+
+\section{M4 -- Platform Behaviour by High-Follower Users (Medium)}
+
+\textbf{Challenge.} Among users with at least 30,000 followers, determine which platform gives them the highest average engagement per post.
+
+\lstinputlisting{queries/Entropy_M4_platform_behaviour_high_follower_users.sql}
+
+\textbf{Output columns.} \texttt{rank}, \texttt{platform}, \texttt{high\_follower\_users}, \texttt{posts}, \texttt{avg\_engagement\_high\_followers}, \texttt{avg\_engagement\_all\_users}, \texttt{cohort\_minus\_baseline}. Returns 5 rows; Instagram ranks first at 4,145.2 for the 594-user cohort.
+
+\section{H4 -- Follower-to-Engagement Anomaly (Hard)}
+
+\textbf{Challenge.} Find users who have fewer than 5,000 followers but whose total post engagement places them among the top 10\% of all users.
+
+\lstinputlisting{queries/Entropy_H4_follower_to_engagement_anomaly.sql}
+
+\textbf{Output columns.} \texttt{rank\_among\_anomalies}, \texttt{user\_id}, \texttt{location}, \texttt{follower\_count}, \texttt{post\_count}, \texttt{total\_engagement}, \texttt{avg\_engagement\_per\_post}, \texttt{top\_percentile}. Returns 16 users; the top-10\% threshold is 43,948 total engagement.
+
+\section{Reproducibility}
+
+\begin{itemize}[leftmargin=*]
+  \item Engine: SQLite 3 (window functions require $\geq$ 3.25), executed through Python's \texttt{sqlite3} + pandas in \texttt{Entropy\_01\_SQL\_Analysis.ipynb}.
+  \item Each query is stored verbatim in \texttt{queries/} and the JPEG screenshots in \texttt{images/} were rendered from the exact result sets returned by these files (\texttt{Entropy\_run\_queries.py}).
+  \item No query mutates data; all are single read-only \texttt{SELECT} statements.
+\end{itemize}
+
+\end{document}
