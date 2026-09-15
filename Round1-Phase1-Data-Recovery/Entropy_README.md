@@ -106,7 +106,6 @@ Round1-Phase1-Data-Recovery/
 |-- Entropy_Social_Engine_Users_Cleaned.csv  # Cleaned users (1,500 rows)
 |-- Entropy_Social_Engine_Cleaned.csv        # Single merged submission file (posts LEFT JOIN users on user_id; 12,000 rows x 12 cols)
 |-- Entropy_cleaning_log.txt                 # Detailed log of all transformations
-|-- Entropy_generate_eda_pdf.py              # Script to regenerate the PDF report
 |-- images/                          # All visualizations (21 PNGs)
 |   |-- Entropy_corruption_catalog.png
 |   |-- Entropy_data_quality_scorecard.png
@@ -152,6 +151,6 @@ Round1-Phase1-Data-Recovery/
 - pandas, numpy (data manipulation)
 - matplotlib, seaborn (visualization)
 - scipy.stats (Kruskal-Wallis, Chi-square, Spearman, Mann-Whitney U)
-- fpdf2 (PDF report generation)
+- LaTeX / pdflatex (PDF report generation)
 - re (regex for text cleaning)
 - collections.Counter (hashtag analysis)
