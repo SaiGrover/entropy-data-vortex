@@ -11,32 +11,30 @@
 
 Solve one question from each difficulty level using SQL on the cleaned Social Engine dataset, and submit the query, its output, the reasoning behind it, and the insights it produces.
 
-| Level | Question | One-line answer |
-|-------|----------|-----------------|
-| Easy | **E3 - Average Engagement by Platform** | Instagram is first (4,040.0) but all five platforms sit within 2.2% of each other (Kruskal-Wallis p = 0.56) |
-| Medium | **M4 - Platform Behaviour by High-Follower Users** | Instagram again (4,145.2 for the 594 users with >= 30k followers), only +105 above the all-user baseline; the cohort is indistinguishable from everyone else (Mann-Whitney p = 0.98) |
-| Hard | **H4 - Follower-to-Engagement Anomaly** | 16 users with < 5k followers reach the top 10%, against 13.1 expected by chance (binomial p = 0.39); they post 61% more, not better |
-
-## Why these three
-
-Each question forces a different SQL technique and can be checked against a Phase 1 EDA finding rather than only returning rows:
-
-- **E3** - `GROUP BY` + `RANK()` + cross-joined benchmark; tests "platform does not matter"
-- **M4** - join, filter, two aggregated CTEs joined on platform; tests "follower count does not matter"
-- **H4** - three-level CTE chain with `NTILE(10)`, `PERCENT_RANK()`, `COUNT(*) OVER ()`; tests whether "anomalies" occur at the rate independence predicts
+| Level | Question | Answer | How much it can be relied on |
+|-------|----------|--------|------------------------------|
+| Easy | **E3 - Average Engagement by Platform** | Instagram, 4,040.0 average total engagement | All platforms within 2.2%; the data could detect a 3.7% gap and finds none (Kruskal-Wallis p = 0.56) |
+| Medium | **M4 - Platform Behaviour by High-Follower Users** | Instagram, 4,145.2 for the 594 users with 30k+ followers | +4.4% over smaller accounts, but not significant after Holm correction (p = 0.12) and the platform ranking reverses between groups |
+| Hard | **H4 - Follower-to-Engagement Anomaly** | 16 users with under 5k followers in the top 10% | Close to the 13.1 expected by chance (p = 0.38); 14 are volume-driven, 2 are exceptional per post |
 
 ## Deliverables
 
 | Required item | File |
 |---------------|------|
 | SQL Query (PDF) | `Entropy_Phase2_SQL_Queries.pdf` |
-| Output Screenshot (JPEG) | `images/Entropy_E3_output.jpeg`, `images/Entropy_M4_output.jpeg`, `images/Entropy_H4_output.jpeg` |
+| Output Screenshot (JPEG) | `images/Entropy_E3_output.jpeg`, `images/Entropy_M4_output.jpeg`, `images/Entropy_H4_output.jpeg` (Jupyter executing each query file) |
 | Logic Explanation (PDF) | `Entropy_Phase2_Logic_Explanation.pdf` |
 | Phase 2 Insight Report (PDF) | `Entropy_Phase2_Insight_Report.pdf` |
 
+## Query Design
+
+- **E3** - `GROUP BY` + `RANK()` + cross-joined grand mean. Follows the question literally: only posts with a missing platform are excluded, and SQL's NULL handling applies the brief's "ignore missing likes" rule to total engagement.
+- **M4** - join + conditional aggregation in a single scan. The 30k+ cohort is compared with users **under** 30k (not all users, which would include the cohort), and each group is ranked separately to test whether the platform order holds.
+- **H4** - four-level CTE chain: impute missing likes with each user's own average, roll up to users, rank twice with `NTILE(10)` (by total and by per-post engagement, `user_id` tie-break), then filter and classify as *Volume-driven* or *Exceptional per post*.
+
 ## Database Schema
 
-Two-table normalised schema with referential integrity and DDL-level constraints (loaded with `if_exists="append"` so the constraints survive):
+Two-table normalised schema with engine-enforced constraints (foreign key, CHECK and NOT NULL violations are demonstrated in the notebook):
 
 ```sql
 users (Parent)
@@ -49,56 +47,54 @@ users (Parent)
 posts (Detail)
   post_id      TEXT PRIMARY KEY
   user_id      TEXT NOT NULL REFERENCES users(user_id)
-  platform     TEXT            -- nullable (corrupted, 14.9%)
-  text_content TEXT            -- nullable (corrupted, 14.3%)
+  platform     TEXT            -- nullable (corrupted, 1,784 posts)
+  text_content TEXT            -- nullable (corrupted)
   timestamp    DATETIME NOT NULL
-  likes        INTEGER CHECK (likes >= 0)   -- nullable (corrupted, 15.1%)
+  likes        INTEGER CHECK (likes >= 0)   -- nullable (corrupted, 1,814 posts)
   shares       INTEGER NOT NULL CHECK (shares >= 0)
   comments     INTEGER NOT NULL CHECK (comments >= 0)
 
-Indexes: posts(user_id), posts(platform), posts(timestamp), users(language), users(location)
+Indexes: posts(user_id), posts(platform), posts(timestamp), users(location), users(language)
 View:    user_posts (posts JOIN users, with total_engagement)
 ```
 
-## NULL policy (the one decision that matters)
-
-- **Averages (E3, M4):** rows with NULL likes are excluded once in `WHERE`, so all averages share a denominator. Substituting 0 would bias every average down by ~15%.
-- **Per-user sums (H4):** NULL likes are `COALESCE`d to 0, so a corrupted like count never discards a post's valid shares and comments. The bias is uniform because the corruption is MCAR (Phase 1, p = 0.64).
+`EXPLAIN QUERY PLAN` confirms `idx_posts_platform` drives E3 and M4, `idx_posts_user_id` drives H4, and every join to `users` is a primary-key lookup.
 
 ## Key Insights
 
-1. **Platform is irrelevant.** First-to-last spread is 2.2%; real platforms differ 2-3x.
-2. **Audience size is irrelevant.** The >= 30k cohort straddles the per-platform baselines (max gap 2.6%, three of five platforms below baseline).
-3. **"Anomalies" are chance.** 16 observed vs 13.1 expected low-follower users in the top decile.
-4. **Volume is the only driver of totals.** Post count vs total engagement: Spearman rho = 0.89; follower count vs total engagement: rho = -0.03. Any leaderboard built on totals is a list of frequent posters; rank on per-post engagement instead.
+1. **Platform choice moves engagement by less than 4%.** A measured bound, not a small-sample shrug.
+2. **Large accounts have no stable best platform.** Instagram's +4.4% disappears under multiple-comparison correction, and YouTube goes from 1st for smaller accounts to 5th for large ones.
+3. **Posting volume, not followers, puts users in the top 10%.** Posts vs total engagement: Spearman rho = 0.91; followers vs total: rho = -0.01.
+4. **Two genuine small-account outperformers:** `user_ogtvuuki` (Cairo) and `user_kbdvf8d6` (Tokyo) are top 10% on both total and per-post engagement.
+5. **How corruption is handled changes answers.** Zero-filling missing likes would have changed 2 of the 16 names in H4.
 
 ## File Structure
 
 ```
 Round1-Phase2-Analytical-Core/
-|-- Entropy_01_SQL_Analysis.ipynb          # Builds schema, runs the 3 queries, statistical checks (executed)
+|-- Entropy_Phase2_SQL_Queries.pdf         # Deliverable 1
+|-- Entropy_Phase2_Logic_Explanation.pdf   # Deliverable 3
+|-- Entropy_Phase2_Insight_Report.pdf      # Deliverable 4
+|-- Entropy_01_SQL_Analysis.ipynb          # Builds schema, query plans, runs queries, all statistics (executed)
 |-- Entropy_social_engine.db               # SQLite database
 |-- queries/
 |   |-- Entropy_E3_average_engagement_by_platform.sql
 |   |-- Entropy_M4_platform_behaviour_high_follower_users.sql
 |   |-- Entropy_H4_follower_to_engagement_anomaly.sql
 |-- images/
-|   |-- Entropy_E3_output.jpeg             # Output screenshots (required deliverable)
+|   |-- Entropy_E3_output.jpeg             # Deliverable 2: output screenshots
 |   |-- Entropy_M4_output.jpeg
 |   |-- Entropy_H4_output.jpeg
 |   |-- Entropy_E3_insight_chart.png       # Charts used in the insight report
 |   |-- Entropy_M4_insight_chart.png
 |   |-- Entropy_H4_insight_chart.png
 |   |-- Entropy_H4_post_volume_chart.png
-|-- Entropy_Phase2_SQL_Queries.pdf         # Deliverable 1
-|-- Entropy_Phase2_Logic_Explanation.pdf   # Deliverable 3
-|-- Entropy_Phase2_Insight_Report.pdf      # Deliverable 4
 |-- Entropy_README.md
 ```
 
 ## Reproduce
 
-Open and run `Entropy_01_SQL_Analysis.ipynb` top to bottom: it rebuilds `Entropy_social_engine.db` from the Phase 1 cleaned CSVs, executes the three queries in `queries/`, and prints every statistic quoted in the reports.
+Open and run `Entropy_01_SQL_Analysis.ipynb` top to bottom: it rebuilds `Entropy_social_engine.db` from the Phase 1 cleaned CSVs, shows each query plan, executes the three queries in `queries/`, and prints every statistic quoted in the reports.
 
 ## Tools
 

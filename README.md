@@ -74,13 +74,14 @@ Data Vortex/
 
 | Level | Question | Answer | What it means |
 |-------|----------|--------|---------------|
-| Easy | E3 - Average Engagement by Platform | Instagram, 4,040.0 avg total engagement | All five platforms sit within **2.2%** of each other (Kruskal-Wallis p = 0.56); platform choice is irrelevant |
-| Medium | M4 - Platform Behaviour by High-Follower Users | Instagram, 4,145.2 for the 594 users with >= 30k followers | Only +105 over the all-user baseline; three of five platforms are below baseline and the cohort is indistinguishable from everyone else (Mann-Whitney p = 0.98) |
-| Hard | H4 - Follower-to-Engagement Anomaly | 16 users with < 5k followers in the top 10% | Chance predicts **13.1** (binomial p = 0.39); they post 61% more often at an average per-post rate, so they are prolific, not exceptional or suspicious |
+| Easy | E3 - Average Engagement by Platform | Instagram, 4,040.0 avg total engagement | All platforms within **2.2%**; the data could detect a 3.7% gap and finds none (Kruskal-Wallis p = 0.56) |
+| Medium | M4 - Platform Behaviour by High-Follower Users | Instagram, 4,145.2 for the 594 users with 30k+ followers | **+4.4%** over smaller accounts, but not significant after Holm correction (p = 0.12), and the platform ranking reverses between groups |
+| Hard | H4 - Follower-to-Engagement Anomaly | 16 users with < 5k followers in the top 10% | Close to the **13.1** expected by chance (p = 0.38); 14 are volume-driven and **2 are exceptional per post** (`user_ogtvuuki`, `user_kbdvf8d6`) |
 
-- Two-table normalized schema with primary/foreign keys, NOT NULL and CHECK constraints, 5 indexes, and a convenience view; queries use CTE chains, `RANK()`, `NTILE(10)`, `PERCENT_RANK()` and cross-joined benchmarks
-- Explicit NULL policy for the 15% corrupted `likes`: excluded for averages (same denominator), `COALESCE`d to 0 for per-user sums
-- **Volume is the only driver of totals:** post count vs total engagement Spearman rho = 0.89, follower count vs total engagement rho = -0.03. Any leaderboard built on totals is a list of frequent posters; rank on per-post engagement instead
+- Two-table normalized schema with engine-enforced primary/foreign keys, NOT NULL and CHECK constraints; `EXPLAIN QUERY PLAN` confirms the indexes drive each query
+- Every query carries its own benchmark: deviation from the overall mean (E3), comparison with users under 30k (M4), and a per-post decile ranking (H4); rankings are deterministic
+- Corrupted `likes` handled per question: SQL NULL semantics for E3 averages, the brief's engagement definition for M4, per-user imputation for H4 totals (zero-filling would change 2 of 16 names)
+- **Posting volume, not followers, drives user totals:** post count vs total engagement Spearman rho = 0.91, followers vs total rho = -0.01
 
 ## Tech Stack
 
