@@ -40,17 +40,21 @@ Data Vortex/
 |   |-- images/                                 # 21 EDA chart PNGs
 |   |-- Entropy_README.md
 |
-|-- Round1-Phase2-Analytical-Core/    # SQL analysis
-|   |-- Entropy_01_SQL_Analysis.ipynb           # 18 analytical SQL queries with interpretations
+|-- Round1-Phase2-Analytical-Core/    # SQL analysis (E3 + M4 + H4)
+|   |-- Entropy_Phase2_SQL_Queries.pdf          # Deliverable 1: final SQL queries
+|   |-- images/Entropy_{E3,M4,H4}_output.jpeg   # Deliverable 2: output screenshots
+|   |-- Entropy_Phase2_Logic_Explanation.pdf    # Deliverable 3: logic and approach
+|   |-- Entropy_Phase2_Insight_Report.pdf       # Deliverable 4: insights and findings
+|   |-- Entropy_01_SQL_Analysis.ipynb           # Builds constrained schema, runs the 3 queries, stat checks (executed)
 |   |-- Entropy_social_engine.db                # SQLite database (PK/FK, CHECK constraints, indexes, view)
-|   |-- queries/                                # Individual .sql files
-|   |-- images/                                 # Query output screenshots and inline visualizations
-|   |-- Entropy_Phase2_Insight_Report.pdf       # Comprehensive insight report (PDF)
-|   |-- Entropy_Phase2_Insight_Report.md        # Insight report source (Markdown)
-|   |-- Entropy_SQL_Queries_Guide.md            # Query-by-query technique and logic guide
+|   |-- queries/                                # The 3 final .sql files
+|   |-- images/                                 # Output screenshots + 4 insight charts
+|   |-- Entropy_*.tex                           # LaTeX sources for the three PDFs
+|   |-- Entropy_run_queries.py                  # Renders screenshots and charts from query results
+|   |-- Entropy_build_notebook.py               # Generates and executes the notebook
 |   |-- Entropy_README.md
 |
-|-- Entropy_README.md                 # This file
+|-- README.md                         # This file
 ```
 
 ## Round 1 Progress
@@ -58,7 +62,7 @@ Data Vortex/
 | Phase | Status | Description |
 |-------|--------|-------------|
 | Phase 1 - Data Recovery | Completed | Data cleaning (10 justified transformations) + EDA (20 sections, 21 visualizations, 6 statistical tests) + PDF insight report |
-| Phase 2 - Analytical Core | Completed | 18 SQL queries across 6 analytical categories + insight report |
+| Phase 2 - Analytical Core | Completed | One question per level (E3, M4, H4) with SQL query PDF, JPEG output screenshots, logic explanation PDF, and insight report PDF |
 
 ## Key Findings
 
@@ -71,12 +75,16 @@ Data Vortex/
 - Contradictory sentiment phrases in the same post reveal **template-based text generation**
 
 ### Phase 2: Analytical Core
-- Two-table normalized schema with primary/foreign keys, NOT NULL and CHECK constraints, 5 indexes, and a convenience view
-- Post volume is **stable** (914-1,038 per month) with no viral outliers; bot-detection and outlier queries return empty results, a legitimate structural finding
-- **Multi-platform users** have consistently higher engagement than single-platform users
-- **Negative sentiment** posts often outperform positive ones for brand content
-- **Follower count** and **account age** show no meaningful correlation with engagement
-- Cohort analysis, SQL-based text pattern detection, and self-join "user twins" all confirm uniform data generation
+
+| Level | Question | Answer | What it means |
+|-------|----------|--------|---------------|
+| Easy | E3 - Average Engagement by Platform | Instagram, 4,040.0 avg total engagement | All five platforms sit within **2.2%** of each other (Kruskal-Wallis p = 0.56); platform choice is irrelevant |
+| Medium | M4 - Platform Behaviour by High-Follower Users | Instagram, 4,145.2 for the 594 users with >= 30k followers | Only +105 over the all-user baseline; three of five platforms are below baseline and the cohort is indistinguishable from everyone else (Mann-Whitney p = 0.98) |
+| Hard | H4 - Follower-to-Engagement Anomaly | 16 users with < 5k followers in the top 10% | Chance predicts **13.1** (binomial p = 0.39); they post 61% more often at an average per-post rate, so they are prolific, not exceptional or suspicious |
+
+- Two-table normalized schema with primary/foreign keys, NOT NULL and CHECK constraints, 5 indexes, and a convenience view; queries use CTE chains, `RANK()`, `NTILE(10)`, `PERCENT_RANK()` and cross-joined benchmarks
+- Explicit NULL policy for the 15% corrupted `likes`: excluded for averages (same denominator), `COALESCE`d to 0 for per-user sums
+- **Volume is the only driver of totals:** post count vs total engagement Spearman rho = 0.89, follower count vs total engagement rho = -0.03. Any leaderboard built on totals is a list of frequent posters; rank on per-post engagement instead
 
 ## Tech Stack
 
