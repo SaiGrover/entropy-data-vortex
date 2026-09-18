@@ -41,7 +41,7 @@ Data Vortex/
 |   |-- Entropy_Social_Engine_Users.csv
 |   |-- Entropy_cleaning_log.txt                # Log of every transformation applied
 |   |-- images/                                 # 21 EDA chart PNGs
-|   |-- Entropy_README.md
+|   |-- Entropy_README_Round1_Phase1.md
 |
 |-- Round1-Phase2-Analytical-Core/    # SQL analysis (E3 + M4 + H4)
 |   |-- Entropy_Phase2_SQL_Queries.pdf          # Deliverable 1: final SQL queries
@@ -52,7 +52,7 @@ Data Vortex/
 |   |-- Entropy_social_engine.db                # SQLite database (PK/FK, CHECK constraints, indexes, view)
 |   |-- queries/                                # The 3 final .sql files
 |   |-- images/                                 # Output screenshots + 4 insight charts
-|   |-- Entropy_README.md
+|   |-- Entropy_README_Round1_Phase2.md
 |
 |-- Round2-Semantic-Recovery/          # NLP: sentiment + topic recovery
 |   |-- code/
@@ -95,8 +95,7 @@ Data Vortex/
 |   |   |-- Entropy_r2_technical_report.pdf        # Complete technical report covering methodology and results
 |   |   |-- Entropy_r2_technical_report.tex        # LaTeX source for the technical report
 |   |
-|   |-- Entropy_r2_common.tex                    # Shared LaTeX preamble for both reports
-|   |-- Entropy_README.md
+|   |-- Entropy_README_Round2.md
 |
 |-- README.md                         # This file
 ```
