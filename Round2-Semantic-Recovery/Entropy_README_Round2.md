@@ -78,10 +78,11 @@ Round2-Semantic-Recovery/
 ## 3. Setup & reproduction
 
 ```bash
-pip install -r requirements.txt   # scikit-learn, sentence-transformers, transformers, torch,
-                                   # joblib, numpy, pandas
+pip install -r requirements.txt
 jupyter notebook Entropy_01_NLP_Model.ipynb
 ```
+
+`requirements.txt` pins: `numpy`, `pandas`, `scipy`, `scikit-learn`, `matplotlib`, `joblib`, `nltk`, `torch`, `transformers`, `sentence-transformers`, `jupyter`. NLTK's stopword corpus is downloaded on first run (`nltk.download("stopwords")`) if not already present.
 
 Run the notebook top to bottom. It imports shared logic from `Entropy_nlp_utils.py`, so keep both files in the same directory. Expect the classical models (TF-IDF, embeddings + LogReg) to run in seconds on CPU; fine-tuning the three MiniLM seeds takes ≈27 minutes total on CPU (≈1,640 s).
 
@@ -92,7 +93,9 @@ pdflatex Entropy_r2_technical_report.tex
 pdflatex Entropy_r2_evaluation_metrics_report.tex
 ```
 
-(Run twice each if the table of contents needs to resolve.) Both `.tex` files pull shared styling from `Entropy_r2_common.tex` and expect the referenced images under `images/`.
+(Run twice each if the table of contents needs to resolve.) Both `.tex` files pull shared styling — the `entropytitle` title block, the `insightbox` environment, and the `bodytext` color scheme — from `Entropy_r2_common.tex`, and expect the referenced images under `images/`.
+
+> **Note:** `Entropy_r2_common.tex` is not yet committed to this repo, so the two reports currently can't be compiled from source by anyone outside the team — only the pre-built PDFs under `reports/` are reproducible as-is. If you want source-buildable reports, commit `Entropy_r2_common.tex` (the same file the Round 1 EDA report's `\edaimg` macro comes from) alongside the other `.tex` files.
 
 ---
 
