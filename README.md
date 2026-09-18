@@ -2,7 +2,7 @@
 
 **Theme:** Rebuilding the Social Engine  
 **Event:** AARUUSH'26, SRM Institute of Science and Technology  
-**Dates:** September 13-16, 2026  
+**Dates:** September 13-18, 2026  
 **Team:** Entropy  
 **Members:** Saanvi Grover & Aditya Sharma
 
