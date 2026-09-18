@@ -1,0 +1,261 @@
+\documentclass[11pt,a4paper]{article}
+\PassOptionsToPackage{nobottomtitles}{titlesec}
+\input{Entropy_r2_common.tex}
+
+\newcommand{\reportimg}[2][0.85]{%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=#1\textwidth]{#2}
+\end{figure}
+}
+
+\begin{document}
+\color{bodytext}
+
+\entropytitle{Semantic Recovery}{Round 2 Evaluation Metrics Report}
+
+\tableofcontents
+\newpage
+
+% ============================================================
+\section{Selected Model}
+% ============================================================
+
+\textbf{Weighted ensemble} of three components, weights chosen by grid search on the validation split:
+\[
+\hat{p} = 0.25\,p_{\text{tfidf+char LogReg}} + 0.20\,p_{\text{MiniLM embeddings + LogReg}} + 0.55\,p_{\text{fine-tuned MiniLM}}
+\]
+Selected on validation macro-F1 (0.7111, the highest of all candidates compared), before the test set was touched. Full model comparison, ablations, and training methodology are in the accompanying Technical Report; this report presents the resulting metrics and error analysis only.
+
+% ============================================================
+\section{Test-Set Performance}
+% ============================================================
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lc@{}}
+\toprule
+\textbf{Metric} & \textbf{Value} \\
+\midrule
+n (test set) & 1{,}185 \\
+Accuracy & 0.7173 \\
+\textbf{Macro-F1} & \textbf{0.7178} \\
+Weighted-F1 & 0.7158 \\
+Macro precision & 0.7167 \\
+Macro recall & 0.7197 \\
+ROC-AUC (one-vs-rest) & 0.8805 \\
+Macro-F1, 95\% bootstrap CI ($n=2{,}000$ resamples) & [0.6913, 0.7414] \\
+Accuracy, 95\% bootstrap CI & [0.6903, 0.7418] \\
+\bottomrule
+\end{tabular}
+\caption{Overall test-set performance, Weighted ensemble.}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} & \textbf{Support} \\
+\midrule
+Negative & 0.7527 & 0.7753 & 0.7638 & 365 \\
+Neutral & 0.6545 & 0.6117 & 0.6324 & 412 \\
+Positive & 0.7429 & 0.7721 & 0.7572 & 408 \\
+\bottomrule
+\end{tabular}
+\caption{Per-class precision, recall, F1.}
+\end{table}
+
+\begin{insightbox}
+Compared against the strongest classical baseline (Linear SVM, word+char TF-IDF), the ensemble improves macro-F1 by \textbf{+0.0935} (95\% CI [0.0655, 0.1243]). A McNemar test on paired predictions ($b=208$, $c=98$) gives $p = 3.0\times10^{-10}$ --- the improvement is statistically significant, not noise.
+\end{insightbox}
+
+% ============================================================
+\section{Confusion Matrix}
+% ============================================================
+
+\reportimg[0.75]{images/Entropy_r2_confusion_matrix.png}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Actual} $\downarrow$ \textbf{/ Predicted} $\rightarrow$ & \textbf{Negative} & \textbf{Neutral} & \textbf{Positive} \\
+\midrule
+Negative (365) & 283 & 64 & 18 \\
+Neutral (412) & 69 & 252 & 91 \\
+Positive (408) & 24 & 69 & 315 \\
+\bottomrule
+\end{tabular}
+\caption{Raw confusion matrix, test set.}
+\end{table}
+
+Neutral is the class the model struggles with most (recall 61.2\%, the lowest of the three), and its errors split almost evenly toward both Negative (69 posts) and Positive (91 posts) rather than leaning systematically in one direction. This is consistent with Neutral being inherently the hardest class in 3-way sentiment: it lacks the strong polarised vocabulary (``love'', ``hate'', ``best'', ``worst'') that anchors the other two classes.
+
+% ============================================================
+\section{Error Analysis}
+% ============================================================
+
+335 of 1{,}185 test posts (28.3\%) were misclassified.
+
+\subsection{Confusion Pairs}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}llcc@{}}
+\toprule
+\textbf{Actual} & \textbf{Predicted} & \textbf{Errors} & \textbf{Share of all errors} \\
+\midrule
+Neutral & Positive & 91 & 27.2\% \\
+Neutral & Negative & 69 & 20.6\% \\
+Positive & Neutral & 69 & 20.6\% \\
+Negative & Neutral & 64 & 19.1\% \\
+Positive & Negative & 24 & 7.2\% \\
+Negative & Positive & 18 & 5.4\% \\
+\bottomrule
+\end{tabular}
+\caption{Breakdown of all 335 test-set errors by confusion pair.}
+\end{table}
+
+Over 87\% of errors involve Neutral on one side of the confusion. True polarity flips (Negative$\leftrightarrow$Positive) are rare: only 42 of 335 errors (12.5\%).
+
+\subsection{Error Rate by Post Property}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Slice} & \textbf{n} & \textbf{Error rate} \\
+\midrule
+All test posts & 1{,}185 & 28.3\% \\
+Short ($\le$12 words) & 117 & 31.6\% \\
+Medium (13--20 words) & 559 & 25.9\% \\
+Long ($>$20 words) & 509 & 30.1\% \\
+Contains \texttt{@user} & 342 & 27.5\% \\
+Contains a hashtag & 194 & 22.7\% \\
+Contains negation & 273 & 25.6\% \\
+Contains contrast (but/though) & 143 & 30.8\% \\
+Contains a question mark & 153 & 29.4\% \\
+Contains an exclamation mark & 208 & 25.5\% \\
+Contains digits & 502 & 27.7\% \\
+\bottomrule
+\end{tabular}
+\caption{Error rate broken down by post property.}
+\end{table}
+
+\reportimg{images/Entropy_r2_error_slices.png}
+
+Short posts (31.6\%) and posts containing a contrast word like \textit{but} or \textit{though} (30.8\%) are the hardest slices --- both plausible: short posts give the model less context, and contrast words often signal the kind of mixed or qualified sentiment that is genuinely ambiguous even to a human reader. Hashtagged posts are comparatively easy (22.7\%), likely because hashtag words carry unusually explicit sentiment.
+
+\subsection{Calibration}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Confidence bucket} & \textbf{n} & \textbf{Mean confidence} & \textbf{Actual accuracy} \\
+\midrule
+(0.0, 0.5] & 147 & 0.451 & 41.5\% \\
+(0.5, 0.6] & 241 & 0.551 & 57.7\% \\
+(0.6, 0.7] & 270 & 0.650 & 73.3\% \\
+(0.7, 0.8] & 290 & 0.747 & 80.7\% \\
+(0.8, 0.9] & 185 & 0.847 & 89.7\% \\
+(0.9, 1.0] & 52 & 0.925 & 100.0\% \\
+\bottomrule
+\end{tabular}
+\caption{Predicted confidence vs.\ observed accuracy, by bucket.}
+\end{table}
+
+Calibration is close to the diagonal across every bucket --- when the ensemble says it is 90\%+ confident, it is right essentially every time in this sample. This means downstream use of the model's confidence score (e.g.\ routing low-confidence posts to human review) is trustworthy.
+
+\subsection{Most Confident Mistakes}
+
+The five highest-confidence errors are all \textbf{Neutral} posts misread as polarised:
+
+\begin{itemize}[leftmargin=*, itemsep=2pt]
+    \small
+    \item A post comparing two public figures' intelligence, misread as Negative (confidence 0.883) --- the model likely reacts to words like ``wrong'' without registering the balanced, non-judgemental framing.
+    \item A promotional poll referencing a film franchise, misread as Positive (0.878) --- enthusiastic phrasing (``Alright ladies and gents'') without actual sentiment content.
+    \item A news-style post about a legal sentencing, misread as Negative (0.873) --- words like ``bad'' and ``unfair'' appear in a factual, third-person report rather than the poster's own opinion.
+    \item A boastful, joking self-comparison, misread as Positive (0.871) --- confident tone read as positive sentiment rather than dry humour.
+    \item A hyperbolic reaction to a celebrity performance, misread as Negative (0.868) --- ``killed me'' is idiomatic praise, not literal negativity.
+\end{itemize}
+
+\begin{insightbox}
+Every one of the five most confident mistakes is a true Neutral post. The model has learned strong lexical cues for polarity (``bad'', ``wrong'', ``killed'') but has not learned that factual reporting, dry humour, and idiom can neutralise an otherwise polarised word. This is the clearest actionable direction for Round 3: Neutral needs either more training examples of this specific pattern, or a feature that captures ``reporting vs.\ opinion'' framing.
+\end{insightbox}
+
+\subsection{Learned Vocabulary}
+
+The top 12 words by logistic regression coefficient for each class, from the plain word-TF-IDF baseline, confirm the model has learned sensible lexical anchors:
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Negative} & \textbf{Neutral} & \textbf{Positive} \\
+\midrule
+fuck, not, no, sad, don, & gucci, at, do you, meet, & love, happy, good, best, \\
+shit, why, bad, hate, & hold, in, nirvana, days, & great, excited, amazing, \\
+worst, ass, even & zayn, mean, shawn, or & thanks, perfect, birthday \\
+\bottomrule
+\end{tabular}
+\caption{Top TF-IDF logistic-regression terms per class.}
+\end{table}
+
+Note that the Neutral column is mostly proper nouns and function words rather than sentiment-bearing terms --- another sign that Neutral is defined by the \emph{absence} of sentiment vocabulary rather than by any vocabulary of its own, which is structurally why it is the hardest class to separate.
+
+% ============================================================
+\section{Full Model Comparison}
+% ============================================================
+
+Every candidate model's validation and test performance, for reference:
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Model} & \textbf{Val macro-F1} & \textbf{Test acc.} & \textbf{Test macro-F1} & \textbf{Test ROC-AUC} \\
+\midrule
+Majority class & 0.1723 & 0.3477 & 0.1720 & -- \\
+Complement NB (word) & 0.5629 & 0.5764 & 0.5707 & 0.7718 \\
+LogReg (word) & 0.5624 & 0.5924 & 0.5915 & 0.7760 \\
+Linear SVM (word+char) & 0.6061 & 0.6245 & 0.6243 & -- \\
+LogReg (word+char) & 0.5888 & 0.6177 & 0.6177 & 0.8007 \\
+MiniLM embeddings + LogReg & 0.6502 & 0.6599 & 0.6600 & 0.8260 \\
+Fine-tuned MiniLM (best seed) & 0.7017 & 0.7241 & 0.7222 & 0.8813 \\
+Fine-tuned MiniLM (3-seed avg.) & 0.6955 & 0.7131 & 0.7141 & 0.8820 \\
+\textbf{Weighted ensemble (selected)} & \textbf{0.7111} & \textbf{0.7173} & \textbf{0.7178} & \textbf{0.8805} \\
+\bottomrule
+\end{tabular}
+\caption{Validation and test metrics for every candidate model.}
+\end{table}
+
+\begin{insightbox}
+The single best-seed fine-tuned MiniLM model (seed 42 alone) scores higher on the test set (macro-F1 0.7222) than the selected Weighted ensemble (0.7178). This is expected and is not cherry-picked after the fact: the ensemble was chosen on validation performance (0.7111 vs.\ 0.7017 for the single seed), before the test set was touched, and both scores sit well within each other's bootstrap confidence intervals.
+\end{insightbox}
+
+% ============================================================
+\section{Topic Classification (Secondary Task)}
+% ============================================================
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+\textbf{Model} & \textbf{Acc.} & \textbf{Macro-F1} & \textbf{F1 Comm.} & \textbf{F1 Tech.} & \textbf{F1 Feat.} & \textbf{F1 Acc.Sec.} \\
+\midrule
+LogReg (word TF-IDF) & 0.9190 & 0.5768 & 0.9557 & 0.7386 & 0.2128 & 0.4000 \\
+LogReg (char 2--6 n-grams) & 0.9536 & 0.7210 & 0.9742 & 0.9100 & 0.5385 & 0.4615 \\
+Recovered substring rules & 1.0000 & 1.0000 & 1.0000 & 1.0000 & 1.0000 & 1.0000 \\
+\bottomrule
+\end{tabular}
+\caption{Topic classification, test set. See Technical Report Section 9 for the finding that these labels were generated by substring rules and should not be modelled as-is.}
+\end{table}
+
+\end{document}

@@ -1,0 +1,37 @@
+{
+  "selected_model": "Weighted ensemble",
+  "labels": [
+    "Negative",
+    "Neutral",
+    "Positive"
+  ],
+  "components": [
+    {
+      "name": "tfidf_logreg",
+      "kind": "sklearn",
+      "weight": 0.25,
+      "file": "Entropy_sentiment_tfidf_logreg.pkl"
+    },
+    {
+      "name": "embedding_logreg",
+      "kind": "embedding",
+      "weight": 0.2,
+      "file": "Entropy_sentiment_embedding_logreg.pkl",
+      "embedder": "sentence-transformers/all-MiniLM-L6-v2"
+    },
+    {
+      "name": "minilm_finetuned",
+      "kind": "transformer",
+      "weight": 0.55,
+      "dirs": [
+        "Entropy_minilm_sentiment_seed42",
+        "Entropy_minilm_sentiment_seed7",
+        "Entropy_minilm_sentiment_seed1234"
+      ],
+      "cased": false,
+      "max_len": 50
+    }
+  ],
+  "validation_macro_f1": 0.7111,
+  "test_macro_f1": 0.7178
+}

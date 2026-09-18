@@ -1,0 +1,26 @@
+{
+  "Technical_Issues": [
+    "app",
+    "down",
+    "update",
+    "crash",
+    "screen",
+    "slow",
+    "bug"
+  ],
+  "Account_Security": [
+    "ban",
+    "account",
+    "suspend",
+    "hack",
+    "password"
+  ],
+  "Feature_Feedback": [
+    "ui",
+    "feature",
+    "button",
+    "design",
+    "mode",
+    "ugly"
+  ]
+}

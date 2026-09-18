@@ -1,0 +1,862 @@
+{
+  "config": {
+    "seed": 42,
+    "finetune_seeds": [
+      42,
+      7,
+      1234
+    ],
+    "max_epochs": 4,
+    "bootstrap": 2000,
+    "fast_mode": false
+  },
+  "audit": {
+    "rows": 9000,
+    "columns": 4,
+    "missing_values": 0,
+    "unique_texts": 7900,
+    "duplicate_groups": 987,
+    "rows_in_duplicate_groups": 2087,
+    "extra_copies": 1100,
+    "max_copies": 5,
+    "groups_with_conflicting_sentiment": 0,
+    "groups_with_conflicting_topic": 0,
+    "words_mean": 19.5,
+    "words_min": 4,
+    "words_max": 35,
+    "artefacts": {
+      "@user mentions": 2617,
+      "hashtags": 1586,
+      "wrapping double quotes": 1747,
+      "HTML entities (&amp; etc.)": 360,
+      "literal \\u escape sequences": 1092,
+      "URLs": 15
+    },
+    "sentiment_counts": {
+      "Negative": 3000,
+      "Positive": 3000,
+      "Neutral": 3000
+    },
+    "topic_counts": {
+      "Community_Discussion": 7752,
+      "Technical_Issues": 815,
+      "Feature_Feedback": 297,
+      "Account_Security": 136
+    }
+  },
+  "leakage": {
+    "naive_cv_f1": 0.6605,
+    "naive_cv_std": 0.0093,
+    "grouped_cv_f1": 0.5832,
+    "grouped_cv_std": 0.0113,
+    "inflation_points": 7.7
+  },
+  "split": {
+    "train": 5530,
+    "val": 1185,
+    "test": 1185,
+    "unique_texts": 7900
+  },
+  "tokens": {
+    "p50": 29,
+    "p95": 39,
+    "max": 69,
+    "max_len_used": 50
+  },
+  "ablation": [
+    {
+      "variant": "No cleaning (raw text)",
+      "cv_macro_f1": 0.5984,
+      "cv_std": 0.0097,
+      "delta_vs_chosen": -0.0042
+    },
+    {
+      "variant": "Cleaned (chosen)",
+      "cv_macro_f1": 0.6026,
+      "cv_std": 0.0104,
+      "delta_vs_chosen": 0.0
+    },
+    {
+      "variant": "Cleaned + stopword removal",
+      "cv_macro_f1": 0.5935,
+      "cv_std": 0.0166,
+      "delta_vs_chosen": -0.0091
+    },
+    {
+      "variant": "Cleaned + negation marking",
+      "cv_macro_f1": 0.5984,
+      "cv_std": 0.0152,
+      "delta_vs_chosen": -0.0041
+    },
+    {
+      "variant": "Cleaned, word n-grams only",
+      "cv_macro_f1": 0.5704,
+      "cv_std": 0.0063,
+      "delta_vs_chosen": -0.0322
+    },
+    {
+      "variant": "Cleaned, char n-grams only",
+      "cv_macro_f1": 0.6011,
+      "cv_std": 0.0128,
+      "delta_vs_chosen": -0.0015
+    }
+  ],
+  "finetune_history": [
+    {
+      "seed": 42,
+      "epoch": 1,
+      "train_loss": 0.9054,
+      "val_loss": 0.7171,
+      "val_macro_f1": 0.6848,
+      "epoch_s": 106.0469
+    },
+    {
+      "seed": 42,
+      "epoch": 2,
+      "train_loss": 0.6259,
+      "val_loss": 0.7072,
+      "val_macro_f1": 0.7017,
+      "epoch_s": 104.3253
+    },
+    {
+      "seed": 42,
+      "epoch": 3,
+      "train_loss": 0.4897,
+      "val_loss": 0.7498,
+      "val_macro_f1": 0.6942,
+      "epoch_s": 108.5833
+    },
+    {
+      "seed": 42,
+      "epoch": 4,
+      "train_loss": 0.4004,
+      "val_loss": 0.7895,
+      "val_macro_f1": 0.6868,
+      "epoch_s": 106.3948
+    },
+    {
+      "seed": 7,
+      "epoch": 1,
+      "train_loss": 0.9033,
+      "val_loss": 0.7157,
+      "val_macro_f1": 0.6851,
+      "epoch_s": 108.27
+    },
+    {
+      "seed": 7,
+      "epoch": 2,
+      "train_loss": 0.6336,
+      "val_loss": 0.7196,
+      "val_macro_f1": 0.6841,
+      "epoch_s": 107.2499
+    },
+    {
+      "seed": 7,
+      "epoch": 3,
+      "train_loss": 0.5014,
+      "val_loss": 0.759,
+      "val_macro_f1": 0.6977,
+      "epoch_s": 144.7152
+    },
+    {
+      "seed": 7,
+      "epoch": 4,
+      "train_loss": 0.411,
+      "val_loss": 0.7957,
+      "val_macro_f1": 0.6864,
+      "epoch_s": 156.6699
+    },
+    {
+      "seed": 1234,
+      "epoch": 1,
+      "train_loss": 0.9166,
+      "val_loss": 0.7393,
+      "val_macro_f1": 0.6735,
+      "epoch_s": 141.6975
+    },
+    {
+      "seed": 1234,
+      "epoch": 2,
+      "train_loss": 0.6267,
+      "val_loss": 0.7178,
+      "val_macro_f1": 0.6881,
+      "epoch_s": 187.4269
+    },
+    {
+      "seed": 1234,
+      "epoch": 3,
+      "train_loss": 0.4947,
+      "val_loss": 0.75,
+      "val_macro_f1": 0.6857,
+      "epoch_s": 186.2091
+    },
+    {
+      "seed": 1234,
+      "epoch": 4,
+      "train_loss": 0.4055,
+      "val_loss": 0.7948,
+      "val_macro_f1": 0.6822,
+      "epoch_s": 152.8054
+    }
+  ],
+  "finetune": {
+    "seed_val_f1": {
+      "42": 0.7017,
+      "7": 0.6977,
+      "1234": 0.6881
+    },
+    "best_seed": 42,
+    "seed_std": 0.0057,
+    "train_seconds_total": 1640
+  },
+  "ensemble_weights": {
+    "tfidf_logreg": 0.25,
+    "embedding_logreg": 0.2,
+    "minilm_finetuned": 0.55
+  },
+  "learning_curve": [
+    {
+      "fraction": 0.1,
+      "n": 553,
+      "Linear SVM (word+char)": 0.4971,
+      "MiniLM embeddings + LogReg": 0.6067
+    },
+    {
+      "fraction": 0.25,
+      "n": 1382,
+      "Linear SVM (word+char)": 0.5554,
+      "MiniLM embeddings + LogReg": 0.6251
+    },
+    {
+      "fraction": 0.5,
+      "n": 2765,
+      "Linear SVM (word+char)": 0.5896,
+      "MiniLM embeddings + LogReg": 0.636
+    },
+    {
+      "fraction": 0.75,
+      "n": 4148,
+      "Linear SVM (word+char)": 0.5981,
+      "MiniLM embeddings + LogReg": 0.6336
+    },
+    {
+      "fraction": 1.0,
+      "n": 5530,
+      "Linear SVM (word+char)": 0.6061,
+      "MiniLM embeddings + LogReg": 0.6502
+    }
+  ],
+  "models": [
+    {
+      "model": "Majority class",
+      "cv_f1": null,
+      "cv_std": null,
+      "best_params": "-",
+      "fit_s": 0.0,
+      "ms_per_post": 0.0,
+      "size_kb": 0.4736,
+      "val_accuracy": 0.3485,
+      "val_macro_f1": 0.1723,
+      "test_accuracy": 0.3477,
+      "test_macro_f1": 0.172,
+      "test_roc_auc": null
+    },
+    {
+      "model": "Complement NB (word)",
+      "cv_f1": 0.5676,
+      "cv_std": 0.0104,
+      "best_params": "{'clf__alpha': 1.0}",
+      "fit_s": 1.1744,
+      "ms_per_post": 0.0345,
+      "size_kb": 1146.4746,
+      "val_accuracy": 0.5671,
+      "val_macro_f1": 0.5629,
+      "test_accuracy": 0.5764,
+      "test_macro_f1": 0.5707,
+      "test_roc_auc": 0.7718
+    },
+    {
+      "model": "LogReg (word)",
+      "cv_f1": 0.5734,
+      "cv_std": 0.0088,
+      "best_params": "{'clf__C': 1}",
+      "fit_s": 2.308,
+      "ms_per_post": 0.0322,
+      "size_kb": 676.1689,
+      "val_accuracy": 0.562,
+      "val_macro_f1": 0.5624,
+      "test_accuracy": 0.5924,
+      "test_macro_f1": 0.5915,
+      "test_roc_auc": 0.776
+    },
+    {
+      "model": "Linear SVM (word+char)",
+      "cv_f1": 0.6042,
+      "cv_std": 0.0102,
+      "best_params": "{'clf__C': 0.1}",
+      "fit_s": 6.4222,
+      "ms_per_post": 0.1444,
+      "size_kb": 2623.8867,
+      "val_accuracy": 0.6051,
+      "val_macro_f1": 0.6061,
+      "test_accuracy": 0.6245,
+      "test_macro_f1": 0.6243,
+      "test_roc_auc": null
+    },
+    {
+      "model": "LogReg (word+char)",
+      "cv_f1": 0.6049,
+      "cv_std": 0.0108,
+      "best_params": "{'clf__C': 2}",
+      "fit_s": 15.8212,
+      "ms_per_post": 0.1513,
+      "size_kb": 2623.9814,
+      "val_accuracy": 0.5873,
+      "val_macro_f1": 0.5888,
+      "test_accuracy": 0.6177,
+      "test_macro_f1": 0.6177,
+      "test_roc_auc": 0.8007
+    },
+    {
+      "model": "MiniLM embeddings + LogReg",
+      "cv_f1": 0.6509,
+      "cv_std": 0.0119,
+      "best_params": "{'C': 0.5}",
+      "fit_s": 19.0725,
+      "ms_per_post": 2.7016,
+      "size_kb": 88733.2275,
+      "val_accuracy": 0.6489,
+      "val_macro_f1": 0.6502,
+      "test_accuracy": 0.6599,
+      "test_macro_f1": 0.66,
+      "test_roc_auc": 0.826
+    },
+    {
+      "model": "Fine-tuned MiniLM (best seed 42)",
+      "cv_f1": 0.6958,
+      "cv_std": 0.0057,
+      "best_params": "lr 5e-5, best epoch 2",
+      "fit_s": 546.5306,
+      "ms_per_post": 4.631,
+      "size_kb": 88723.5,
+      "val_accuracy": 0.703,
+      "val_macro_f1": 0.7017,
+      "test_accuracy": 0.7241,
+      "test_macro_f1": 0.7222,
+      "test_roc_auc": 0.8813
+    },
+    {
+      "model": "Fine-tuned MiniLM (3-seed average)",
+      "cv_f1": null,
+      "cv_std": null,
+      "best_params": "seeds [42, 7, 1234]",
+      "fit_s": 1639.5918,
+      "ms_per_post": 13.893,
+      "size_kb": 266170.5,
+      "val_accuracy": 0.6937,
+      "val_macro_f1": 0.6955,
+      "test_accuracy": 0.7131,
+      "test_macro_f1": 0.7141,
+      "test_roc_auc": 0.882
+    },
+    {
+      "model": "Weighted ensemble",
+      "cv_f1": null,
+      "cv_std": null,
+      "best_params": "{\"tfidf_logreg\": 0.25, \"embedding_logreg\": 0.2, \"minilm_finetuned\": 0.55}",
+      "fit_s": 1674.4855,
+      "ms_per_post": 16.7459,
+      "size_kb": 357527.709,
+      "val_accuracy": 0.7097,
+      "val_macro_f1": 0.7111,
+      "test_accuracy": 0.7173,
+      "test_macro_f1": 0.7178,
+      "test_roc_auc": 0.8805
+    }
+  ],
+  "final": {
+    "selected_model": "Weighted ensemble",
+    "best_classical": "Linear SVM (word+char)",
+    "n_test": 1185,
+    "accuracy": 0.7173,
+    "macro_f1": 0.7178,
+    "weighted_f1": 0.7158,
+    "macro_precision": 0.7167,
+    "macro_recall": 0.7197,
+    "roc_auc_ovr": 0.8805,
+    "macro_f1_ci95": [
+      0.6913,
+      0.7414
+    ],
+    "accuracy_ci95": [
+      0.6903,
+      0.7418
+    ],
+    "delta_vs_best_classical": 0.0935,
+    "delta_ci95": [
+      0.0655,
+      0.1243
+    ],
+    "mcnemar_b": 208,
+    "mcnemar_c": 98,
+    "mcnemar_p": 3.00637005433363e-10,
+    "per_class": {
+      "Negative": {
+        "precision": 0.7527,
+        "recall": 0.7753,
+        "f1": 0.7638,
+        "support": 365
+      },
+      "Neutral": {
+        "precision": 0.6545,
+        "recall": 0.6117,
+        "f1": 0.6324,
+        "support": 412
+      },
+      "Positive": {
+        "precision": 0.7429,
+        "recall": 0.7721,
+        "f1": 0.7572,
+        "support": 408
+      }
+    },
+    "confusion_matrix": [
+      [
+        283,
+        64,
+        18
+      ],
+      [
+        69,
+        252,
+        91
+      ],
+      [
+        24,
+        69,
+        315
+      ]
+    ]
+  },
+  "errors": {
+    "n_errors": 335,
+    "pairs": [
+      {
+        "sentiment_label": "Neutral",
+        "pred": "Positive",
+        "errors": 91,
+        "share": 0.2716
+      },
+      {
+        "sentiment_label": "Neutral",
+        "pred": "Negative",
+        "errors": 69,
+        "share": 0.206
+      },
+      {
+        "sentiment_label": "Positive",
+        "pred": "Neutral",
+        "errors": 69,
+        "share": 0.206
+      },
+      {
+        "sentiment_label": "Negative",
+        "pred": "Neutral",
+        "errors": 64,
+        "share": 0.191
+      },
+      {
+        "sentiment_label": "Positive",
+        "pred": "Negative",
+        "errors": 24,
+        "share": 0.0716
+      },
+      {
+        "sentiment_label": "Negative",
+        "pred": "Positive",
+        "errors": 18,
+        "share": 0.0537
+      }
+    ],
+    "slices": [
+      {
+        "slice": "All test posts",
+        "n": 1185,
+        "error_rate": 0.2827
+      },
+      {
+        "slice": "Short (<= 12 words)",
+        "n": 117,
+        "error_rate": 0.3162
+      },
+      {
+        "slice": "Medium (13-20 words)",
+        "n": 559,
+        "error_rate": 0.2594
+      },
+      {
+        "slice": "Long (> 20 words)",
+        "n": 509,
+        "error_rate": 0.3006
+      },
+      {
+        "slice": "Contains @user",
+        "n": 342,
+        "error_rate": 0.2749
+      },
+      {
+        "slice": "Contains a hashtag",
+        "n": 194,
+        "error_rate": 0.2268
+      },
+      {
+        "slice": "Contains negation",
+        "n": 273,
+        "error_rate": 0.2564
+      },
+      {
+        "slice": "Contains contrast (but / though)",
+        "n": 143,
+        "error_rate": 0.3077
+      },
+      {
+        "slice": "Contains a question mark",
+        "n": 153,
+        "error_rate": 0.2941
+      },
+      {
+        "slice": "Contains an exclamation mark",
+        "n": 208,
+        "error_rate": 0.2548
+      },
+      {
+        "slice": "Contains digits (scores, dates)",
+        "n": 502,
+        "error_rate": 0.2769
+      }
+    ],
+    "calibration": [
+      {
+        "confidence": "(0.0, 0.5]",
+        "n": 147,
+        "accuracy": 0.415,
+        "mean_conf": 0.4506
+      },
+      {
+        "confidence": "(0.5, 0.6]",
+        "n": 241,
+        "accuracy": 0.5768,
+        "mean_conf": 0.551
+      },
+      {
+        "confidence": "(0.6, 0.7]",
+        "n": 270,
+        "accuracy": 0.7333,
+        "mean_conf": 0.6502
+      },
+      {
+        "confidence": "(0.7, 0.8]",
+        "n": 290,
+        "accuracy": 0.8069,
+        "mean_conf": 0.7471
+      },
+      {
+        "confidence": "(0.8, 0.9]",
+        "n": 185,
+        "accuracy": 0.8973,
+        "mean_conf": 0.8472
+      },
+      {
+        "confidence": "(0.9, 1.0]",
+        "n": 52,
+        "accuracy": 1.0,
+        "mean_conf": 0.9254
+      }
+    ],
+    "confident_errors": [
+      {
+        "text_id": "TXT_04183",
+        "post_text": "@user @user Sarah Palin, other women you disagree with may still be quite bright.Hillary may be intelligent, just wrong.",
+        "sentiment_label": "Neutral",
+        "pred": "Negative",
+        "confidence": 0.883
+      },
+      {
+        "text_id": "TXT_03481",
+        "post_text": "Alright ladies and (yes) gents. Our poll is here! You may know these two best from both Thor movies AND the Avengers (among others).",
+        "sentiment_label": "Neutral",
+        "pred": "Positive",
+        "confidence": 0.878
+      },
+      {
+        "text_id": "TXT_02459",
+        "post_text": "@user @user Yakub got bad unfair sentence due to 3rd rate prosecutor not telling court about his crucial cooperation.",
+        "sentiment_label": "Neutral",
+        "pred": "Negative",
+        "confidence": 0.873
+      },
+      {
+        "text_id": "TXT_07186",
+        "post_text": "@user i could pick up my dog, my 2nd cousin and david beckham and still get top 3 at that event, pls win it",
+        "sentiment_label": "Neutral",
+        "pred": "Positive",
+        "confidence": 0.871
+      },
+      {
+        "text_id": "TXT_01917",
+        "post_text": "How in the HECK am I expected to go to class tomorrow, or even LIVE, after Beyonce has just killed me like this??????",
+        "sentiment_label": "Neutral",
+        "pred": "Negative",
+        "confidence": 0.868
+      },
+      {
+        "text_id": "TXT_04747",
+        "post_text": "I'm selling a lawn ticket for Jason Aldean this coming Friday! DM me if you're interested!",
+        "sentiment_label": "Neutral",
+        "pred": "Positive",
+        "confidence": 0.867
+      },
+      {
+        "text_id": "TXT_01322",
+        "post_text": "I just bought two tickets for the Sacramento Kings season opener on Monday! HYPED.",
+        "sentiment_label": "Neutral",
+        "pred": "Positive",
+        "confidence": 0.855
+      },
+      {
+        "text_id": "TXT_06750",
+        "post_text": "#YakubDebate have you seen the long bearded Yakub off late. #presstitutes won't show the radicalised man.",
+        "sentiment_label": "Neutral",
+        "pred": "Negative",
+        "confidence": 0.849
+      },
+      {
+        "text_id": "TXT_03954",
+        "post_text": "Serbian President to Visit Pope Francis on Friday: Serbian President Tomislav Nikolic will meet with Pope Fran...",
+        "sentiment_label": "Positive",
+        "pred": "Neutral",
+        "confidence": 0.845
+      },
+      {
+        "text_id": "TXT_01691",
+        "post_text": "Racist Mad Libs: Islam is _______ with _____",
+        "sentiment_label": "Neutral",
+        "pred": "Negative",
+        "confidence": 0.845
+      },
+      {
+        "text_id": "TXT_01559",
+        "post_text": "Parents in Zurich and going to Pride Parade tomorrow. I'm jealous :)",
+        "sentiment_label": "Neutral",
+        "pred": "Positive",
+        "confidence": 0.842
+      },
+      {
+        "text_id": "TXT_05158",
+        "post_text": "I feel like Viola Davis is being Cicely Tysoned but I\\u2019m going to bed. I may awake to hate tweets.",
+        "sentiment_label": "Neutral",
+        "pred": "Negative",
+        "confidence": 0.838
+      },
+      {
+        "text_id": "TXT_02412",
+        "post_text": "@user the Kendrick album may be the most overrated album of all time. It's a good album but very little replay value",
+        "sentiment_label": "Neutral",
+        "pred": "Positive",
+        "confidence": 0.838
+      },
+      {
+        "text_id": "TXT_08929",
+        "post_text": "@user beautiful Saturday morning listening to #Hot45sxm while getting ready for Jason Aldean and Kenny Chesney tonight",
+        "sentiment_label": "Neutral",
+        "pred": "Positive",
+        "confidence": 0.831
+      },
+      {
+        "text_id": "TXT_03861",
+        "post_text": "Just remember Michelle Obama told Barack Obama she may not vote for him for senate just because she didn't want him in politics.",
+        "sentiment_label": "Neutral",
+        "pred": "Negative",
+        "confidence": 0.826
+      }
+    ]
+  },
+  "top_terms": {
+    "Negative": [
+      "fuck",
+      "not",
+      "no",
+      "sad",
+      "don",
+      "shit",
+      "why",
+      "bad",
+      "hate",
+      "worst",
+      "ass",
+      "even"
+    ],
+    "Neutral": [
+      "gucci",
+      "at",
+      "do you",
+      "meet",
+      "hold",
+      "in",
+      "nirvana",
+      "days",
+      "zayn",
+      "mean",
+      "shawn",
+      "or"
+    ],
+    "Positive": [
+      "love",
+      "happy",
+      "good",
+      "best",
+      "great",
+      "excited",
+      "amazing",
+      "thanks",
+      "perfect",
+      "birthday",
+      "the best",
+      "can wait"
+    ]
+  },
+  "topic": {
+    "models": [
+      {
+        "model": "LogReg (word TF-IDF)",
+        "accuracy": 0.919,
+        "macro_f1": 0.5768,
+        "F1 Community_Discussion": 0.9557,
+        "F1 Technical_Issues": 0.7386,
+        "F1 Feature_Feedback": 0.2128,
+        "F1 Account_Security": 0.4
+      },
+      {
+        "model": "LogReg (char 2-6 n-grams)",
+        "accuracy": 0.9536,
+        "macro_f1": 0.721,
+        "F1 Community_Discussion": 0.9742,
+        "F1 Technical_Issues": 0.91,
+        "F1 Feature_Feedback": 0.5385,
+        "F1 Account_Security": 0.4615
+      },
+      {
+        "model": "Recovered substring rules",
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "F1 Community_Discussion": 1.0,
+        "F1 Technical_Issues": 1.0,
+        "F1 Feature_Feedback": 1.0,
+        "F1 Account_Security": 1.0
+      }
+    ],
+    "rule_accuracy_all_rows": 1.0,
+    "rule_mismatches_all_rows": 0,
+    "rules": {
+      "Technical_Issues": [
+        "app",
+        "down",
+        "update",
+        "crash",
+        "screen",
+        "slow",
+        "bug"
+      ],
+      "Account_Security": [
+        "ban",
+        "account",
+        "suspend",
+        "hack",
+        "password"
+      ],
+      "Feature_Feedback": [
+        "ui",
+        "feature",
+        "button",
+        "design",
+        "mode",
+        "ugly"
+      ]
+    },
+    "whole_word_share": {
+      "Account_Security": {
+        "whole_word_share": 0.5581,
+        "n": 129,
+        "inside_other_word_share": 0.4419
+      },
+      "Feature_Feedback": {
+        "whole_word_share": 0.116,
+        "n": 250,
+        "inside_other_word_share": 0.884
+      },
+      "Technical_Issues": {
+        "whole_word_share": 0.351,
+        "n": 718,
+        "inside_other_word_share": 0.649
+      }
+    },
+    "top_inside_word_triggers": {
+      "Account_Security": {
+        "bank": 9,
+        "bang": 7,
+        "husband": 5,
+        "bands": 4,
+        "miliband": 3,
+        "bangz": 2,
+        "banks": 2,
+        "urban": 2
+      },
+      "Feature_Feedback": {
+        "louis": 16,
+        "guide": 13,
+        "quick": 9,
+        "juice": 9,
+        "building": 8,
+        "ruined": 6,
+        "quite": 6,
+        "modern": 5
+      },
+      "Technical_Issues": {
+        "happy": 132,
+        "apple": 44,
+        "happen": 40,
+        "apparently": 19,
+        "disappointed": 14,
+        "appearance": 13,
+        "happened": 12,
+        "happens": 9
+      }
+    },
+    "word_model_confusion": [
+      [
+        1014,
+        2,
+        4,
+        0
+      ],
+      [
+        42,
+        65,
+        1,
+        0
+      ],
+      [
+        32,
+        0,
+        5,
+        0
+      ],
+      [
+        14,
+        1,
+        0,
+        5
+      ]
+    ]
+  }
+}
