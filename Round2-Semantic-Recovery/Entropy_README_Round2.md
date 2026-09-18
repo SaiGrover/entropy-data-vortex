@@ -95,7 +95,6 @@ pdflatex Entropy_r2_evaluation_metrics_report.tex
 
 (Run twice each if the table of contents needs to resolve.) Both `.tex` files pull shared styling — the `entropytitle` title block, the `insightbox` environment, and the `bodytext` color scheme — from `Entropy_r2_common.tex`, and expect the referenced images under `images/`.
 
-> **Note:** `Entropy_r2_common.tex` is not yet committed to this repo, so the two reports currently can't be compiled from source by anyone outside the team — only the pre-built PDFs under `reports/` are reproducible as-is. If you want source-buildable reports, commit `Entropy_r2_common.tex` (the same file the Round 1 EDA report's `\edaimg` macro comes from) alongside the other `.tex` files.
 
 ---
 
@@ -132,8 +131,6 @@ model.predict(["your post text here"])
 ```
 
 A reload test (loading every artefact fresh from disk and re-predicting on 200 held-out posts) matched the in-memory predictions on 100% of posts.
-
-> **Submission note:** the fine-tuned MiniLM checkpoints are large transformer weights (tens of MB each), so the full ensemble doesn't fit a single-file, 10MB submission cap. Where a competition portal enforces that limit, only `Entropy_sentiment_tfidf_logreg.pkl` (plus, space permitting, `Entropy_sentiment_model.json` and `Entropy_topic_rules.json`) is uploaded as the representative artefact.
 
 ---
 
