@@ -55,22 +55,47 @@ Data Vortex/
 |   |-- Entropy_README.md
 |
 |-- Round2-Semantic-Recovery/          # NLP: sentiment + topic recovery
-|   |-- Entropy_01_NLP_Model.ipynb               # EDA -> leakage check -> preprocessing -> model
-|   |                                             # selection -> ensemble -> evaluation -> error analysis
-|   |-- Entropy_nlp_utils.py                     # clean_text pipeline, NB-SVM, topic rule classifier,
-|   |                                             # SentimentEnsemble loader
+|   |-- code/
+|   |   |-- Entropy_01_NLP_Model.ipynb           # Main end-to-end notebook: EDA -> leakage check -> preprocessing -> model selection -> evaluation -> error analysis
+|   |   |-- Entropy_nlp_utils.py                 # NLP utilities: text cleaning, NB-SVM, topic rules, sentiment ensemble loader
+|   |
+|   |-- data/
+|   |   |-- Entropy_Labeled_Social_NLP_Training_Data.xlsx # Main labeled dataset used for NLP model development and evaluation
+|   |
+|   |-- model/
+|   |   |-- Entropy_minilm_sentiment_seed7/       # MiniLM sentiment model trained with seed 7
+|   |   |-- Entropy_minilm_sentiment_seed42/      # MiniLM sentiment model trained with seed 42
+|   |   |-- Entropy_minilm_sentiment_seed1234/    # MiniLM sentiment model trained with seed 1234
+|   |   |-- Entropy_r2_model_artifacts.zip        # Compressed archive containing Round 2 model artefacts
+|   |   |-- Entropy_sentiment_embedding_logreg.pkl # Logistic Regression model using text embeddings for sentiment
+|   |   |-- Entropy_sentiment_model.json           # Sentiment model configuration and metadata
+|   |   |-- Entropy_sentiment_tfidf_logreg.pkl     # TF-IDF + Logistic Regression sentiment classifier
+|   |   |-- Entropy_topic_char_logreg.pkl          # Character n-gram TF-IDF + Logistic Regression topic classifier
+|   |   |-- Entropy_topic_rules.json               # Rule-based topic classification patterns and triggers
+|   |
+|   |-- outputs/
+|   |   |-- Entropy_r2_classification_report.xlsx # Detailed classification metrics for the final model
+|   |   |-- Entropy_r2_metrics.json                # Exported evaluation metrics in JSON format
+|   |   |-- Entropy_r2_model_comparison.xlsx       # Performance comparison of evaluated models
+|   |   |-- Entropy_r2_test_predictions.xlsx       # Test-set predictions with actual and predicted labels
+|   |
+|   |-- reports/
+|   |   |-- images/                              # 8 report figures used for analysis and reporting
+|   |   |   |-- Entropy_r2_class_distribution.png  # Class/sentiment distribution visualisation
+|   |   |   |-- Entropy_r2_confusion_matrix.png    # Confusion matrix for classification performance
+|   |   |   |-- Entropy_r2_error_slices.png        # Model error analysis across different data slices
+|   |   |   |-- Entropy_r2_learning_curve.png      # Learning curve showing performance vs training data
+|   |   |   |-- Entropy_r2_model_comparison.png    # Visual comparison of candidate model performance
+|   |   |   |-- Entropy_r2_topic_confusion_word_model.png # Topic classification word/confusion analysis
+|   |   |   |-- Entropy_r2_topic_substring_triggers.png # Topic substring trigger analysis
+|   |   |   |-- Entropy_r2_training_curves.png     # Training and validation curves
+|   |   |
+|   |   |-- Entropy_r2_evaluation_metrics_report.pdf # Standalone metrics + error-analysis report
+|   |   |-- Entropy_r2_evaluation_metrics_report.tex # LaTeX source for the evaluation metrics report
+|   |   |-- Entropy_r2_technical_report.pdf        # Complete technical report covering methodology and results
+|   |   |-- Entropy_r2_technical_report.tex        # LaTeX source for the technical report
+|   |
 |   |-- Entropy_r2_common.tex                    # Shared LaTeX preamble for both reports
-|   |-- Entropy_r2_technical_report.tex / .pdf   # Full write-up: problem def, leakage check,
-|   |                                             # preprocessing, model selection, training methodology,
-|   |                                             # evaluation, error analysis, secondary task, artefacts
-|   |-- Entropy_r2_evaluation_metrics_report.tex / .pdf
-|   |                                             # Standalone metrics + error-analysis report
-|   |-- data/                                    # Dataset 2 (raw + deduplicated + train/val/test splits)
-|   |-- images/                                  # 8 report figures (confusion matrix, error slices,
-|   |                                             # learning curve, model comparison, etc.)
-|   |-- model/                                   # Saved artefacts: TF-IDF+LogReg, embedding+LogReg,
-|   |                                             # 3-seed fine-tuned MiniLM, ensemble + topic-rule configs
-|   |-- outputs/                                 # Notebook run outputs
 |   |-- Entropy_README.md
 |
 |-- README.md                         # This file
