@@ -115,33 +115,65 @@ _WHOLE_WORD_FORMS = {
     "designs", "designed", "modes", "bugs", "buggy", "apps", "screens", "slowly", "slower",
 }
 
-
 class TopicRuleClassifier:
-    """Deterministic classifier that reproduces the dataset's topic_category labels."""
+    def __init__(self, rules_path=None):
+        self.rules = TOPIC_RULES
 
-    rules = TOPIC_RULES
-    default = DEFAULT_TOPIC
+        if rules_path is None:
+            rules_path = Path(__file__).resolve().parent / "model" / "Entropy_topic_rules.json"
+
+        rules_path = Path(rules_path)
+
+        if rules_path.exists():
+            try:
+                loaded_rules = json.loads(
+                    rules_path.read_text(encoding="utf-8")
+                )
+
+                if isinstance(loaded_rules, dict):
+                    self.rules = loaded_rules
+
+            except (json.JSONDecodeError, OSError):
+                # Fall back to the built-in rules if the artifact
+                # cannot be loaded.
+                self.rules = TOPIC_RULES
+
+    def predict_one(self, text):
+        text = clean_text(text).lower()
+
+        for topic, keywords in self.rules.items():
+            if any(keyword.lower() in text for keyword in keywords):
+                return topic
+
+        return "Community_Discussion"
 
     def explain(self, text):
-        low = str(text).lower()
-        for label, keywords in self.rules:
-            for kw in keywords:
-                pos = low.find(kw)
-                if pos >= 0:
-                    start = pos
-                    while start > 0 and (low[start - 1].isalnum() or low[start - 1] == "'"):
-                        start -= 1
-                    end = pos + len(kw)
-                    while end < len(low) and (low[end].isalnum() or low[end] == "'"):
-                        end += 1
-                    token = low[start:end]
-                    whole = token in {kw, kw + "s", kw + "es", kw + "ed", kw + "d", kw + "ing"} or token in _WHOLE_WORD_FORMS
-                    return label, kw, token, whole
-        return self.default, None, None, None
+        text = clean_text(text).lower()
+
+        for label, keywords in self.rules.items():
+            for keyword in keywords:
+                keyword = keyword.lower()
+
+                if keyword in text:
+                    tokens = text.split()
+                    whole_word = keyword in tokens
+
+                    return (
+                        label,
+                        keyword,
+                        keyword,
+                        whole_word
+                    )
+
+        return (
+            "Community_Discussion",
+            None,
+            None,
+            False
+        )
 
     def predict(self, texts):
-        return np.array([self.explain(t)[0] for t in texts])
-
+        return [self.predict_one(text) for text in texts]
 
 def load_tokenizer(path_or_id):
     from transformers import AutoTokenizer
