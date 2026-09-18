@@ -117,6 +117,7 @@ Both excluded steps hurt when added back in: stopword removal costs 0.9 points (
 
 % ============================================================
 \section{Model Selection \& Justification}
+\label{sec:model-selection}
 % ============================================================
 
 Seven model families were compared, from a floor baseline to a weighted ensemble:
@@ -353,6 +354,32 @@ Contains digits & 502 & 27.7\% \\
 \reportimg{images/Entropy_r2_error_slices.png}
 
 Short posts (31.6\%) and posts containing a contrast word like \textit{but} or \textit{though} (30.8\%) are the hardest slices --- both plausible: short posts give the model less context, and contrast words often signal the kind of mixed or qualified sentiment that is genuinely ambiguous even to a human reader. Hashtagged posts are comparatively easy (22.7\%), likely because hashtag words carry unusually explicit sentiment.
+
+\subsection{Neutral Bias Mitigation}
+\label{sec:neutral-bias}
+
+Since 87\% of errors involve Neutral on one side of the confusion (Table above), a targeted fix was tried: a single scalar bias multiplied onto the ensemble's Neutral-class probability before renormalising and taking the argmax, i.e.\ a cheap re-weighting of an already-trained model rather than retraining. The bias factor was swept over $[0.80, 1.60]$ and selected by \textbf{validation} macro-F1 only, then applied to the test set exactly once --- the same discipline used for the ensemble-weight search in Section~\ref{sec:model-selection} (test touched once).
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Metric} & \textbf{Before} & \textbf{After ($\text{bias}=1.05$)} & \textbf{$\Delta$} \\
+\midrule
+Validation macro-F1 (selection metric) & 0.7111 & 0.7113 & $+0.0002$ \\
+Test macro-F1 & 0.7178 & \textbf{0.7227} & $+0.0049$ \\
+Neutral recall (test) & 0.6117 & 0.6335 & $+0.0218$ \\
+\bottomrule
+\end{tabular}
+\caption{Effect of the validation-selected Neutral bias on the held-out test set. Neutral recall improves without degrading Negative or Positive F1.}
+\end{table}
+
+\begin{insightbox}
+\textbf{Honesty check on this result.} The validation improvement that justified choosing $\text{bias}=1.05$ was tiny ($+0.0002$), on a validation macro-F1 curve that is nearly flat across the 17 swept values --- while the resulting test improvement is roughly 30$\times$ larger ($+0.0049$). This is \emph{not} test-set leakage: the bias was selected on validation only, and test was touched exactly once. But the gap is large enough that the size of the test gain should be read as an upper bound rather than a fully robust effect --- part of it is plausibly favorable test-set noise rather than a guaranteed improvement that would replicate on a fresh test split. The direction (helps Neutral recall, doesn't hurt the other classes) is credible; the exact magnitude ($+0.0049$) is less certain than a single number suggests.
+\end{insightbox}
+
+$\text{bias}=1.05$ is folded into the shipped decision rule (\texttt{SentimentEnsemble.predict()} in \texttt{Entropy\_nlp\_utils.py}, config field \texttt{neutral\_bias} in \texttt{Entropy\_sentiment\_model.json}), so the deployed model now produces 0.7227 test macro-F1 rather than the 0.7178 reported for the unbiased ensemble in Section~\ref{sec:evaluation}. The confidence interval, McNemar comparison, and confusion matrix in that section were computed on the unbiased ensemble and have not been recomputed against the biased predictions --- that recomputation is flagged as outstanding, not silently assumed unchanged.
 
 \subsection{Calibration}
 

@@ -148,6 +148,29 @@ Contains digits & 502 & 27.7\% \\
 
 Short posts (31.6\%) and posts containing a contrast word like \textit{but} or \textit{though} (30.8\%) are the hardest slices --- both plausible: short posts give the model less context, and contrast words often signal the kind of mixed or qualified sentiment that is genuinely ambiguous even to a human reader. Hashtagged posts are comparatively easy (22.7\%), likely because hashtag words carry unusually explicit sentiment.
 
+\subsection{Neutral Bias Mitigation}
+
+A scalar bias on the ensemble's Neutral-class probability (multiply, renormalise, argmax) was swept over $[0.80, 1.60]$, selected by \textbf{validation} macro-F1 only, and applied to test exactly once.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Metric} & \textbf{Before} & \textbf{After ($\text{bias}=1.05$)} & \textbf{$\Delta$} \\
+\midrule
+Validation macro-F1 (selection metric) & 0.7111 & 0.7113 & $+0.0002$ \\
+Test macro-F1 & 0.7178 & \textbf{0.7227} & $+0.0049$ \\
+Neutral recall (test) & 0.6117 & 0.6335 & $+0.0218$ \\
+\bottomrule
+\end{tabular}
+\caption{Effect of the validation-selected Neutral bias on the held-out test set.}
+\end{table}
+
+\begin{insightbox}
+The validation delta that selected this bias ($+0.0002$) is $\sim$30$\times$ smaller than the test delta it produced ($+0.0049$), on a nearly flat validation curve. Not leakage --- test was touched once --- but the magnitude of the test gain should be treated as an upper bound rather than a guaranteed effect. See the Technical Report's Error Analysis for the full discussion. \texttt{bias=1.05} is folded into the shipped model (\texttt{neutral\_bias} in \texttt{Entropy\_sentiment\_model.json}).
+\end{insightbox}
+
 \subsection{Calibration}
 
 \begin{table}[H]

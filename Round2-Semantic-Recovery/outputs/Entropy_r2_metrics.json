@@ -440,6 +440,23 @@
   },
   "errors": {
     "n_errors": 335,
+    "neutral_mitigation": {
+      "method": "Scalar bias on the Neutral class probability: multiply the Neutral column of predict_proba() output, renormalise across classes, then argmax.",
+      "sweep_range": [0.8, 1.6],
+      "selected_on": "validation macro-F1 only; applied to test exactly once (same protocol as the §5 ensemble-weight search)",
+      "chosen_bias": 1.05,
+      "val_macro_f1_before": 0.7111,
+      "val_macro_f1_after": 0.7113,
+      "val_macro_f1_delta": 0.0002,
+      "test_macro_f1_before": 0.7178,
+      "test_macro_f1_after": 0.7227,
+      "test_macro_f1_delta": 0.0049,
+      "neutral_recall_before": 0.6117,
+      "neutral_recall_after": 0.6335,
+      "adopted_in_shipped_model": true,
+      "caveat": "The validation delta that selected bias=1.05 (+0.0002) is roughly 30x smaller than the resulting test delta (+0.0049), on a validation macro-F1 curve that is nearly flat across the 17 swept bias values. This is not test-set leakage \u2014 the bias was chosen on validation only and touched test exactly once \u2014 but the size of the test gain should be read as an upper bound rather than a guaranteed effect; some of it is plausibly favorable test-set noise rather than a fully robust improvement.",
+      "note_for_reproduction": "Full per-bias-value validation macro-F1 sweep table (17 points, 0.80-1.60) lives in the notebook's own save cell output and was not duplicated in this file; paste it here as \"sweep_curve\" if you want it machine-readable."
+    },
     "pairs": [
       {
         "sentiment_label": "Neutral",

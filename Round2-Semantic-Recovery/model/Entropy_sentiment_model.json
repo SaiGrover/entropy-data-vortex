@@ -32,6 +32,7 @@
       "max_len": 50
     }
   ],
-  "validation_macro_f1": 0.7111,
-  "test_macro_f1": 0.7178
+  "neutral_bias": 1.05,
+  "validation_macro_f1": 0.7113,
+  "test_macro_f1": 0.7227
 }

@@ -171,6 +171,11 @@ class SentimentEnsemble:
         self.dir = Path(model_dir)
         self.cfg = json.loads((self.dir / "Entropy_sentiment_model.json").read_text(encoding="utf-8"))
         self.labels = self.cfg["labels"]
+        # Validation-selected scalar bias on the Neutral class probability (see
+        # Technical Report §Error Analysis / "Neutral Bias Mitigation"). Defaults
+        # to 1.0 (no-op) if the config predates this field.
+        self.neutral_bias = self.cfg.get("neutral_bias", 1.0)
+        self._neutral_idx = self.labels.index("Neutral") if "Neutral" in self.labels else None
         self._loaded = {}
 
     def _load(self, comp):
@@ -215,5 +220,14 @@ class SentimentEnsemble:
             weight_sum += w
         return total / weight_sum
 
+    def _apply_neutral_bias(self, proba):
+        """Scale the Neutral column by the validation-selected bias and renormalise."""
+        if self.neutral_bias == 1.0 or self._neutral_idx is None:
+            return proba
+        biased = proba.copy()
+        biased[:, self._neutral_idx] *= self.neutral_bias
+        return biased / biased.sum(axis=1, keepdims=True)
+
     def predict(self, texts):
-        return np.array(self.labels)[self.predict_proba(texts).argmax(axis=1)]
+        proba = self._apply_neutral_bias(self.predict_proba(texts))
+        return np.array(self.labels)[proba.argmax(axis=1)]
