@@ -1,0 +1,154 @@
+{
+  "period_levels": {
+    "Pre-launch (8-14 Sep)": {
+      "n": 171,
+      "net": 0.0526,
+      "ci_low": -0.0468,
+      "ci_high": 0.152,
+      "distinguishable_from_zero": false
+    },
+    "Launch +0-24h": {
+      "n": 330,
+      "net": -0.1212,
+      "ci_low": -0.203,
+      "ci_high": -0.0364,
+      "distinguishable_from_zero": true
+    },
+    "Settling +24-72h": {
+      "n": 355,
+      "net": -0.169,
+      "ci_low": -0.2479,
+      "ci_high": -0.0901,
+      "distinguishable_from_zero": true
+    },
+    "Later (72h+)": {
+      "n": 547,
+      "net": -0.3729,
+      "ci_low": -0.4296,
+      "ci_high": -0.3163,
+      "distinguishable_from_zero": true
+    }
+  },
+  "period_differences": {
+    "Launch +0-24h": {
+      "drop_from_baseline": 0.1738,
+      "ci_low": 0.0435,
+      "ci_high": 0.3036,
+      "significant": true
+    },
+    "Settling +24-72h": {
+      "drop_from_baseline": 0.2219,
+      "ci_low": 0.0934,
+      "ci_high": 0.3497,
+      "significant": true
+    },
+    "Later (72h+)": {
+      "drop_from_baseline": 0.4265,
+      "ci_low": 0.3112,
+      "ci_high": 0.5396,
+      "significant": true
+    }
+  },
+  "author_concentration": {
+    "posts": 1403,
+    "authors": 1132,
+    "posts_per_author": 1.239,
+    "busiest_author_posts": 18,
+    "top10_share_of_corpus": 0.0563,
+    "negative_posts": 562,
+    "negative_authors": 521,
+    "top10_share_of_negatives": 0.0516,
+    "share_of_authors_posting_once": 0.8675
+  },
+  "vader_baseline": {
+    "n": 150,
+    "macro_f1": 0.4414,
+    "accuracy": 0.44,
+    "per_class_f1": {
+      "Negative": 0.5769,
+      "Neutral": 0.4615,
+      "Positive": 0.2857
+    }
+  },
+  "our_model_on_same_labels": {
+    "shipped_macro_f1": 0.6665,
+    "shipped_accuracy": 0.6867,
+    "as_is_macro_f1": 0.6325
+  },
+  "alerting": {
+    "rule": "net sentiment <= -0.15 for 2 consecutive 12h bins with n >= 20",
+    "first_fired": "2026-09-15 12:00:00+00:00",
+    "launch": "2026-09-14 17:00:00+00:00",
+    "hours_after_launch": 19.0,
+    "bins_evaluated": 13,
+    "false_alarms_pre_launch": 0
+  },
+  "nmf_topics": {
+    "0": {
+      "n": 392,
+      "net": -0.3112,
+      "ci_low": -0.3776,
+      "ci_high": -0.2423
+    },
+    "1": {
+      "n": 299,
+      "net": -0.2843,
+      "ci_low": -0.3712,
+      "ci_high": -0.1939
+    },
+    "2": {
+      "n": 141,
+      "net": -0.2199,
+      "ci_low": -0.3262,
+      "ci_high": -0.1206
+    },
+    "3": {
+      "n": 207,
+      "net": -0.3382,
+      "ci_low": -0.4251,
+      "ci_high": -0.2464
+    },
+    "4": {
+      "n": 131,
+      "net": -0.1298,
+      "ci_low": -0.2519,
+      "ci_high": 0.0
+    },
+    "5": {
+      "n": 233,
+      "net": 0.1288,
+      "ci_low": 0.03,
+      "ci_high": 0.2232
+    }
+  },
+  "human_consensus": {
+    "annotators": [
+      "saanvi",
+      "aditya"
+    ],
+    "n_double_labelled": 150,
+    "cohens_kappa": 0.8963,
+    "raw_agreement": 0.9333,
+    "n_consensus": 140,
+    "n_disagreements_excluded": 10,
+    "consensus_balance": {
+      "Negative": 66,
+      "Neutral": 39,
+      "Positive": 35
+    },
+    "model_macro_f1": 0.699,
+    "model_accuracy": 0.7071,
+    "as_is_macro_f1": 0.7115,
+    "shipped_minus_as_is": {
+      "point": -0.0125,
+      "ci_low": -0.0715,
+      "ci_high": 0.0454,
+      "distinguishable": false
+    },
+    "kappa_vs_first_annotator": {
+      "saanvi": 0.6431,
+      "aditya": 0.6624
+    },
+    "vader_macro_f1": 0.4956
+  }
+}

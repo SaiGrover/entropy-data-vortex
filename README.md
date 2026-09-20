@@ -26,7 +26,7 @@ Retrieved from a simulated corrupted website (`datavortex-social-engine.vercel.a
 9,000 labelled social-media posts, separate from the Round 1 corpus, with two targets: `sentiment_label` (Negative / Neutral / Positive, perfectly balanced) and `topic_category` (4 classes, 86% one class). Only 7,900 of the 9,000 rows are unique text — see [Round 2 Key Findings](#round-2-semantic-recovery-1) below.
 
 ### Round 3 — self-collected live data
-Public reaction to the **iOS 27 / iPadOS 27 / macOS 27** release (14 September 2026), with **Android 17** as a comparison, collected from Reddit, Hacker News, Mastodon and Lemmy with no paid APIs: **5,498 posts and comments** over a 295-hour window in two snapshots, of which **1,403** (1,132 distinct authors) explicitly mention a tracked release. Author names are stored only as salted hashes.
+Public reaction to the **iOS 27 / iPadOS 27 / macOS 27** release (14 September 2026), with **Android 17** as a comparison, collected from Reddit, Hacker News, Mastodon and Lemmy with no paid APIs: **5,498 posts and comments** over a 297.6-hour collection window in two snapshots, of which **1,403** (1,132 distinct authors) explicitly mention a tracked release. Author names are stored only as salted hashes.
 
 ## Project Structure
 
@@ -103,13 +103,19 @@ Data Vortex/
 |-- Round3-Signal-Tracking/           # Live collection + real-time analysis
 |   |-- Entropy_collect_data.py                 # Deliverable 2: key-less collector (Reddit/HN/Mastodon/Lemmy/news)
 |   |-- Entropy_02_Realtime_Analysis.ipynb      # Deliverable 3: real-time analysis notebook (executed)
+|   |-- Entropy_03_robustness_checks.py         # CIs, author concentration, VADER baseline, alert replay, kappa
 |   |-- data/
 |   |   |-- Entropy_round3_collected_posts.csv  # Deliverable 1: 5,498 collected posts and comments
 |   |   |-- Entropy_round3_news_timeline.csv    # 390 news articles used to date real events
 |   |   |-- Entropy_round3_collection_manifest.json
 |   |   |-- raw/request_log.json.gz             # every HTTP request with status
-|   |-- outputs/                                # scored dataset, metrics JSON, validation sample
-|   |-- images/                                 # 7 analysis figures
+|   |-- outputs/
+|   |   |-- Entropy_round3_scored_posts.csv     # 1,403 on-topic posts with model sentiment
+|   |   |-- Entropy_round3_metrics.json         # every number quoted in the report
+|   |   |-- Entropy_round3_robustness.json      # period CIs, author concentration, VADER, alert replay
+|   |   |-- Entropy_round3_annotation_{saanvi,aditya}.csv  # two independent annotators, 150 posts each
+|   |   |-- Entropy_round3_consensus_labels.csv # the 140 they agreed on - the reference standard
+|   |-- images/                                 # 9 analysis figures
 |   |-- reports/
 |   |   |-- Entropy_round3_analytical_report.pdf  # Deliverable 4 (+ .tex source)
 |   |   |-- Entropy_r3_analysis_notebook.pdf      # notebook exported to PDF for submission
@@ -182,11 +188,14 @@ Data Vortex/
 - **The learning curve hasn't plateaued:** both fast candidate models were still improving at 100% of the training data — more labelled sentiment data would likely help further
 
 ### Round 3: Signal Tracking
-- **The launch soured rather than failed:** net sentiment ran +0.05 before release, **-0.12 in the first 24 hours** and **-0.37 after 72 hours**; three shifts are significant after Holm correction, including a sharp 12-hour turn at 15 Sep 00:00 (+0.16 to -0.26, p < 0.0001)
+- **The launch soured from indifference, not approval:** net sentiment ran +0.05 before release, **-0.12 in the first 24 hours** and **-0.37 after 72 hours**. The pre-launch 95% interval is **[-0.05, +0.15]**, so the baseline is not measurably positive; the *fall* is what the data supports, and it reaches **0.43 below baseline (95% CI [0.31, 0.54])** by day three; three shifts are significant after Holm correction, including a sharp 12-hour turn at 15 Sep 00:00 (+0.16 to -0.26, p < 0.0001)
+- **Not a pile-on:** 562 negative posts come from **521 distinct authors**; the ten busiest accounts are 5.6% of the corpus
+- **The reused model beats a lexicon baseline:** VADER scores 0.496 macro-F1 against our **0.699**, both measured on a 140-post two-annotator consensus (Cohen's kappa **0.896**)
+- **A simple monitoring rule fires 19 hours after release** with 0 pre-launch false alarms
 - **The decline is not a sampling artefact:** on Mastodon alone, positives fall 57% -> 24% (p = 0.0002) and negatives rise 14% -> 41% (p = 3.6e-8)
 - **Reliability, not design, drives complaints:** bugs/crashes -0.67, notifications -0.61, privacy -0.42, Siri -0.27, while UI/design is the *least* negative theme at -0.10
 - **Volume and engagement peak at different moments:** the release hour is the volume peak (36 posts/h, z = 97), while the largest engagement peak came 4 days later from one Hacker News thread about *Android 17* (1,135 points, z = 183)
-- **Reusing a model is not free:** the Round 2 ensemble scores **0.666 macro-F1 in this domain** versus 0.723 on tweets; applying its neutral bias (+0.021) and fixing silent truncation of 68% of posts (+0.013) mattered more than any modelling change
+- **Reusing a model is not free:** the Round 2 ensemble scores **0.699 macro-F1 in this domain** versus 0.723 on tweets; applying its neutral bias (+0.021) and fixing silent truncation of 68% of posts (+0.013) mattered more than any modelling change
 - **Negative posts earn more engagement** (median 2 vs 1, Kruskal-Wallis p = 0.046), repeating the "outrage engagement" pattern from Round 1
 
 ## Tech Stack

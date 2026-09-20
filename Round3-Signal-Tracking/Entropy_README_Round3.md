@@ -23,13 +23,15 @@ A live monitoring pipeline: collect public reaction from four platforms with no 
 | Scraping / extraction code | `Entropy_collect_data.py` |
 | Real-time analysis notebook | `Entropy_02_Realtime_Analysis.ipynb` + `reports/Entropy_r3_analysis_notebook.pdf` |
 | Round 3 analytical report | `reports/Entropy_round3_analytical_report.pdf` (+ `.tex` source) |
+| Robustness checks and baselines | `Entropy_03_robustness_checks.py` -> `outputs/Entropy_round3_robustness.json` |
 
 ## Dataset
 
 | | |
 |---|---|
-| Window | 8 Sep 2026 01:10 UTC to 20 Sep 2026 10:44 UTC (294.9 hours) |
-| Collected (in-window, de-duplicated) | **5,498** posts and comments, over two snapshots |
+| Collection window | 8 Sep 2026 01:10 UTC to 20 Sep 2026 10:44 UTC (297.6 hours) |
+| Analysis window | 8 Sep 2026 03:48 UTC to 20 Sep 2026 10:44 UTC (294.9 hours) - the span of the analysis set |
+| Collected (de-duplicated) | **5,498** posts and comments, over two snapshots; 5,491 carry at least 15 characters of text and enter the analysis |
 | Analysis set (mentions a tracked release, English) | **1,403** from **1,132 distinct authors** |
 | Sources | Reddit 718, Mastodon 513, Hacker News 138, Lemmy 34 |
 | Event timeline | 390 news articles (used only to date real events) |
@@ -59,24 +61,37 @@ The saved ensemble (TF-IDF 0.25 + MiniLM embeddings 0.20 + three fine-tuned Mini
 2. **Operating point** - the artefact carries a neutral bias of 1.05 that `predict()` applies but `predict_proba()` does not, so the bias is applied here.
 3. **Truncation** - the fine-tuned component was trained with `max_len = 50` tokens, but the median post here is 74 tokens and 68% exceed 50, so long posts are split into overlapping 34-word windows and averaged.
 
-**In-domain validation** on 150 randomly drawn, hand-labelled posts:
+**In-domain validation.** 150 posts were drawn at random and labelled **independently by both team members**,
+from a shuffled sheet with the model's predictions hidden. They agree at **Cohen's kappa 0.896**
+(93.3% raw agreement); the **140 posts they agree on** are the reference standard
+and the 10 they disagree on are set aside rather than adjudicated.
 
-| Scoring configuration | Accuracy | Macro-F1 |
+| Scorer | Macro-F1 | Reference |
 |---|---|---|
-| As-is (truncated, no bias) | 0.653 | 0.632 |
-| Neutral bias only | 0.673 | 0.653 |
-| **Chunked + neutral bias (used)** | **0.687** | **0.666** |
+| VADER lexicon baseline | 0.496 | consensus |
+| Round 2 ensemble, as-is (truncated) | 0.712 | consensus |
+| **Round 2 ensemble, chunked + neutral bias (used)** | **0.699** | consensus |
+| Same model, against one annotator only | 0.666 | single |
 
-Round 2 scored 0.723 on tweets; the residual gap is genuine domain shift. Chunking changes 12% of labels across a 400-post sample.
+Round 2 scored 0.723 on tweets; the residual gap is genuine domain shift. Two honest notes: the estimate barely
+moves when the reference standard changes (0.666 to 0.699), and **the two inference
+corrections are not measurably better than plain truncation here** - chunked scoring comes out -0.013
+against as-is with a 95% interval of [-0.071, +0.045], which includes zero. The chunked
+configuration is kept because truncation at 50 tokens discards text from 68% of these posts, not because it
+scores higher. Chunking changes 12% of labels across a 400-post sample.
 
 ## Headline findings
 
-1. **The launch soured rather than failed.** Net sentiment: **+0.05 pre-launch -> -0.12 in the first 24h -> -0.17 -> -0.37 after 72h.**
+1. **The launch soured rather than failed - from indifference, not from approval.** Net sentiment: **+0.05 pre-launch -> -0.12 in the first 24h -> -0.17 -> -0.37 after 72h.** The pre-launch figure's 95% interval is **[-0.05, +0.15]**, so the baseline is *not* measurably positive; what the data supports is a fall from neutral. The fall itself is unambiguous: **0.43 below baseline by day three (95% CI [0.31, 0.54])**.
 2. **Three statistically significant shifts** (Holm-corrected): pre-launch to launch (p = 0.0002), settling to later (p = 0.00001), and a sharp 12-hour turn at **15 Sep 00:00** (+0.16 to -0.26, p < 0.0001).
 3. **Not a sampling artefact.** On Mastodon alone, net sentiment falls +0.43 to -0.17; positives drop 57% to 24% (p = 0.0002) and negatives rise 14% to 41% (p = 3.6e-8).
 4. **Volume and engagement peak at different moments.** The release hour is the volume peak (36 posts/h, z = 97); the largest engagement peak came four days later from one Hacker News thread about **Android 17** (1,135 points, z = 183).
 5. **Reliability, not design, drives complaints.** Bugs/crashes -0.67, notifications -0.61, privacy -0.42, install process -0.30, Siri -0.27 - while UI/design is the *least* negative theme at -0.10.
 6. **Negative posts earn more engagement** (median 2 vs 1, Kruskal-Wallis p = 0.046), the same pattern found in Round 1.
+7. **Not a pile-on.** 562 negative posts come from **521 distinct authors**; 87% of all authors appear exactly once and the ten busiest accounts are only 5.6% of the corpus.
+8. **The reused model beats an off-the-shelf tool by a wide margin.** Against the 140-post consensus, VADER scores **0.496 macro-F1** against our **0.699**.
+9. **A simple rule would have caught it in a day.** Replaying *net sentiment <= -0.15 for 2 consecutive 12h bins with n >= 20* over the window fires **19 hours after release** with **0 pre-launch false alarms**.
+10. **Two annotators, not one.** Both team members labelled the same 150 posts independently and agree at **Cohen's kappa 0.896** - "almost perfect" on the conventional scale. Their consensus replaced the original single-annotator labels, and is better balanced (35 Positive posts against 15 before).
 
 ## Reproduce
 
@@ -84,6 +99,7 @@ Round 2 scored 0.723 on tweets; the residual gap is genuine domain shift. Chunki
 python Entropy_collect_data.py                          # full collection (~40 min; Reddit slow lane)
 python Entropy_collect_data.py --append --reddit-top 12 # add a later snapshot + popularity pass
 jupyter nbconvert --to notebook --execute --inplace Entropy_02_Realtime_Analysis.ipynb
+python Entropy_03_robustness_checks.py                  # CIs, author concentration, VADER, alert replay
 cd reports && pdflatex Entropy_round3_analytical_report.tex   # twice for cross-references
 ```
 
@@ -95,6 +111,7 @@ The notebook imports the Round 2 model from `../Round2-Semantic-Recovery/model` 
 Round3-Signal-Tracking/
 |-- Entropy_collect_data.py                    # Deliverable 2: collection script
 |-- Entropy_02_Realtime_Analysis.ipynb         # Deliverable 3: analysis notebook (executed)
+|-- Entropy_03_robustness_checks.py            # robustness checks, baselines and the kappa sheet
 |-- Entropy_README_Round3.md                   # This file
 |-- data/
 |   |-- Entropy_round3_collected_posts.csv     # Deliverable 1: the live dataset
@@ -105,7 +122,11 @@ Round3-Signal-Tracking/
 |-- outputs/
 |   |-- Entropy_round3_scored_posts.csv        # analysis set + model sentiment and probabilities
 |   |-- Entropy_round3_metrics.json            # every number quoted in the report
-|   |-- Entropy_round3_validation_sample.csv   # 150 hand-labelled posts (in-domain validation)
+|   |-- Entropy_round3_validation_sample.csv   # the original single-annotator sheet, kept for comparison
+|   |-- Entropy_round3_annotation_saanvi.csv    # annotator 1, 150 posts
+|   |-- Entropy_round3_annotation_aditya.csv    # annotator 2, same 150 posts
+|   |-- Entropy_round3_consensus_labels.csv     # the 140 they agree on (reference standard)
+|   |-- Entropy_round3_robustness.json         # author concentration, VADER baseline, alert replay
 |   |-- Entropy_round3_sentiment_bins.csv
 |   |-- Entropy_round3_activity_hourly.csv
 |   |-- Entropy_round3_entity_sentiment.csv
@@ -119,8 +140,9 @@ Round3-Signal-Tracking/
 ## Limitations
 
 - Reddit RSS exposes no scores, so engagement analysis uses Hacker News, Mastodon and Lemmy (584 scored posts).
-- In-domain macro-F1 is 0.666 with a wide 95% interval ([0.578, 0.745]); only 15 of the 150 validation posts are Positive. Reported *levels* are noisier than reported *changes*.
-- Validation labels come from a single annotator, so there is no inter-annotator agreement figure.
+- In-domain macro-F1 is 0.699 on 140 consensus-labelled posts, and the interval remains wide at that sample size. Reported *levels* are noisier than reported *changes*.
+- Validation labels are our own. Both team members labelled the 150 posts independently (kappa 0.896) and only the 140 they agreed on are used, but they remain our judgements rather than an external gold standard.
+- The pre-launch period is the thinnest at 171 posts, and its net-sentiment interval includes zero. The *decline* is significant at every pre-specified comparison; the *starting level* is not claimed.
 - Platform mix shifts across the window; the within-platform comparison is the correction.
 - English-only analysis; X, TikTok and YouTube need paid API access and are out of scope.
 

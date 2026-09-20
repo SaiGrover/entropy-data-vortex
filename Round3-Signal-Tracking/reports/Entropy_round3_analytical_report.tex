@@ -2,6 +2,7 @@
 \input{Entropy_r3_common.tex}
 \hypersetup{pdftitle={Round 3 Analytical Report -- Team Entropy}}
 
+\usepackage{url}
 \begin{document}
 \color{bodytext}
 \entropytitle{Analytical Report}{Public reaction to the iOS 27 software update}
@@ -12,7 +13,7 @@
 We tracked public reaction to the \textbf{iOS 27 / iPadOS 27 / macOS 27} release (14 September 2026), using \textbf{Android 17} (18 September) as a comparison release. A purpose-written collector gathered \textbf{5,498 posts and comments} from Reddit, Hacker News, Mastodon and Lemmy across a 295-hour window in two snapshots; \textbf{1,403} of them, written by \textbf{1,132 distinct authors}, explicitly mention a tracked release and form the analysis set. Every post was scored with the \textbf{Round 2 sentiment ensemble}, reused without retraining.
 
 \begin{insightbox}[HEADLINE]
-The launch was not greeted badly -- it was greeted mildly, and then soured. Net sentiment (share positive minus share negative) ran at \textbf{+0.05} before release, \textbf{$-$0.12} in the first 24 hours, and \textbf{$-$0.37} after three days. Both of those moves are statistically significant, and the decline survives when the platform is held fixed. What people complain about is not the redesign but reliability: \textbf{bugs and crashes score $-$0.67} and \textbf{notifications $-$0.61}, while the visual redesign is the \emph{least} negative theme at $-$0.10. The single loudest moment of the window belongs to the comparison release: a Hacker News thread about \textbf{Android 17} withholding APIs from AOSP drew 1,135 points and an engagement spike \textbf{183 standard deviations} above baseline.
+The launch was not greeted badly -- it was greeted indifferently, and then soured. Net sentiment (share positive minus share negative) ran at \textbf{+0.05} before release (95\% CI $[-0.05, +0.15]$, so the baseline is \emph{not} measurably positive -- it is indistinguishable from neutral), \textbf{$-$0.12} in the first 24 hours, and \textbf{$-$0.37} after three days. The \emph{levels} at the start are uncertain; the \emph{decline} is not. Relative to baseline the drop reaches \textbf{0.43} (95\% CI $[0.31, 0.54]$) by day three, it is statistically significant at every pre-specified comparison, it survives holding the platform fixed, and it is not the work of a handful of accounts: \textbf{562 negative posts come from \textbf{521} distinct authors}. What people complain about is not the redesign but reliability: \textbf{bugs and crashes score $-$0.67} and \textbf{notifications $-$0.61}, while the visual redesign is the \emph{least} negative theme at $-$0.10. The single loudest moment of the window belongs to the comparison release: a Hacker News thread about \textbf{Android 17} withholding APIs from AOSP drew 1,135 points and an engagement spike \textbf{183 standard deviations} above baseline.
 \end{insightbox}
 
 \begin{table}[H]
@@ -80,9 +81,11 @@ Mentions a tracked release   & 1,829  & Hacker News & 138 \\
 \caption{From raw collection to analysis set: 1,132 distinct authors, 1,250 posts and 153 comments.}
 \end{table}
 
+Two scripts produce everything in this report. \texttt{Entropy\_collect\_data.py} performs the collection described above; \texttt{Entropy\_03\_robustness\_checks.py} produces the period intervals, the author-concentration check, the VADER baseline, the alert replay and the inter-annotator figures in section 7, writing them to \texttt{outputs/Entropy\_round3\_robustness.json}. Both, together with the notebook, the annotation sheets and the consensus labels, are in the team repository at \url{https://github.com/SaiGrover/entropy-data-vortex}.
+
 \section{Time window}
 
-Collection covers \textbf{8 September 2026 01:10 UTC to 20 September 2026 10:44 UTC} (294.9 hours). The window starts six days \emph{before} the iOS 27 release so that a pre-launch baseline exists: without one, a negative reading after launch cannot be distinguished from a community that is negative all the time. All timestamps come from each platform's own metadata and are normalised to UTC.
+Collection covers \textbf{8 September 2026 01:10 UTC to 20 September 2026 10:44 UTC} (297.6 hours); the analysis set, being a subset, spans \textbf{03:48 UTC on 8 September} to the same end point (294.9 hours), and it is that figure the per-hour rates in this report are computed over. The window starts six days \emph{before} the iOS 27 release so that a pre-launch baseline exists: without one, a negative reading after launch cannot be distinguished from a community that is negative all the time. All timestamps come from each platform's own metadata and are normalised to UTC.
 
 The window is divided into four periods: pre-launch, the first 24 hours, 24--72 hours, and beyond. Two release moments anchor it: \textbf{iOS 27 on 14 September $\approx$17:00 UTC} and \textbf{Android 17 on 18 September}.
 
@@ -109,19 +112,21 @@ Round 2 reported macro-F1 0.723 on labelled tweets. To measure the model where i
 
 \begin{table}[H]
 \centering\small
-\begin{tabular}{@{}lrrrrr@{}}
+\begin{tabular}{@{}lrrr@{}}
 \toprule
-\textbf{Scoring configuration} & \textbf{Accuracy} & \textbf{Macro-F1} & \textbf{F1 Neg} & \textbf{F1 Neu} & \textbf{F1 Pos} \\
+\textbf{Scorer} & \textbf{Macro-F1} & \textbf{Accuracy} & \textbf{Reference} \\
 \midrule
-As-is (truncated, no bias)            & 0.653 & 0.632 & 0.75 & 0.60 & 0.55 \\
-Neutral bias only                     & 0.673 & 0.653 & 0.76 & 0.63 & 0.57 \\
-\textbf{Chunked + neutral bias (used)}& \textbf{0.687} & \textbf{0.666} & 0.75 & 0.66 & 0.59 \\
+VADER lexicon & 0.496 & --- & consensus \\
+Round 2 ensemble, as-is (truncated) & 0.712 & --- & consensus \\
+\textbf{Round 2 ensemble, chunked $+$ neutral bias (used)} & \textbf{0.699} & \textbf{0.707} & consensus \\
+\addlinespace
+Same model, against the first annotator alone & 0.666 & 0.687 & single \\
 \bottomrule
 \end{tabular}
-\caption{In-domain validation on 150 hand-labelled posts (70 Negative, 65 Neutral, 15 Positive). Macro-F1 95\% CI for the chosen configuration: [0.578, 0.745].}
+\caption{In-domain validation against the 140-post two-annotator consensus (66 Negative, 39 Neutral, 35 Positive). The final row shows the same model scored against the original single annotator, for comparison.}
 \end{table}
 
-Both corrections help, and together they recover about half the gap to the Round 2 tweet score. Across a 400-post sample, chunking changes \textbf{12\% of labels}. The residual difference from 0.723 is genuine domain shift: these posts are longer, more technical and more often questions than the tweets the model was trained on. The confusion matrix shows where the model is weakest -- 21 of 70 truly Negative posts are read as Neutral, and 14 of 65 Neutral posts as Positive -- so absolute sentiment levels should be read with more caution than \emph{changes} in them, which is what this report relies on.
+Two points deserve stating plainly. First, the model scores \textbf{0.699 macro-F1} against the consensus, which is close to the 0.666 measured against the first annotator alone -- the estimate is not an artefact of who labelled. Second, and less comfortably, \textbf{the two inference corrections are not measurably better than plain truncation on this evidence}: chunked scoring comes out -0.013 against as-is, with a 95\% interval of $[-0.071, +0.045]$ from a paired bootstrap, which includes zero. Against the first annotator's labels the corrections appeared to help by 0.034; against the consensus that ordering does not replicate. We keep the chunked configuration because its justification is structural rather than empirical -- truncation at 50 tokens discards text from 68\% of these posts, and a scorer should read the post it is scoring -- but we do not claim it raises accuracy here. Across a 400-post sample chunking changes \textbf{12\% of labels}. The residual difference from 0.723 is genuine domain shift: these posts are longer, more technical and more often questions than the tweets the model was trained on. The confusion matrix shows where the model is weakest -- 21 of 70 truly Negative posts are read as Neutral, and 14 of 65 Neutral posts as Positive -- so absolute sentiment levels should be read with more caution than \emph{changes} in them, which is what this report relies on.
 
 Across the analysis set the distribution is \textbf{40.1\% Negative, 40.9\% Neutral, 19.0\% Positive} (mean confidence 0.57).
 
@@ -131,18 +136,24 @@ Rather than scanning every boundary and reporting whatever looked largest, three
 
 \begin{table}[H]
 \centering\small
-\begin{tabular}{@{}lrrrrl@{}}
+\begin{tabular}{@{}lrrrrll@{}}
 \toprule
-\textbf{Period} & \textbf{n} & \textbf{Positive} & \textbf{Negative} & \textbf{Net} & \textbf{Change vs previous} \\
+\textbf{Period} & \textbf{n} & \textbf{Positive} & \textbf{Negative} & \textbf{Net} & \textbf{95\% CI} & \textbf{Change vs previous} \\
 \midrule
-Pre-launch (8--14 Sep) & 171 & 27.5\% & 22.2\% & $+0.05$ & --- \\
-Launch $+$0--24h       & 330 & 21.5\% & 33.6\% & $-0.12$ & $-0.17$, Holm $p = 0.0002$ \\
-Settling $+$24--72h    & 355 & 18.9\% & 35.8\% & $-0.17$ & $-0.05$, not significant \\
-Later ($+$72h onward)  & 547 & 13.5\% & 50.8\% & $-0.37$ & $-0.20$, Holm $p = 0.00001$ \\
+Pre-launch (8--14 Sep) & 171 & 25.1\% & 19.9\% & $+0.05$\,$^{\dagger}$ & $[-0.05, +0.15]$ & --- \\
+Launch $+$0--24h & 330 & 24.5\% & 36.7\% & $-0.12$ & $[-0.20, -0.04]$ & $-0.17$, Holm $p = 0.0002$ \\
+Settling $+$24--72h & 355 & 22.8\% & 39.7\% & $-0.17$ & $[-0.25, -0.09]$ & $-0.05$, not significant \\
+Later ($+$72h onward) & 547 & 11.3\% & 48.6\% & $-0.37$ & $[-0.43, -0.32]$ & $-0.20$, Holm $p = 0.00001$ \\
 \bottomrule
 \end{tabular}
-\caption{Net sentiment by period. The first and third comparisons are significant after correction.}
+\caption{Net sentiment by period, with 95\% bootstrap intervals from 8{,}000 multinomial resamples of each period's class counts. $\dagger$ marks an interval that includes zero: the pre-launch baseline is indistinguishable from neutral, so the decline is a fall from indifference rather than from approval. The first and third comparisons remain significant after Holm correction.}
 \end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.94\textwidth]{Entropy_r3_fig8_periods_ci.png}
+\caption{The same four periods as intervals rather than points. Only the pre-launch interval crosses zero, and it is also the thinnest period at $n=171$.}
+\end{figure}
 
 \subsection{One detected shift}
 
@@ -295,13 +306,64 @@ The gap is explainable rather than mysterious: Mastodon hashtag timelines carry 
 
 The pipeline is not a single snapshot. The collector ran twice, every row records the moment it was fetched, and the second run added \textbf{233 posts} to the analysis set (110 Negative, 91 Neutral, 32 Positive), moving the newest tracked post from 09:33 to 10:44 UTC. A live refresh executed at the end of the notebook then pulled a further \textbf{17 posts} published after the dataset was saved and scored them with the same model (9 Neutral, 6 Negative, 2 Positive), confirming the loop runs continuously rather than once.
 
+\section{Robustness checks and baselines}
+
+Four checks were run against the claims above, each interrogating a specific way this analysis could be wrong. They live in \texttt{Entropy\_03\_robustness\_checks.py} and write \texttt{outputs/Entropy\_round3\_robustness.json}.
+
+\subsection{Is the decline a pile-on by a few accounts?}
+
+The most economical explanation for any measured drop in sentiment is that a small number of accounts posted a large number of complaints. It is not what happened here. The analysis set holds \textbf{1403 posts from 1132 distinct authors} (1.24 posts per author), and 87\% of those authors appear exactly once. The busiest single account contributes 18 posts and the ten busiest together account for only 5.6\% of the corpus. Restricting to negative posts alone, \textbf{562 negative posts come from 521 distinct authors} -- barely more than one apiece -- with the ten busiest contributing 5.2\%. The shift reflects many people reacting independently, not a campaign.
+
+\subsection{Does the model beat an off-the-shelf tool?}
+
+A reused fine-tuned ensemble is only worth its complexity if it beats something anyone could install in a minute. VADER, a rule-based lexicon scorer built for social media text, was run over the same 150 hand-labelled posts with its standard $\pm 0.05$ compound thresholds.
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+\textbf{Scorer} & \textbf{Macro-F1} & \textbf{Accuracy} \\
+\midrule
+VADER lexicon (baseline) & 0.496 & --- \\
+Round 2 ensemble, as-is & 0.712 & --- \\
+\textbf{Round 2 ensemble, chunked $+$ neutral bias} & \textbf{0.699} & \textbf{0.707} \\
+\bottomrule
+\end{tabular}
+\caption{All three scored against the same 140-post human consensus. The reused ensemble beats the lexicon baseline by 0.203 macro-F1.}
+\end{table}
+
+The gap is large enough to justify the transfer: at 0.496 macro-F1 VADER is close to chance on three balanced classes, largely because it reads technical complaint language as neutral. The domain shift that costs our model 0.06 against its own test set still leaves it far ahead of the obvious alternative.
+
+\subsection{Would a monitoring rule have caught this?}
+
+Analysing a launch after it is over is not monitoring. To test whether this pipeline would have been useful in real time, a deliberately simple rule was replayed over the window: \emph{net sentiment <= -0.15 for 2 consecutive 12h bins with n >= 20}.
+
+The rule first fires at \textbf{2026-09-15 12:00 UTC}, \textbf{19 hours after release}, and it raises \textbf{0 false alarms} in the pre-launch period. A team watching this dashboard would have known the reception had turned within a day, while the press coverage was still reporting the redesign.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.94\textwidth]{Entropy_r3_fig9_alerting.png}
+\caption{The alerting rule replayed over the collected window. The threshold is crossed decisively after release and never before it.}
+\end{figure}
+
+\subsection{Inter-annotator agreement}
+
+The original 150 labels came from a single annotator, which was the weakest methodological point in this round. Both team members then labelled the same 150 posts independently, from a shuffled sheet with the model's predictions and the first annotator's labels removed.
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Cohen's $\kappa$ = 0.896} between the two annotators over all 150 posts (93.3\% raw agreement), which is `almost perfect' agreement on the conventional scale.
+  \item The 140 posts they agree on become the \textbf{reference standard} for every accuracy figure in this report. The 10 they disagree on are set aside rather than adjudicated, so no tie is broken by the people being measured.
+  \item Each annotator agrees with the original single-annotator labels at only $\kappa \approx 0.64$--$0.66$, well below their agreement with each other. That gap is the reason the consensus replaced the original labels rather than supplementing them.
+  \item The consensus set is also better balanced: 35 Positive posts against the 15 in the original sample, so the Positive-class score is no longer resting on a handful of examples.
+\end{itemize}
+
 \section{Limitations}
 
 \begin{itemize}[leftmargin=*]
   \item \textbf{No Reddit engagement.} The RSS interface omits scores, so engagement analysis rests on Hacker News, Mastodon and Lemmy (584 scored posts).
   \item \textbf{Platform mix is not constant} across the window, which inflates the raw decline; section 4.5 is the correction, not a footnote.
-  \item \textbf{Model accuracy in this domain is 0.666 macro-F1}, below the 0.723 measured on tweets, and the 95\% interval is wide ([0.578, 0.745]) because 150 posts is a small validation set with only 15 Positive examples. Reported \emph{levels} are noisier than reported \emph{changes}.
-  \item \textbf{Validation labels are our own.} A single annotator labelled the 150 posts against the rubric above; there is no second annotator and therefore no inter-annotator agreement figure.
+  \item \textbf{Model accuracy in this domain is 0.699 macro-F1}, below the 0.723 measured on tweets, and the interval remains wide because 140 posts is a small validation set with only 15 Positive examples. Reported \emph{levels} are noisier than reported \emph{changes}.
+  \item \textbf{Validation labels are our own.} Both team members labelled the 150 posts independently ($\kappa = 0.896$) and only the 140 they agreed on are used, but they remain our judgements rather than an external gold standard.
   \item \textbf{English-only and public-only.} Non-English posts are excluded, and X, TikTok and YouTube are out of reach without paid API access.
   \item \textbf{Keyword recall.} A post reacting to the update without naming it is not in the analysis set.
 \end{itemize}
@@ -310,7 +372,7 @@ The pipeline is not a single snapshot. The collector ran twice, every row record
 
 The monitoring layer works end to end: it collected live public reaction with no paid APIs, scored it with the Round 2 model, and located the moment opinion turned, with statistical support and named causes.
 
-For this release the story is that \textbf{a mildly positive launch soured within three days, and reliability, not design, did the damage}. If Apple were reading this dashboard, the queue would be the PWA regression, macOS application compatibility, notification behaviour, and the distance between Apple Intelligence marketing and its reception. The redesign, which absorbed most of the press coverage, is the thing people mind least.
+For this release the story is that \textbf{a launch that began in indifference soured within three days, and reliability, not design, did the damage}. The baseline was never measurably positive -- what the data supports is a fall from neutral, and that fall is large, significant, spread across 521 distinct authors, and detectable by a simple rule within 19 hours. If Apple were reading this dashboard, the queue would be the PWA regression, macOS application compatibility, notification behaviour, and the distance between Apple Intelligence marketing and its reception. The redesign, which absorbed most of the press coverage, is the thing people mind least.
 
 Two methodological lessons carry beyond this dataset. First, \textbf{a single global sentiment line is misleading} when the source mix moves; per-platform baselines are mandatory, and negative content is amplified by engagement on every platform we measured. Second, \textbf{a model must be validated in the domain where it is deployed}: reusing the Round 2 ensemble unchanged was correct, but its accuracy here is six points lower than its training-domain score, and two inference details -- an unapplied operating point and silent truncation of two thirds of the corpus -- were worth more than any modelling change.
 
