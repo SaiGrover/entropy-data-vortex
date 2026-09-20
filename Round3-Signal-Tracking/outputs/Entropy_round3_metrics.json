@@ -1,0 +1,1528 @@
+{
+  "dataset": {
+    "collected_rows": 5491,
+    "on_topic_rows": 1781,
+    "on_topic_english_rows": 1403,
+    "unique_authors": 1132,
+    "window_start": "2026-09-08 03:48:27+00:00",
+    "window_end": "2026-09-20 10:44:03.162000+00:00",
+    "span_hours": 294.9,
+    "by_source": {
+      "reddit": 718,
+      "mastodon": 513,
+      "hackernews": 138,
+      "lemmy": 34
+    },
+    "by_kind": {
+      "post": 1250,
+      "comment": 153
+    },
+    "entity_counts": {
+      "iOS 27": 784,
+      "iPadOS 27": 83,
+      "macOS 27": 378,
+      "Apple Intelligence": 344,
+      "Android 17": 127
+    }
+  },
+  "sentiment_distribution": {
+    "Negative": 0.4006,
+    "Neutral": 0.4091,
+    "Positive": 0.1903
+  },
+  "confidence": {
+    "mean": 0.5695,
+    "share_above_0.7": 0.149
+  },
+  "in_domain_validation": {
+    "n": 150,
+    "human_label_distribution": {
+      "Negative": 70,
+      "Neutral": 65,
+      "Positive": 15
+    },
+    "configurations": {
+      "as-is (truncated, no bias)": {
+        "accuracy": 0.6533,
+        "macro_f1": 0.6325,
+        "F1 Negative": 0.752,
+        "F1 Neutral": 0.6,
+        "F1 Positive": 0.5455
+      },
+      "neutral bias only": {
+        "accuracy": 0.6733,
+        "macro_f1": 0.6527,
+        "F1 Negative": 0.7581,
+        "F1 Neutral": 0.6341,
+        "F1 Positive": 0.566
+      },
+      "chunked + neutral bias (used)": {
+        "accuracy": 0.6867,
+        "macro_f1": 0.6665,
+        "F1 Negative": 0.752,
+        "F1 Neutral": 0.6565,
+        "F1 Positive": 0.5909
+      }
+    },
+    "chosen": "chunked + neutral bias (used)",
+    "macro_f1_ci95": [
+      0.5777,
+      0.7454
+    ],
+    "round2_test_macro_f1": 0.7227,
+    "confusion_matrix": [
+      [
+        47,
+        21,
+        2
+      ],
+      [
+        8,
+        43,
+        14
+      ],
+      [
+        0,
+        2,
+        13
+      ]
+    ],
+    "per_class": {
+      "Negative": {
+        "precision": 0.8545454545454545,
+        "recall": 0.6714285714285714,
+        "f1-score": 0.752,
+        "support": 70.0
+      },
+      "Neutral": {
+        "precision": 0.6515151515151515,
+        "recall": 0.6615384615384615,
+        "f1-score": 0.6564885496183206,
+        "support": 65.0
+      },
+      "Positive": {
+        "precision": 0.4482758620689655,
+        "recall": 0.8666666666666667,
+        "f1-score": 0.5909090909090909,
+        "support": 15.0
+      },
+      "accuracy": 0.6866666666666666,
+      "macro avg": {
+        "precision": 0.6514454893765238,
+        "recall": 0.7332112332112333,
+        "f1-score": 0.6664658801758039,
+        "support": 150.0
+      },
+      "weighted avg": {
+        "precision": 0.7259386973180075,
+        "recall": 0.6866666666666666,
+        "f1-score": 0.6945026139255146,
+        "support": 150.0
+      }
+    }
+  },
+  "chunking_effect": {
+    "n_sample": 400,
+    "labels_changed_share": 0.12,
+    "net_truncated": -0.185,
+    "net_chunked": -0.1975
+  },
+  "sentiment_shifts": [
+    {
+      "from": "2026-09-14 12:00:00+00:00",
+      "to": "2026-09-15 00:00:00+00:00",
+      "n_before": 148,
+      "n_after": 151,
+      "net_before": 0.1554,
+      "net_after": -0.2583,
+      "delta_net": -0.4137,
+      "p_pos": 0.0043,
+      "p_neg": 0.0,
+      "p_min": 0.0,
+      "p_holm": 0.0
+    },
+    {
+      "from": "2026-09-17 00:00:00+00:00",
+      "to": "2026-09-17 12:00:00+00:00",
+      "n_before": 82,
+      "n_after": 106,
+      "net_before": -0.0854,
+      "net_after": -0.3113,
+      "delta_net": -0.226,
+      "p_pos": 0.0183,
+      "p_neg": 0.2641,
+      "p_min": 0.0183,
+      "p_holm": 0.2016
+    },
+    {
+      "from": "2026-09-15 12:00:00+00:00",
+      "to": "2026-09-16 00:00:00+00:00",
+      "n_before": 138,
+      "n_after": 64,
+      "net_before": -0.3261,
+      "net_after": -0.0938,
+      "delta_net": 0.2323,
+      "p_pos": 0.1627,
+      "p_neg": 0.0474,
+      "p_min": 0.0474,
+      "p_holm": 0.4744
+    },
+    {
+      "from": "2026-09-19 00:00:00+00:00",
+      "to": "2026-09-19 12:00:00+00:00",
+      "n_before": 67,
+      "n_after": 123,
+      "net_before": -0.403,
+      "net_after": -0.3821,
+      "delta_net": 0.0209,
+      "p_pos": 0.5106,
+      "p_neg": 0.503,
+      "p_min": 0.503,
+      "p_holm": 0.503
+    },
+    {
+      "from": "2026-09-16 12:00:00+00:00",
+      "to": "2026-09-17 00:00:00+00:00",
+      "n_before": 96,
+      "n_after": 82,
+      "net_before": -0.1667,
+      "net_after": -0.0854,
+      "delta_net": 0.0813,
+      "p_pos": 0.0682,
+      "p_neg": 0.6194,
+      "p_min": 0.0682,
+      "p_holm": 0.6139
+    },
+    {
+      "from": "2026-09-19 12:00:00+00:00",
+      "to": "2026-09-20 00:00:00+00:00",
+      "n_before": 123,
+      "n_after": 139,
+      "net_before": -0.3821,
+      "net_after": -0.2158,
+      "delta_net": 0.1663,
+      "p_pos": 0.0937,
+      "p_neg": 0.1107,
+      "p_min": 0.0937,
+      "p_holm": 0.7498
+    }
+  ],
+  "period_sentiment": [
+    {
+      "period": "Pre-launch (8-14 Sep)",
+      "n": 171,
+      "pos": 0.2515,
+      "neg": 0.1988,
+      "net": 0.0526
+    },
+    {
+      "period": "Launch +0-24h",
+      "n": 330,
+      "pos": 0.2455,
+      "neg": 0.3667,
+      "net": -0.1212
+    },
+    {
+      "period": "Settling +24-72h",
+      "n": 355,
+      "pos": 0.2282,
+      "neg": 0.3972,
+      "net": -0.169
+    },
+    {
+      "period": "Later (72h+)",
+      "n": 547,
+      "pos": 0.1133,
+      "neg": 0.4863,
+      "net": -0.3729
+    }
+  ],
+  "prespecified_shifts": [
+    {
+      "comparison": "Pre-launch (8-14 Sep) -> Launch +0-24h",
+      "n_before": 171,
+      "n_after": 330,
+      "net_before": 0.05263,
+      "net_after": -0.12121,
+      "delta_net": -0.17384,
+      "p_pos": 0.88255,
+      "p_neg": 0.00012,
+      "p_min": 0.00012,
+      "p_holm": 0.00023
+    },
+    {
+      "comparison": "Launch +0-24h -> Settling +24-72h",
+      "n_before": 330,
+      "n_after": 355,
+      "net_before": -0.12121,
+      "net_after": -0.16901,
+      "delta_net": -0.0478,
+      "p_pos": 0.59474,
+      "p_neg": 0.41155,
+      "p_min": 0.41155,
+      "p_holm": 0.41155
+    },
+    {
+      "comparison": "Settling +24-72h -> Later (72h+)",
+      "n_before": 355,
+      "n_after": 547,
+      "net_before": -0.16901,
+      "net_after": -0.37294,
+      "delta_net": -0.20393,
+      "p_pos": 0.0,
+      "p_neg": 0.00861,
+      "p_min": 0.0,
+      "p_holm": 1e-05
+    }
+  ],
+  "composition": {
+    "platform_mix": {
+      "hackernews": {
+        "Pre-launch (8-14 Sep)": 0.076,
+        "Launch +0-24h": 0.2758,
+        "Settling +24-72h": 0.0732,
+        "Later (72h+)": 0.0146
+      },
+      "lemmy": {
+        "Pre-launch (8-14 Sep)": 0.076,
+        "Launch +0-24h": 0.0091,
+        "Settling +24-72h": 0.0197,
+        "Later (72h+)": 0.0201
+      },
+      "mastodon": {
+        "Pre-launch (8-14 Sep)": 0.4094,
+        "Launch +0-24h": 0.4152,
+        "Settling +24-72h": 0.4507,
+        "Later (72h+)": 0.2669
+      },
+      "reddit": {
+        "Pre-launch (8-14 Sep)": 0.4386,
+        "Launch +0-24h": 0.3,
+        "Settling +24-72h": 0.4563,
+        "Later (72h+)": 0.6984
+      }
+    },
+    "within_source_net": {
+      "Pre-launch (8-14 Sep)": {
+        "hackernews": -0.1538,
+        "lemmy": -0.1538,
+        "mastodon": 0.4286,
+        "reddit": -0.2267
+      },
+      "Launch +0-24h": {
+        "hackernews": -0.3516,
+        "lemmy": -0.3333,
+        "mastodon": 0.146,
+        "reddit": -0.2727
+      },
+      "Settling +24-72h": {
+        "hackernews": -0.2692,
+        "lemmy": -0.2857,
+        "mastodon": 0.175,
+        "reddit": -0.4877
+      },
+      "Later (72h+)": {
+        "hackernews": -0.375,
+        "lemmy": -0.5455,
+        "mastodon": -0.1712,
+        "reddit": -0.445
+      }
+    },
+    "mastodon_only": {
+      "n_pre": 70,
+      "n_late": 146,
+      "net_pre": 0.4286,
+      "net_late": -0.1712,
+      "positive_z": -3.705,
+      "positive_p": 0.00021150081835585866,
+      "negative_z": 5.51,
+      "negative_p": 3.594920650051847e-08
+    }
+  },
+  "spikes": [
+    {
+      "hour": "2026-09-09 18:00:00+00:00",
+      "posts": 14,
+      "engagement": 16.0,
+      "z_posts": 14.89,
+      "z_engagement": 13.07,
+      "type": "volume + engagement"
+    },
+    {
+      "hour": "2026-09-09 19:00:00+00:00",
+      "posts": 10,
+      "engagement": 6.0,
+      "z_posts": 4.31,
+      "z_engagement": 2.18,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-10 09:00:00+00:00",
+      "posts": 2,
+      "engagement": 53.0,
+      "z_posts": 0.74,
+      "z_engagement": 17.69,
+      "type": "engagement"
+    },
+    {
+      "hour": "2026-09-13 00:00:00+00:00",
+      "posts": 1,
+      "engagement": 68.0,
+      "z_posts": 0.67,
+      "z_engagement": 21.19,
+      "type": "engagement"
+    },
+    {
+      "hour": "2026-09-13 12:00:00+00:00",
+      "posts": 4,
+      "engagement": 76.0,
+      "z_posts": 3.6,
+      "z_engagement": 7.73,
+      "type": "volume + engagement"
+    },
+    {
+      "hour": "2026-09-14 13:00:00+00:00",
+      "posts": 10,
+      "engagement": 33.0,
+      "z_posts": 26.98,
+      "z_engagement": 2.27,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-14 17:00:00+00:00",
+      "posts": 36,
+      "engagement": 851.0,
+      "z_posts": 97.13,
+      "z_engagement": 56.03,
+      "type": "volume + engagement"
+    },
+    {
+      "hour": "2026-09-14 18:00:00+00:00",
+      "posts": 22,
+      "engagement": 14.0,
+      "z_posts": 59.36,
+      "z_engagement": 0.11,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-14 19:00:00+00:00",
+      "posts": 22,
+      "engagement": 71.0,
+      "z_posts": 59.36,
+      "z_engagement": 0.58,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-14 20:00:00+00:00",
+      "posts": 9,
+      "engagement": 46.0,
+      "z_posts": 11.47,
+      "z_engagement": 0.37,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-14 21:00:00+00:00",
+      "posts": 13,
+      "engagement": 78.0,
+      "z_posts": 8.09,
+      "z_engagement": 0.63,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-14 22:00:00+00:00",
+      "posts": 12,
+      "engagement": 29.0,
+      "z_posts": 7.42,
+      "z_engagement": 0.24,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-14 23:00:00+00:00",
+      "posts": 7,
+      "engagement": 4.0,
+      "z_posts": 4.05,
+      "z_engagement": 0.03,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-15 00:00:00+00:00",
+      "posts": 17,
+      "engagement": 9.0,
+      "z_posts": 10.79,
+      "z_engagement": 0.07,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-15 01:00:00+00:00",
+      "posts": 14,
+      "engagement": 38.0,
+      "z_posts": 8.77,
+      "z_engagement": 0.31,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-15 02:00:00+00:00",
+      "posts": 11,
+      "engagement": 0.0,
+      "z_posts": 6.74,
+      "z_engagement": 0.0,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-15 03:00:00+00:00",
+      "posts": 7,
+      "engagement": 2.0,
+      "z_posts": 4.05,
+      "z_engagement": 0.02,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-15 04:00:00+00:00",
+      "posts": 11,
+      "engagement": 4.0,
+      "z_posts": 4.27,
+      "z_engagement": 0.03,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-15 05:00:00+00:00",
+      "posts": 12,
+      "engagement": 2.0,
+      "z_posts": 3.37,
+      "z_engagement": 0.02,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-15 06:00:00+00:00",
+      "posts": 15,
+      "engagement": 10.0,
+      "z_posts": 4.38,
+      "z_engagement": 12.82,
+      "type": "volume + engagement"
+    },
+    {
+      "hour": "2026-09-15 07:00:00+00:00",
+      "posts": 12,
+      "engagement": 11.0,
+      "z_posts": 3.37,
+      "z_engagement": 6.74,
+      "type": "volume + engagement"
+    },
+    {
+      "hour": "2026-09-15 08:00:00+00:00",
+      "posts": 11,
+      "engagement": 6.0,
+      "z_posts": 3.04,
+      "z_engagement": 2.02,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-15 09:00:00+00:00",
+      "posts": 12,
+      "engagement": 6.0,
+      "z_posts": 3.37,
+      "z_engagement": 1.35,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-15 10:00:00+00:00",
+      "posts": 16,
+      "engagement": 5.0,
+      "z_posts": 4.72,
+      "z_engagement": 0.67,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-16 11:00:00+00:00",
+      "posts": 7,
+      "engagement": 43.0,
+      "z_posts": -0.31,
+      "z_engagement": 5.47,
+      "type": "engagement"
+    },
+    {
+      "hour": "2026-09-16 19:00:00+00:00",
+      "posts": 6,
+      "engagement": 129.0,
+      "z_posts": -0.39,
+      "z_engagement": 20.74,
+      "type": "engagement"
+    },
+    {
+      "hour": "2026-09-16 21:00:00+00:00",
+      "posts": 16,
+      "engagement": 37.0,
+      "z_posts": 0.79,
+      "z_engagement": 5.31,
+      "type": "engagement"
+    },
+    {
+      "hour": "2026-09-17 11:00:00+00:00",
+      "posts": 13,
+      "engagement": 40.0,
+      "z_posts": 1.01,
+      "z_engagement": 5.9,
+      "type": "engagement"
+    },
+    {
+      "hour": "2026-09-17 17:00:00+00:00",
+      "posts": 26,
+      "engagement": 63.0,
+      "z_posts": 3.42,
+      "z_engagement": 9.2,
+      "type": "volume + engagement"
+    },
+    {
+      "hour": "2026-09-17 20:00:00+00:00",
+      "posts": 7,
+      "engagement": 56.0,
+      "z_posts": 0.0,
+      "z_engagement": 7.64,
+      "type": "engagement"
+    },
+    {
+      "hour": "2026-09-17 21:00:00+00:00",
+      "posts": 11,
+      "engagement": 38.0,
+      "z_posts": 0.77,
+      "z_engagement": 4.95,
+      "type": "engagement"
+    },
+    {
+      "hour": "2026-09-18 04:00:00+00:00",
+      "posts": 3,
+      "engagement": 156.0,
+      "z_posts": -0.79,
+      "z_engagement": 21.44,
+      "type": "engagement"
+    },
+    {
+      "hour": "2026-09-18 19:00:00+00:00",
+      "posts": 13,
+      "engagement": 1157.0,
+      "z_posts": 2.31,
+      "z_engagement": 182.99,
+      "type": "engagement"
+    },
+    {
+      "hour": "2026-09-18 21:00:00+00:00",
+      "posts": 6,
+      "engagement": 62.0,
+      "z_posts": -0.39,
+      "z_engagement": 9.78,
+      "type": "engagement"
+    },
+    {
+      "hour": "2026-09-19 01:00:00+00:00",
+      "posts": 7,
+      "engagement": 37.0,
+      "z_posts": 0.22,
+      "z_engagement": 5.56,
+      "type": "engagement"
+    },
+    {
+      "hour": "2026-09-19 11:00:00+00:00",
+      "posts": 6,
+      "engagement": 106.0,
+      "z_posts": 0.0,
+      "z_engagement": 17.2,
+      "type": "engagement"
+    },
+    {
+      "hour": "2026-09-19 13:00:00+00:00",
+      "posts": 12,
+      "engagement": 115.0,
+      "z_posts": 2.31,
+      "z_engagement": 18.72,
+      "type": "engagement"
+    },
+    {
+      "hour": "2026-09-19 14:00:00+00:00",
+      "posts": 16,
+      "engagement": 13.0,
+      "z_posts": 3.37,
+      "z_engagement": 1.52,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-19 17:00:00+00:00",
+      "posts": 18,
+      "engagement": 3.0,
+      "z_posts": 4.05,
+      "z_engagement": -0.25,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-19 18:00:00+00:00",
+      "posts": 10,
+      "engagement": 65.0,
+      "z_posts": 1.35,
+      "z_engagement": 10.29,
+      "type": "engagement"
+    },
+    {
+      "hour": "2026-09-19 19:00:00+00:00",
+      "posts": 8,
+      "engagement": 40.0,
+      "z_posts": 0.67,
+      "z_engagement": 6.07,
+      "type": "engagement"
+    },
+    {
+      "hour": "2026-09-20 06:00:00+00:00",
+      "posts": 16,
+      "engagement": 5.0,
+      "z_posts": 3.04,
+      "z_engagement": 0.34,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-20 07:00:00+00:00",
+      "posts": 21,
+      "engagement": 3.0,
+      "z_posts": 4.72,
+      "z_engagement": 0.0,
+      "type": "volume"
+    },
+    {
+      "hour": "2026-09-20 09:00:00+00:00",
+      "posts": 23,
+      "engagement": 35.0,
+      "z_posts": 4.8,
+      "z_engagement": 5.4,
+      "type": "volume + engagement"
+    }
+  ],
+  "by_source": {
+    "hackernews": {
+      "posts": 138,
+      "authors": 120,
+      "pos": 0.1377,
+      "neg": 0.4565,
+      "mean_conf": 0.565,
+      "net": -0.3188
+    },
+    "lemmy": {
+      "posts": 34,
+      "authors": 31,
+      "pos": 0.0588,
+      "neg": 0.3824,
+      "mean_conf": 0.5743,
+      "net": -0.3235
+    },
+    "mastodon": {
+      "posts": 513,
+      "authors": 318,
+      "pos": 0.3353,
+      "neg": 0.232,
+      "mean_conf": 0.5942,
+      "net": 0.1033
+    },
+    "reddit": {
+      "posts": 718,
+      "authors": 663,
+      "pos": 0.1031,
+      "neg": 0.5111,
+      "mean_conf": 0.5525,
+      "net": -0.4081
+    }
+  },
+  "source_sentiment_chi2": {
+    "chi2": 153.42,
+    "p": 1.46452987304537e-30,
+    "dof": 6
+  },
+  "engagement_by_sentiment": {
+    "median": {
+      "Negative": 2.0,
+      "Neutral": 1.0,
+      "Positive": 1.0
+    },
+    "kruskal_p": 0.04581068018543081,
+    "n": 584
+  },
+  "entities": [
+    {
+      "entity": "bugs/crashes",
+      "mentions": 181,
+      "authors": 169,
+      "pos": 0.0718,
+      "neg": 0.7459,
+      "net": -0.674,
+      "median_engagement": 1.0
+    },
+    {
+      "entity": "notifications",
+      "mentions": 54,
+      "authors": 48,
+      "pos": 0.0185,
+      "neg": 0.6296,
+      "net": -0.6111,
+      "median_engagement": 7.5
+    },
+    {
+      "entity": "privacy",
+      "mentions": 50,
+      "authors": 50,
+      "pos": 0.12,
+      "neg": 0.54,
+      "net": -0.42,
+      "median_engagement": 2.0
+    },
+    {
+      "entity": "install/update process",
+      "mentions": 149,
+      "authors": 138,
+      "pos": 0.1745,
+      "neg": 0.4765,
+      "net": -0.302,
+      "median_engagement": 1.0
+    },
+    {
+      "entity": "Siri/assistant",
+      "mentions": 279,
+      "authors": 246,
+      "pos": 0.129,
+      "neg": 0.4014,
+      "net": -0.2724,
+      "median_engagement": 1.0
+    },
+    {
+      "entity": "performance",
+      "mentions": 115,
+      "authors": 106,
+      "pos": 0.3043,
+      "neg": 0.5565,
+      "net": -0.2522,
+      "median_engagement": 1.0
+    },
+    {
+      "entity": "macOS 27",
+      "mentions": 378,
+      "authors": 318,
+      "pos": 0.2328,
+      "neg": 0.4577,
+      "net": -0.2249,
+      "median_engagement": 1.0
+    },
+    {
+      "entity": "Apple Intelligence",
+      "mentions": 344,
+      "authors": 293,
+      "pos": 0.157,
+      "neg": 0.3779,
+      "net": -0.2209,
+      "median_engagement": 1.0
+    },
+    {
+      "entity": "Android 17",
+      "mentions": 127,
+      "authors": 104,
+      "pos": 0.1181,
+      "neg": 0.3071,
+      "net": -0.189,
+      "median_engagement": 1.0
+    },
+    {
+      "entity": "iOS 27",
+      "mentions": 784,
+      "authors": 650,
+      "pos": 0.2066,
+      "neg": 0.3699,
+      "net": -0.1633,
+      "median_engagement": 1.0
+    },
+    {
+      "entity": "battery",
+      "mentions": 59,
+      "authors": 57,
+      "pos": 0.2542,
+      "neg": 0.4068,
+      "net": -0.1525,
+      "median_engagement": 1.0
+    },
+    {
+      "entity": "UI/design",
+      "mentions": 173,
+      "authors": 151,
+      "pos": 0.2543,
+      "neg": 0.3526,
+      "net": -0.0983,
+      "median_engagement": 1.0
+    },
+    {
+      "entity": "iPadOS 27",
+      "mentions": 83,
+      "authors": 68,
+      "pos": 0.1807,
+      "neg": 0.2651,
+      "net": -0.0843,
+      "median_engagement": 1.5
+    }
+  ],
+  "log_odds": {
+    "positive": [
+      "new",
+      "ios27",
+      "2026",
+      "improvements",
+      "galaxy",
+      "health",
+      "new features",
+      "apple",
+      "available",
+      "apple app",
+      "features",
+      "faster",
+      "ui",
+      "9to5mac",
+      "apps apple"
+    ],
+    "negative": [
+      "don",
+      "storage",
+      "issue",
+      "fix",
+      "tried",
+      "bug",
+      "problem",
+      "mac",
+      "external",
+      "working",
+      "mail",
+      "messages",
+      "macbook",
+      "menu bar",
+      "account"
+    ]
+  },
+  "nmf_topics": [
+    {
+      "topic": 0,
+      "size": 392,
+      "share": 0.2794,
+      "top_terms": "ios, ios 27, 27, iphone, 26, ios 26, update, beta",
+      "net_sentiment": -0.3112
+    },
+    {
+      "topic": 1,
+      "size": 299,
+      "share": 0.2131,
+      "top_terms": "macos, macos 27, 27, golden, golden gate, gate, 27 golden, macos27",
+      "net_sentiment": -0.2843
+    },
+    {
+      "topic": 5,
+      "size": 233,
+      "share": 0.1661,
+      "top_terms": "ios27, app, macos27, ios27 macos27, new, apple, liquid, glass",
+      "net_sentiment": 0.1288
+    },
+    {
+      "topic": 3,
+      "size": 207,
+      "share": 0.1475,
+      "top_terms": "siri, ai, siri ai, new siri, new, just, use, turn",
+      "net_sentiment": -0.3382
+    },
+    {
+      "topic": 2,
+      "size": 141,
+      "share": 0.1005,
+      "top_terms": "android, android 17, 17, update, pixel, qpr1, google, 17 qpr1",
+      "net_sentiment": -0.2199
+    },
+    {
+      "topic": 4,
+      "size": 131,
+      "share": 0.0934,
+      "top_terms": "apple, intelligence, apple intelligence, features, appleintelligence, iphone, health, 2026",
+      "net_sentiment": -0.1298
+    }
+  ],
+  "entity_daily_net": {
+    "iOS 27": {
+      "2026-09-09": -0.0455,
+      "2026-09-11": 0.0,
+      "2026-09-14": 0.17,
+      "2026-09-15": -0.1975,
+      "2026-09-16": -0.1383,
+      "2026-09-17": -0.129,
+      "2026-09-18": -0.4928,
+      "2026-09-19": -0.4421,
+      "2026-09-20": -0.1294
+    },
+    "iPadOS 27": {
+      "2026-09-14": -0.0385,
+      "2026-09-15": 0.0909,
+      "2026-09-16": -0.2,
+      "2026-09-20": -0.0833
+    },
+    "macOS 27": {
+      "2026-09-14": 0.2679,
+      "2026-09-15": -0.2273,
+      "2026-09-16": -0.2222,
+      "2026-09-17": -0.3333,
+      "2026-09-18": -0.6226,
+      "2026-09-19": -0.3696,
+      "2026-09-20": -0.6818
+    },
+    "Apple Intelligence": {
+      "2026-09-09": 0.0,
+      "2026-09-14": -0.0189,
+      "2026-09-15": -0.3608,
+      "2026-09-16": -0.3,
+      "2026-09-17": -0.2424,
+      "2026-09-18": -0.2917,
+      "2026-09-19": -0.4375,
+      "2026-09-20": -0.0952
+    },
+    "Android 17": {
+      "2026-09-16": 0.2667,
+      "2026-09-18": -0.3333,
+      "2026-09-19": -0.275,
+      "2026-09-20": -0.2143
+    }
+  },
+  "triggers": [
+    {
+      "when": "2026-09-09 18:00:00+00:00",
+      "kind": "volume + engagement spike",
+      "size": "14 posts/h (z=14.9)",
+      "headlines": [
+        "Apple ushers in new, AI-powered era for Siri - Mashable"
+      ],
+      "top_post": "Upcoming Vernissage Update for iOS 27 * **Submitted Build**: A new version containing small fixes for iOS 27 was recently submitted to Apple for review. * **Timeline Redesign**: Th"
+    },
+    {
+      "when": "2026-09-09 19:00:00+00:00",
+      "kind": "volume spike",
+      "size": "10 posts/h (z=4.3)",
+      "headlines": [
+        "Apple ushers in new, AI-powered era for Siri - Mashable"
+      ],
+      "top_post": "Upcoming Vernissage Update for iOS 27 * **Submitted Build**: A new version containing small fixes for iOS 27 was recently submitted to Apple for review. * **Timeline Redesign**: Th"
+    },
+    {
+      "when": "2026-09-10 09:00:00+00:00",
+      "kind": "engagement spike",
+      "size": "2 posts/h (z=0.7)",
+      "headlines": [
+        "How to Prepare for iOS 27 on iPhone & iPadOS 27 on iPad - osxdaily.com",
+        "Apple Intelligence is getting usage limits, and here\u2019s what it means for you - digitaltrends.com",
+        "iOS 27 and macOS 27 has an Easter egg that will delight longtime Apple fans - macworld.com"
+      ],
+      "top_post": "The new Apple Watch can listen in on your conversations and take notes. That makes me feel weird. ::: spoiler article text So you got an Apple Watch to track your steps and heart r"
+    },
+    {
+      "when": "2026-09-13 00:00:00+00:00",
+      "kind": "engagement spike",
+      "size": "1 posts/h (z=0.7)",
+      "headlines": [],
+      "top_post": ">Apple is relying on an opt-in procedure: When activating Siri AI, the manufacturer asks for help in improving the chatbot, as developers with access to the release candidate of iO"
+    },
+    {
+      "when": "2026-09-13 12:00:00+00:00",
+      "kind": "volume + engagement spike",
+      "size": "4 posts/h (z=3.6)",
+      "headlines": [
+        "iOS 27 breaks 15 years of muscle memory on iPhone and iPad - 9to5Mac",
+        "Apple Intelligence could be the key to cram Face ID into future iPhone Duo - AppleInsider",
+        "macOS 27 Golden Gate on M1 and M2 Macs: What Changes Monday, What Doesn\u2019t - The Mac Observer"
+      ],
+      "top_post": "Backflip: Apple now wants to train AI models with user data after all >Apple is relying on an opt-in procedure: When activating Siri AI, the manufacturer asks for help in improving"
+    },
+    {
+      "when": "2026-09-14 13:00:00+00:00",
+      "kind": "volume spike",
+      "size": "10 posts/h (z=27.0)",
+      "headlines": [
+        "iOS 27 and macOS 27 are loaded with security fixes\u2013here\u2019s why - macworld.com",
+        "I\u2019ve used macOS Golden Gate for 3 months \u2014 and here\u2019s what I think - Tom's Guide",
+        "Apple Intelligence Languages in iOS 27: All 16, Plus What Siri AI Adds in October - The Mac Observer"
+      ],
+      "top_post": "iOS 27, iPadOS 27, and macOS 27"
+    },
+    {
+      "when": "2026-09-14 17:00:00+00:00",
+      "kind": "volume + engagement spike",
+      "size": "36 posts/h (z=97.1)",
+      "headlines": [
+        "iOS 27, Siri AI, and iPadOS 27 compatibility explained \u2014 here's which devices are supported - TechRadar",
+        "When does iOS 27 come out? Date and time you can download the new iPhone operating system around the world - Fast Company",
+        "How To Prepare Your iPhone For The iOS 27 Update - Engadget"
+      ],
+      "top_post": "iOS 27, iPadOS 27, and macOS 27"
+    },
+    {
+      "when": "2026-09-14 18:00:00+00:00",
+      "kind": "volume spike",
+      "size": "22 posts/h (z=59.4)",
+      "headlines": [
+        "When does iOS 27 come out? Date and time you can download the new iPhone operating system around the world - Fast Company",
+        "How To Prepare Your iPhone For The iOS 27 Update - Engadget",
+        "iOS and iPadOS 27: The MacStories Review - macstories.net"
+      ],
+      "top_post": "iOS 27, iPadOS 27, and macOS 27"
+    },
+    {
+      "when": "2026-09-14 19:00:00+00:00",
+      "kind": "volume spike",
+      "size": "22 posts/h (z=59.4)",
+      "headlines": [
+        "How To Prepare Your iPhone For The iOS 27 Update - Engadget",
+        "iOS and iPadOS 27: The MacStories Review - macstories.net",
+        "Our OS 27 Review Extras: eBooks, Shortcuts, and the Making of the iOS and iPadOS 27 Review - macstories.net"
+      ],
+      "top_post": "iOS 27, iPadOS 27, and macOS 27"
+    },
+    {
+      "when": "2026-09-14 20:00:00+00:00",
+      "kind": "volume spike",
+      "size": "9 posts/h (z=11.5)",
+      "headlines": [
+        "iOS and iPadOS 27: The MacStories Review - macstories.net",
+        "Our OS 27 Review Extras: eBooks, Shortcuts, and the Making of the iOS and iPadOS 27 Review - macstories.net",
+        "macOS 27: The MacStories Review - Page 9 of 15 - macstories.net"
+      ],
+      "top_post": "iOS 27, iPadOS 27, and macOS 27"
+    },
+    {
+      "when": "2026-09-14 21:00:00+00:00",
+      "kind": "volume spike",
+      "size": "13 posts/h (z=8.1)",
+      "headlines": [
+        "iOS and iPadOS 27: The MacStories Review - macstories.net",
+        "Our OS 27 Review Extras: eBooks, Shortcuts, and the Making of the iOS and iPadOS 27 Review - macstories.net",
+        "macOS 27: The MacStories Review - Page 9 of 15 - macstories.net"
+      ],
+      "top_post": "iOS 27, iPadOS 27, and macOS 27"
+    },
+    {
+      "when": "2026-09-14 22:00:00+00:00",
+      "kind": "volume spike",
+      "size": "12 posts/h (z=7.4)",
+      "headlines": [
+        "iOS 27 Available Now With These 8 New Features - MacRumors",
+        "watchOS 27: The MacStories Review - macstories.net",
+        "10 Cool New iPhone Features You Need to Try Now - gearpatrol.com"
+      ],
+      "top_post": "iOS 27, iPadOS 27, and macOS 27"
+    },
+    {
+      "when": "2026-09-14 23:00:00+00:00",
+      "kind": "volume spike",
+      "size": "7 posts/h (z=4.0)",
+      "headlines": [
+        "The 12 best iOS 27, iPadOS 27 and macOS 27 tips you might have missed - stuff.tv",
+        "Fashion app Daydream uses Apple Intelligence to help you shop the outfits in your camera roll - techcrunch.com",
+        "Apple Releases iOS 27 and iPadOS 27 With Siri AI and Liquid Glass Update - MacRumors"
+      ],
+      "top_post": "iOS 27, iPadOS 27, and macOS 27"
+    },
+    {
+      "when": "2026-09-15 00:00:00+00:00",
+      "kind": "volume spike",
+      "size": "17 posts/h (z=10.8)",
+      "headlines": [
+        "Jamf Announces Same-Day Support For macOS Golden Gate 27, iOS 27 And Other OS 27 Releases - Yahoo Finance",
+        "Jamf Announces Same-Day Support For macOS Golden Gate 27, iOS 27 And Other OS 27 Releases - Business Wire",
+        "Apple releases new parental controls with iOS 27, iPadOS 27, and macOS 27 - BetaNews"
+      ],
+      "top_post": "Tell HN: iOS 27 does not allow Apple Intelligence to be disabled I&#x27;m surprised that this didn&#x27;t get more attention during the Beta period.<p>iOS 26 had a toggle you could"
+    },
+    {
+      "when": "2026-09-15 01:00:00+00:00",
+      "kind": "volume spike",
+      "size": "14 posts/h (z=8.8)",
+      "headlines": [
+        "The next generation of Apple Intelligence is available today - Apple",
+        "Apple releases test of redesigned Siri AI before iPhone 18 hits stores this week - CNBC",
+        "Apple Rolls Out iOS 27, iPadOS 27, macOS 27, and More to the Public; Here\u2019s What\u2019s New - Appleosophy"
+      ],
+      "top_post": "Tell HN: iOS 27 does not allow Apple Intelligence to be disabled I&#x27;m surprised that this didn&#x27;t get more attention during the Beta period.<p>iOS 26 had a toggle you could"
+    },
+    {
+      "when": "2026-09-15 02:00:00+00:00",
+      "kind": "volume spike",
+      "size": "11 posts/h (z=6.7)",
+      "headlines": [
+        "iOS 27 is out! What Florida iPhone users should check before installing - Florida Today",
+        "iPadOS 27 brings Siri AI and system optimizations to your iPad - AppleInsider",
+        "Apple released iOS 27 and iPadOS 27 \u2013 what\u2019s new and which iPhone and iPad models can be updated - mobidevices.com"
+      ],
+      "top_post": "Tell HN: iOS 27 does not allow Apple Intelligence to be disabled I&#x27;m surprised that this didn&#x27;t get more attention during the Beta period.<p>iOS 26 had a toggle you could"
+    },
+    {
+      "when": "2026-09-15 03:00:00+00:00",
+      "kind": "volume spike",
+      "size": "7 posts/h (z=4.0)",
+      "headlines": [
+        "Apple Releases macOS 27 Golden Gate With Siri AI and Liquid Glass Refinements: how 26 outlets framed it - NewsCord",
+        "Here's how to download the macOS Golden Gate update right now - Tom's Guide",
+        "Here\u2019s every security fix included in iOS 27 and iPadOS 27 - 9to5Mac"
+      ],
+      "top_post": "Tell HN: iOS 27 does not allow Apple Intelligence to be disabled I&#x27;m surprised that this didn&#x27;t get more attention during the Beta period.<p>iOS 26 had a toggle you could"
+    },
+    {
+      "when": "2026-09-15 04:00:00+00:00",
+      "kind": "volume spike",
+      "size": "11 posts/h (z=4.3)",
+      "headlines": [
+        "macOS Golden Gate: 10 Features to Try First - MacRumors",
+        "Pixel 11 Gets Another September Update, but Android 17 QPR1 Is Still Missing - TechRepublic",
+        "iOS 27 Features: The Ultimate Mega Guide - MacRumors"
+      ],
+      "top_post": "Apple found a new way to sabotage and ruin PWAs in iOS 27. When you add a PWA to the Home Screen, it forces this fade onto it, and you can't remove it. Unbelievable. # Apple # iOS2"
+    },
+    {
+      "when": "2026-09-15 05:00:00+00:00",
+      "kind": "volume spike",
+      "size": "12 posts/h (z=3.4)",
+      "headlines": [
+        "macOS Golden Gate: 10 Features to Try First - MacRumors",
+        "Pixel 11 Gets Another September Update, but Android 17 QPR1 Is Still Missing - TechRepublic",
+        "iOS 27 Features: The Ultimate Mega Guide - MacRumors"
+      ],
+      "top_post": "Apple found a new way to sabotage and ruin PWAs in iOS 27. When you add a PWA to the Home Screen, it forces this fade onto it, and you can't remove it. Unbelievable. # Apple # iOS2"
+    },
+    {
+      "when": "2026-09-15 06:00:00+00:00",
+      "kind": "volume + engagement spike",
+      "size": "15 posts/h (z=4.4)",
+      "headlines": [
+        "macOS Golden Gate: 10 Features to Try First - MacRumors",
+        "Pixel 11 Gets Another September Update, but Android 17 QPR1 Is Still Missing - TechRepublic",
+        "iOS 27 Features: The Ultimate Mega Guide - MacRumors"
+      ],
+      "top_post": "Apple found a new way to sabotage and ruin PWAs in iOS 27. When you add a PWA to the Home Screen, it forces this fade onto it, and you can't remove it. Unbelievable. # Apple # iOS2"
+    },
+    {
+      "when": "2026-09-15 07:00:00+00:00",
+      "kind": "volume + engagement spike",
+      "size": "12 posts/h (z=3.4)",
+      "headlines": [
+        "Here\u2019s what\u2019s new with parental control features in iOS 27, iPadOS 27, and macOS 27 - 9to5Mac",
+        "Apple overhauls security with iOS and macOS 27 - iTnews",
+        "Apple Releases iOS 27 With Key New iPhone Features And Major Upgrades - Forbes"
+      ],
+      "top_post": "Apple found a new way to sabotage and ruin PWAs in iOS 27. When you add a PWA to the Home Screen, it forces this fade onto it, and you can't remove it. Unbelievable. # Apple # iOS2"
+    },
+    {
+      "when": "2026-09-15 08:00:00+00:00",
+      "kind": "volume spike",
+      "size": "11 posts/h (z=3.0)",
+      "headlines": [
+        "Here\u2019s what\u2019s new with parental control features in iOS 27, iPadOS 27, and macOS 27 - 9to5Mac",
+        "Apple overhauls security with iOS and macOS 27 - iTnews",
+        "Apple Releases iOS 27 With Key New iPhone Features And Major Upgrades - Forbes"
+      ],
+      "top_post": "Kinda surprised to see this. # macOS27"
+    },
+    {
+      "when": "2026-09-15 09:00:00+00:00",
+      "kind": "volume spike",
+      "size": "12 posts/h (z=3.4)",
+      "headlines": [
+        "Apple Releases iOS 27 With Key New iPhone Features And Major Upgrades - Forbes",
+        "50 New Things Your iPhone Can Do in iOS 27 - Out Now! - MacRumors",
+        "macOS 27 Golden Gate: Intel Macs Dropped [2026] - tech-insider.org"
+      ],
+      "top_post": "Kinda surprised to see this. # macOS27"
+    },
+    {
+      "when": "2026-09-15 10:00:00+00:00",
+      "kind": "volume spike",
+      "size": "16 posts/h (z=4.7)",
+      "headlines": [
+        "50 New Things Your iPhone Can Do in iOS 27 - Out Now! - MacRumors",
+        "macOS 27 Golden Gate: Intel Macs Dropped [2026] - tech-insider.org",
+        "iOS 27 Brings These Five New Features to Your iPhone Lock Screen - MacRumors"
+      ],
+      "top_post": "Upgraded from macOS 15 to 27 and fuck me, I hate the bubbles everywhere. The tab bar in Safari is an abomination. All toolbars everywhere inspire disgust. I absolutely hate this. #"
+    },
+    {
+      "when": "2026-09-16 11:00:00+00:00",
+      "kind": "engagement spike",
+      "size": "7 posts/h (z=-0.3)",
+      "headlines": [
+        "Apple fixed over 200 flaws in iOS 27 and macOS 27 - Korben",
+        "macOS 27 Golden Gate has arrived: Here\u2019s what\u2019s new on your Mac - macworld.com",
+        "Why This Single iOS 27 Feature Turns the iPhone Duo Into a Pocket Laptop - PCMag"
+      ],
+      "top_post": "\"As it turns out, Apple realistically needs customer data to make Siri AI work well. So, starting with iOS 27, it is asking users to opt-in to training on your data. A new section "
+    },
+    {
+      "when": "2026-09-16 19:00:00+00:00",
+      "kind": "engagement spike",
+      "size": "6 posts/h (z=-0.4)",
+      "headlines": [
+        "iOS 27: Customize Controls in the Camera App - MacRumors",
+        "iOS 27 adds three new iPhone features you\u2019ll use all the time - 9to5Mac",
+        "Samsung starts rolling out Android 17 with One UI 9, confirms initial list of Galaxy devices - 9to5Google"
+      ],
+      "top_post": "macOS 27 Golden Gate \u2013 Review"
+    },
+    {
+      "when": "2026-09-16 21:00:00+00:00",
+      "kind": "engagement spike",
+      "size": "16 posts/h (z=0.8)",
+      "headlines": [
+        "7 New iOS 27 Features You\u2019ll Want to Try Out - osxdaily.com",
+        "Apple Weather adds two convenient new features in iOS 27 - 9to5Mac",
+        "macOS 27 Golden Gate closes the door on Intel Macs - The Apple Post"
+      ],
+      "top_post": "macOS 27 Golden Gate \u2013 Review"
+    },
+    {
+      "when": "2026-09-17 11:00:00+00:00",
+      "kind": "engagement spike",
+      "size": "13 posts/h (z=1.0)",
+      "headlines": [
+        "An iOS 27 Bug Can Temporarily Freeze Your iPhone - Engadget",
+        "Safari Keeps Getting Better. Try These 21 Hidden Tricks Now That iOS 27 Is Here - PCMag",
+        "Much-Anticipated Apple Software Rollout Starts: What Users Should Know - DailyVoice.com"
+      ],
+      "top_post": "I have a MacBook Pro M4, and I have Siri totally disabled. I also have a (linked) iPhone 15 with Siri totally disabled. I upgraded the computer to macOS 27.0, and now the Messages "
+    },
+    {
+      "when": "2026-09-17 17:00:00+00:00",
+      "kind": "volume + engagement spike",
+      "size": "26 posts/h (z=3.4)",
+      "headlines": [
+        "Google Home just became a power user\u2019s paradise - 9to5Google",
+        "Which iOS 27 CarPlay Features Actually Work in Your Car? - MacRumors",
+        "Apple Watch Series 12: Worthwhile upgrade, looking forward to Audio Intelligence - MobileSyrup"
+      ],
+      "top_post": "Android 17 sucks. So I put Linux on a phone."
+    },
+    {
+      "when": "2026-09-17 20:00:00+00:00",
+      "kind": "engagement spike",
+      "size": "7 posts/h (z=0.0)",
+      "headlines": [
+        "iOS 27 CarPlay Features Compatibility: Cars, iPhones, Apps - Gadget Hacks",
+        "Another Motorola phone just picked up its big Android 17 update - Android Authority",
+        "iPadOS 27.2 adds convenient new feature from the Mac - 9to5Mac"
+      ],
+      "top_post": "Android 17 sucks. So I put Linux on a phone."
+    },
+    {
+      "when": "2026-09-17 21:00:00+00:00",
+      "kind": "engagement spike",
+      "size": "11 posts/h (z=0.8)",
+      "headlines": [
+        "One UI 9: Samsung Reveals When Your Galaxy Will Be Updated With Android 17 - Ubergizmo",
+        "Larry Magid: iOS 27 brings a smarter Siri and more - The Mercury News",
+        "Honor confirms list of devices getting its Liquid Glass-filled Android 17 update [Video] - 9to5Google"
+      ],
+      "top_post": "Android 17 sucks. So I put Linux on a phone."
+    },
+    {
+      "when": "2026-09-18 04:00:00+00:00",
+      "kind": "engagement spike",
+      "size": "3 posts/h (z=-0.8)",
+      "headlines": [
+        "Android 17 QPR2 Beta 5: key changes - NeoTeo",
+        "Apple Watch Series 12 Is Becoming The AI Wearable You Already Own - WeRSM",
+        "Google Keep update tweaks the homescreen widget on Android - 9to5Google"
+      ],
+      "top_post": "GrapheneOS accuses Google of gatekeeping Android 17 features and security fixes"
+    },
+    {
+      "when": "2026-09-18 19:00:00+00:00",
+      "kind": "engagement spike",
+      "size": "13 posts/h (z=2.3)",
+      "headlines": [
+        "watchOS 27 kills the Digital Crown double-click, and Apple Watch owners aren\u2019t happy - Yahoo Tech",
+        "iPhone 18 Pro: The New Features You Should Try First - MacRumors",
+        "iOS 27\u2014Apple Just Gave iPhone Users 120 Reasons To Update Now - Forbes"
+      ],
+      "top_post": "Android 17 is the first since 3.x to add new APIs without releasing to the AOSP"
+    },
+    {
+      "when": "2026-09-18 21:00:00+00:00",
+      "kind": "engagement spike",
+      "size": "6 posts/h (z=-0.4)",
+      "headlines": [
+        "Siri AI vs ChatGPT: I gave iOS 27\u2019s new assistant 5 jobs I rely on ChatGPT Voice for, and it\u2019s changing how I use AI - TechRadar",
+        "Siri AI vs ChatGPT: I gave iOS 27\u2019s new assistant 5 jobs I rely on ChatGPT Voice for, and it\u2019s changing how I use AI - Yahoo Tech",
+        "Siri app vs. Hey Siri: how to get more from Siri AI - AppleInsider"
+      ],
+      "top_post": "Android 17 is the first since 3.x to add new APIs without releasing to the AOSP"
+    },
+    {
+      "when": "2026-09-19 01:00:00+00:00",
+      "kind": "engagement spike",
+      "size": "7 posts/h (z=0.2)",
+      "headlines": [
+        "Apple Loop: iIPhone 18 Pro Camera, iOS 27 Changes, M6 MacBook Benchmarks - Yahoo Tech",
+        "iPhone 18 Pro, Apple Watch Series 12 and AirPods 5 hit stores - Yahoo Tech",
+        "Apple iPhone 13 vs. iPhone 18: How Performance and Features Have Changed in 5 Years - PCMag"
+      ],
+      "top_post": "Android 17 is the first since 3.x to add new APIs without releasing to the AOSP"
+    },
+    {
+      "when": "2026-09-19 11:00:00+00:00",
+      "kind": "engagement spike",
+      "size": "6 posts/h (z=0.0)",
+      "headlines": [
+        "iOS 27: 10 Secret iPhone Features Apple Forgot to Mention! - Geeky Gadgets",
+        "Notify Me is easily one of the best features iOS 27 has to offer \u2014 but it needs to do better - Tom's Guide",
+        "Notify Me is easily one of the best features iOS 27 has to offer \u2014 but it needs to do better - Yahoo Tech"
+      ],
+      "top_post": "Android 17 is the first since 3.x to add new APIs without releasing to the AOSP"
+    },
+    {
+      "when": "2026-09-19 13:00:00+00:00",
+      "kind": "engagement spike",
+      "size": "12 posts/h (z=2.3)",
+      "headlines": [
+        "Notify Me is easily one of the best features iOS 27 has to offer \u2014 but it needs to do better - Tom's Guide",
+        "Notify Me is easily one of the best features iOS 27 has to offer \u2014 but it needs to do better - Yahoo Tech",
+        "Android 17: Samsung rolls out One UI 9.0 to Galaxy S26, 26+, 26 Ultra - Deccan Herald"
+      ],
+      "top_post": "Android 17 is the first since 3.x to add new APIs without releasing to the AOSP"
+    },
+    {
+      "when": "2026-09-19 14:00:00+00:00",
+      "kind": "volume spike",
+      "size": "16 posts/h (z=3.4)",
+      "headlines": [
+        "I replaced ChatGPT with Siri AI for a day \u2014 here's what surprised me - Yahoo Tech",
+        "Apple\u2019s $250 million Siri settlement: who qualifies and how claims will work - The Mac Observer",
+        "Apple\u2019s own pages disagree on when Apple Intelligence limits start - The Mac Observer"
+      ],
+      "top_post": "Android 17 is the first since 3.x to add new APIs without releasing to the AOSP"
+    },
+    {
+      "when": "2026-09-19 17:00:00+00:00",
+      "kind": "volume spike",
+      "size": "18 posts/h (z=4.0)",
+      "headlines": [
+        "watchOS 27 eliminates this beloved Apple Watch feature - Yahoo Tech",
+        "Apple Intelligence bundles Home app alerts by default: here\u2019s the off switch - The Mac Observer",
+        "visionOS 27 brings Siri AI to Vision Pro, even in the EU where iPhone misses out - mixed-news.com"
+      ],
+      "top_post": "Android 17 is the first since 3.x to add new APIs without releasing to the AOSP"
+    },
+    {
+      "when": "2026-09-19 18:00:00+00:00",
+      "kind": "engagement spike",
+      "size": "10 posts/h (z=1.3)",
+      "headlines": [
+        "Top Stories: iOS 27 and macOS Golden Gate Out Now, Siri AI Waitlist, and More - MacRumors",
+        "New Android Feature Helps You Keep Track Of Important Items, No Tag Needed - SlashGear",
+        "Apple's Siri AI troubles prove Samsung's messy multi-AI strategy was right - SamMobile"
+      ],
+      "top_post": "Android 17 is the first since 3.x to add new APIs without releasing to the AOSP"
+    },
+    {
+      "when": "2026-09-19 19:00:00+00:00",
+      "kind": "engagement spike",
+      "size": "8 posts/h (z=0.7)",
+      "headlines": [
+        "Top Stories: iOS 27 and macOS Golden Gate Out Now, Siri AI Waitlist, and More - MacRumors",
+        "New Android Feature Helps You Keep Track Of Important Items, No Tag Needed - SlashGear",
+        "Apple's Siri AI troubles prove Samsung's messy multi-AI strategy was right - SamMobile"
+      ],
+      "top_post": "Android 17 is the first since 3.x to add new APIs without releasing to the AOSP"
+    },
+    {
+      "when": "2026-09-20 06:00:00+00:00",
+      "kind": "volume spike",
+      "size": "16 posts/h (z=3.0)",
+      "headlines": [
+        "iOS 27 makes your iPhone faster in these 30+ ways - 9to5Mac",
+        "Apple releases Golden Gate update with new Siri AI for Macs - The Daily Star",
+        "iCloud Photos Sync Immediately in iOS 27: Here\u2019s what it does and when it pauses - The Mac Observer"
+      ],
+      "top_post": "GrapheneOS Isn't Happy With Google Over Pixel's Widening Head Start Google's September 2026 Pixel Update Bulletin contains patches beyond what's in that month's regular Android Sec"
+    },
+    {
+      "when": "2026-09-20 07:00:00+00:00",
+      "kind": "volume spike",
+      "size": "21 posts/h (z=4.7)",
+      "headlines": [
+        "Apple releases Golden Gate update with new Siri AI for Macs - The Daily Star",
+        "iCloud Photos Sync Immediately in iOS 27: Here\u2019s what it does and when it pauses - The Mac Observer",
+        "How to report a bad Siri AI answer to Apple with Report a Concern - The Mac Observer"
+      ],
+      "top_post": "GrapheneOS Isn't Happy With Google Over Pixel's Widening Head Start Google's September 2026 Pixel Update Bulletin contains patches beyond what's in that month's regular Android Sec"
+    },
+    {
+      "when": "2026-09-20 09:00:00+00:00",
+      "kind": "volume + engagement spike",
+      "size": "23 posts/h (z=4.8)",
+      "headlines": [
+        "iCloud Photos Sync Immediately in iOS 27: Here\u2019s what it does and when it pauses - The Mac Observer",
+        "How to report a bad Siri AI answer to Apple with Report a Concern - The Mac Observer",
+        "How to rate photos with stars and add keywords in iOS 27 Photos - The Mac Observer"
+      ],
+      "top_post": "GrapheneOS Isn't Happy With Google Over Pixel's Widening Head Start Google's September 2026 Pixel Update Bulletin contains patches beyond what's in that month's regular Android Sec"
+    },
+    {
+      "when": "2026-09-15 00:00:00+00:00",
+      "kind": "sentiment shift",
+      "size": "net +16% -> -26% (Holm p=0.000)",
+      "headlines": [
+        "Jamf Announces Same-Day Support For macOS Golden Gate 27, iOS 27 And Other OS 27 Releases - Yahoo Finance",
+        "Jamf Announces Same-Day Support For macOS Golden Gate 27, iOS 27 And Other OS 27 Releases - Business Wire",
+        "Apple releases new parental controls with iOS 27, iPadOS 27, and macOS 27 - BetaNews"
+      ],
+      "top_post": "Tell HN: iOS 27 does not allow Apple Intelligence to be disabled I&#x27;m surprised that this didn&#x27;t get more attention during the Beta period.<p>iOS 26 had a toggle you could"
+    }
+  ],
+  "surge_terms": {
+    "2026-09-15 00:00:00+00:00": [
+      "beta",
+      "photos",
+      "feels",
+      "experience",
+      "new siri",
+      "16",
+      "old",
+      "release",
+      "just",
+      "bug"
+    ],
+    "2026-09-09 18:00:00+00:00": [],
+    "2026-09-09 19:00:00+00:00": [
+      "siri",
+      "intelligence",
+      "apple intelligence",
+      "ios",
+      "17",
+      "ios 27",
+      "iphone",
+      "apple",
+      "ai",
+      "27"
+    ],
+    "2026-09-10 09:00:00+00:00": []
+  },
+  "snapshots": {
+    "runs": {
+      "2026-09-20 10:00:00+00:00": 115,
+      "2026-09-20 11:00:00+00:00": 118
+    },
+    "rows_added_by_second_run": 233,
+    "new_row_sentiment": {
+      "Negative": 110,
+      "Neutral": 91,
+      "Positive": 32
+    },
+    "newest_post_first_snapshot": "2026-09-20 09:33:18+00:00",
+    "newest_post_second_snapshot": "2026-09-20 10:44:03.162000+00:00",
+    "reddit_comments_total": 41
+  },
+  "live_refresh": {
+    "new_posts": 21,
+    "checked_at": "2026-09-20 12:02:11.206022+00:00",
+    "sentiment": {
+      "Neutral": 11,
+      "Negative": 8,
+      "Positive": 2
+    }
+  }
+}

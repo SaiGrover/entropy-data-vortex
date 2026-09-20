@@ -1,0 +1,317 @@
+\documentclass[11pt,a4paper]{article}
+\input{Entropy_r3_common.tex}
+\hypersetup{pdftitle={Round 3 Analytical Report -- Team Entropy}}
+
+\begin{document}
+\color{bodytext}
+\entropytitle{Analytical Report}{Public reaction to the iOS 27 software update}
+
+\section*{Executive summary}
+\addcontentsline{toc}{section}{Executive summary}
+
+We tracked public reaction to the \textbf{iOS 27 / iPadOS 27 / macOS 27} release (14 September 2026), using \textbf{Android 17} (18 September) as a comparison release. A purpose-written collector gathered \textbf{5,498 posts and comments} from Reddit, Hacker News, Mastodon and Lemmy across a 295-hour window in two snapshots; \textbf{1,403} of them, written by \textbf{1,132 distinct authors}, explicitly mention a tracked release and form the analysis set. Every post was scored with the \textbf{Round 2 sentiment ensemble}, reused without retraining.
+
+\begin{insightbox}[HEADLINE]
+The launch was not greeted badly -- it was greeted mildly, and then soured. Net sentiment (share positive minus share negative) ran at \textbf{+0.05} before release, \textbf{$-$0.12} in the first 24 hours, and \textbf{$-$0.37} after three days. Both of those moves are statistically significant, and the decline survives when the platform is held fixed. What people complain about is not the redesign but reliability: \textbf{bugs and crashes score $-$0.67} and \textbf{notifications $-$0.61}, while the visual redesign is the \emph{least} negative theme at $-$0.10. The single loudest moment of the window belongs to the comparison release: a Hacker News thread about \textbf{Android 17} withholding APIs from AOSP drew 1,135 points and an engagement spike \textbf{183 standard deviations} above baseline.
+\end{insightbox}
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Rulebook requirement} & \textbf{Delivered} & \textbf{Section} \\
+\midrule
+At least 2 sentiment shifts & 3 significant shifts (2 pre-specified, 1 detected) & 4.3, 4.4 \\
+At least 1 engagement spike & 44 spike hours; 3 analysed in depth & 5 \\
+Key discussion topics / entities & 5 entities, 8 themes, 6 unsupervised topics & 6 \\
+Reasons behind observed changes & 5 triggers evidenced by news and named posts & 7 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Data collection method}
+
+\subsection{Sources and endpoints}
+
+Collection is performed by \texttt{Entropy\_collect\_data.py}, a standalone Python script that uses only public, read-only endpoints and \textbf{no API keys}.
+
+\begin{table}[H]
+\centering\footnotesize
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Source} & \textbf{Endpoint} & \textbf{Collected} & \textbf{Engagement field} \\
+\midrule
+Reddit & \texttt{/r/*/search.rss}, \texttt{/comments/*.rss} & 1,054 posts, 688 comments & not exposed by RSS \\
+Hacker News & \texttt{hn.algolia.com/api/v1/search} & 126 stories, 1,919 comments & points, comment count \\
+Mastodon & \texttt{\{instance\}/api/v1/timelines/tag/} & 1,594 posts & favourites + boosts \\
+Lemmy & \texttt{\{instance\}/api/v3/search} & 88 posts, 29 comments & score, comment count \\
+Google News & \texttt{news.google.com/rss/search} & 390 articles & n/a (event timeline) \\
+\bottomrule
+\end{tabular}
+\caption{Five public sources. Google News is used only to date real-world events and is never counted as public reaction.}
+\end{table}
+
+Queries covered \texttt{iOS 27}, \texttt{iPadOS 27}, \texttt{macOS 27}, \texttt{Apple Intelligence} and \texttt{Android 17} across 9 subreddits, 4 Mastodon instances (17 hashtag timelines) and 3 Lemmy instances. Reddit was searched twice, by recency and by popularity, and the most-discussed threads were expanded comment by comment; Hacker News threads were expanded for the 20 most-commented stories, which is where long-form opinion lives.
+
+\subsection{Three obstacles and how they were handled}
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Reddit blocks anonymous JSON.} \texttt{api.reddit.com} returns HTTP 403 and \texttt{old.reddit.com/*.json} serves an interstitial page. The Atom (RSS) interface still works and is used instead. The cost is that \textbf{RSS does not expose scores}, so Reddit contributes text and timing but not engagement values.
+  \item \textbf{Anonymous feeds are rate limited} to roughly one request per minute. Reddit therefore runs in a dedicated slow lane (45\,s between calls, exponential backoff on HTTP 429) while other sources run at 1.2\,s. Across both runs, 417 requests were issued and 31 failed after retries; every attempt is logged.
+  \item \textbf{Popularity is invisible in RSS.} A first run picked threads by recency and recovered only 31 comments. Because a \texttt{sort=top} search returns posts in popularity order, the second run used that ordering to choose which threads to expand, raising Reddit comments to \textbf{688}.
+\end{itemize}
+
+\subsection{Structure, ethics and reproducibility}
+
+Every record is normalised to one schema: \texttt{source}, \texttt{source\_detail}, \texttt{kind} (post or comment), \texttt{post\_id}, \texttt{parent\_id}, \texttt{created\_utc}, \texttt{title}, \texttt{text}, \texttt{author\_hash}, \texttt{score}, \texttt{n\_replies}, \texttt{url}, \texttt{query}, \texttt{lang}, \texttt{collected\_at}. \textbf{Author names are replaced by a salted SHA-256 hash}, so no personal identifiers are stored. A manifest records every query, counts and timings, and the full request log is stored gzipped beside the data.
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{@{}lrlr@{}}
+\toprule
+\textbf{Stage} & \textbf{Rows} & \textbf{Analysis set by source} & \textbf{Posts} \\
+\midrule
+Fetched across two runs      & 16,010 & Reddit      & 718 \\
+In window, de-duplicated     & 5,498  & Mastodon    & 513 \\
+Mentions a tracked release   & 1,829  & Hacker News & 138 \\
+\textbf{English analysis set}& \textbf{1,403} & Lemmy & 34 \\
+\bottomrule
+\end{tabular}
+\caption{From raw collection to analysis set: 1,132 distinct authors, 1,250 posts and 153 comments.}
+\end{table}
+
+\section{Time window}
+
+Collection covers \textbf{8 September 2026 01:10 UTC to 20 September 2026 10:44 UTC} (294.9 hours). The window starts six days \emph{before} the iOS 27 release so that a pre-launch baseline exists: without one, a negative reading after launch cannot be distinguished from a community that is negative all the time. All timestamps come from each platform's own metadata and are normalised to UTC.
+
+The window is divided into four periods: pre-launch, the first 24 hours, 24--72 hours, and beyond. Two release moments anchor it: \textbf{iOS 27 on 14 September $\approx$17:00 UTC} and \textbf{Android 17 on 18 September}.
+
+\begin{figure}[H]\centering
+\includegraphics[width=\textwidth]{Entropy_r3_volume_timeline.png}
+\caption{Collected volume per 6 hours by platform. Activity is minimal before the release, jumps at launch, and stays elevated.}
+\end{figure}
+
+\section{Sentiment analysis}
+
+\subsection{Applying the Round 2 model}
+
+The Round 2 artefact is loaded exactly as trained: a weighted ensemble of TF-IDF logistic regression (0.25), MiniLM sentence embeddings with logistic regression (0.20) and three fine-tuned MiniLM seeds (0.55). Three practical details were handled rather than ignored.
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Library compatibility.} The pickles were written by a newer scikit-learn than the one installed, which no longer sets \texttt{multi\_class} on \texttt{LogisticRegression}. The attribute is restored to the trained value (\texttt{multinomial}) instead of retraining.
+  \item \textbf{Operating point.} The artefact carries a validation-selected bias of 1.05 on the Neutral class. The saved \texttt{predict()} applies it but \texttt{predict\_proba()} does not, so scoring through \texttt{predict\_proba} would silently use a different operating point than Round 2 chose. The bias is applied here.
+  \item \textbf{Truncation.} The fine-tuned component was trained on tweets with \texttt{max\_len}~=~50 tokens, but posts here have a median length of 74 tokens and \textbf{68\% exceed 50}. Scoring them directly would read only the opening of two thirds of the corpus, so long posts are split into overlapping 34-word windows and their probabilities averaged.
+\end{itemize}
+
+\subsection{How accurate is the model on this data?}
+
+Round 2 reported macro-F1 0.723 on labelled tweets. To measure the model where it is actually used, \textbf{150 posts were drawn at random} (not stratified by prediction, which would flatter the estimate) and labelled by hand against a fixed rubric: Positive = approval or a favourable experience; Negative = complaint, bug report or criticism; Neutral = factual news, an announcement, or a question with no clear valence.
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+\textbf{Scoring configuration} & \textbf{Accuracy} & \textbf{Macro-F1} & \textbf{F1 Neg} & \textbf{F1 Neu} & \textbf{F1 Pos} \\
+\midrule
+As-is (truncated, no bias)            & 0.653 & 0.632 & 0.75 & 0.60 & 0.55 \\
+Neutral bias only                     & 0.673 & 0.653 & 0.76 & 0.63 & 0.57 \\
+\textbf{Chunked + neutral bias (used)}& \textbf{0.687} & \textbf{0.666} & 0.75 & 0.66 & 0.59 \\
+\bottomrule
+\end{tabular}
+\caption{In-domain validation on 150 hand-labelled posts (70 Negative, 65 Neutral, 15 Positive). Macro-F1 95\% CI for the chosen configuration: [0.578, 0.745].}
+\end{table}
+
+Both corrections help, and together they recover about half the gap to the Round 2 tweet score. Across a 400-post sample, chunking changes \textbf{12\% of labels}. The residual difference from 0.723 is genuine domain shift: these posts are longer, more technical and more often questions than the tweets the model was trained on. The confusion matrix shows where the model is weakest -- 21 of 70 truly Negative posts are read as Neutral, and 14 of 65 Neutral posts as Positive -- so absolute sentiment levels should be read with more caution than \emph{changes} in them, which is what this report relies on.
+
+Across the analysis set the distribution is \textbf{40.1\% Negative, 40.9\% Neutral, 19.0\% Positive} (mean confidence 0.57).
+
+\subsection{Two pre-specified shifts}
+
+Rather than scanning every boundary and reporting whatever looked largest, three comparisons were fixed in advance and corrected with Holm's method.
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{@{}lrrrrl@{}}
+\toprule
+\textbf{Period} & \textbf{n} & \textbf{Positive} & \textbf{Negative} & \textbf{Net} & \textbf{Change vs previous} \\
+\midrule
+Pre-launch (8--14 Sep) & 171 & 27.5\% & 22.2\% & $+0.05$ & --- \\
+Launch $+$0--24h       & 330 & 21.5\% & 33.6\% & $-0.12$ & $-0.17$, Holm $p = 0.0002$ \\
+Settling $+$24--72h    & 355 & 18.9\% & 35.8\% & $-0.17$ & $-0.05$, not significant \\
+Later ($+$72h onward)  & 547 & 13.5\% & 50.8\% & $-0.37$ & $-0.20$, Holm $p = 0.00001$ \\
+\bottomrule
+\end{tabular}
+\caption{Net sentiment by period. The first and third comparisons are significant after correction.}
+\end{table}
+
+\subsection{One detected shift}
+
+Independently, consecutive 12-hour bins (minimum 40 posts) were compared pairwise with two-proportion z-tests and Holm correction across all 24 boundaries. One survives, and it is sharp: at \textbf{15 September 00:00 UTC} net sentiment falls from $+0.16$ to $-0.26$ ($n = 148 \to 151$, Holm $p < 0.0001$) -- the first full night after release, when the update reached ordinary users rather than enthusiasts.
+
+\begin{figure}[H]\centering
+\includegraphics[width=\textwidth]{Entropy_r3_sentiment_timeline.png}
+\caption{Sentiment mix per 12-hour bin (top) and net sentiment with the significant shift marked (bottom).}
+\end{figure}
+
+\subsection{Is the decline real, or a change in who we sampled?}
+
+Reddit is the most negative platform here and its share grows across the window, so the decline could in principle be an artefact of sampling. Holding the platform fixed removes that objection: on \textbf{Mastodon alone}, where coverage is good at both ends of the window, net sentiment falls from $+0.43$ (n = 70) to $-0.17$ (n = 146). Positive posts drop from 57.1\% to 24.0\% ($p = 0.0002$) and negative posts rise from 14.3\% to 41.1\% ($p = 3.6 \times 10^{-8}$).
+
+\begin{insightbox}
+The decline is real, but the raw figure overstates it. A monitoring system that reports one global sentiment line will mislead whenever its source mix changes; baselines must be computed per platform. Our own headline number ($-0.37$) is part sentiment and part sampling, and only the within-platform comparison separates the two.
+\end{insightbox}
+
+\section{Activity analysis}
+
+Hourly volume and hourly engagement were each scored with a robust z-score against a trailing 48-hour median and median absolute deviation, falling back to a trailing standard deviation when the baseline is flat. 44 hours exceed $z > 3$ on at least one measure.
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{@{}llrrl@{}}
+\toprule
+\textbf{Hour (UTC)} & \textbf{Type} & \textbf{Posts} & \textbf{Engagement} & \textbf{Robust z} \\
+\midrule
+14 Sep 17:00 & volume + engagement & 36 & 851   & $z_{\text{posts}} = 97.1$, $z_{\text{eng}} = 56.0$ \\
+18 Sep 19:00 & engagement          & 13 & 1,157 & $z_{\text{eng}} = 183.0$ \\
+09 Sep 18:00 & volume + engagement & 14 & 16    & $z_{\text{posts}} = 14.9$ \\
+18 Sep 04:00 & engagement          & 3  & 156   & $z_{\text{eng}} = 21.4$ \\
+\bottomrule
+\end{tabular}
+\caption{The largest spikes. The release hour is the volume peak; the largest engagement peak belongs to Android 17.}
+\end{table}
+
+\begin{figure}[H]\centering
+\includegraphics[width=\textwidth]{Entropy_r3_activity_spikes.png}
+\caption{Posting activity (top) and engagement (bottom) per hour, with detected spikes marked.}
+\end{figure}
+
+Two structural points follow. First, \textbf{volume and engagement peak at different moments}: the release produced the most posts, but a single Hacker News thread four days later produced far more engagement from only 13 posts. Second, posting stays elevated for the rest of the window instead of decaying, which is what makes the later sentiment reading meaningful rather than the noise of a few stragglers.
+
+\section{Topic and entity analysis}
+
+\subsection{Entities and themes}
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{@{}lrr|lrr@{}}
+\toprule
+\textbf{Entity} & \textbf{Mentions} & \textbf{Net} & \textbf{Theme} & \textbf{Mentions} & \textbf{Net} \\
+\midrule
+iOS 27             & 784 & $-0.16$ & Bugs / crashes           & 181 & $-0.67$ \\
+macOS 27           & 378 & $-0.22$ & Notifications            & 54  & $-0.61$ \\
+Apple Intelligence & 344 & $-0.22$ & Privacy                  & 50  & $-0.42$ \\
+Android 17         & 127 & $-0.19$ & Install / update process & 149 & $-0.30$ \\
+iPadOS 27          & 83  & $-0.08$ & Siri / assistant         & 279 & $-0.27$ \\
+                   &     &         & Performance              & 115 & $-0.25$ \\
+                   &     &         & Battery                  & 59  & $-0.15$ \\
+                   &     &         & UI / design              & 173 & $-0.10$ \\
+\bottomrule
+\end{tabular}
+\caption{Net sentiment per entity and theme. Every theme is net negative, but they are not equally negative.}
+\end{table}
+
+The ranking is the finding. Reliability complaints (bugs, notifications, installation) sit two to six times further below zero than the visual redesign, which is the \emph{least} negative theme at $-0.10$ despite being the most visible change in the release. Privacy at $-0.42$ is driven by the Apple Intelligence opt-in and data-training questions rather than by the operating system itself.
+
+\begin{figure}[H]\centering
+\includegraphics[width=0.95\textwidth]{Entropy_r3_entity_sentiment.png}
+\caption{What people disliked most. Reliability dominates; the redesign is comparatively mild.}
+\end{figure}
+
+\subsection{Which words separate positive from negative}
+
+Using log-odds ratios with an informative Dirichlet prior (Monroe et al., 2008), the most positive-leaning terms are \emph{new}, \emph{new features}, \emph{improvements}, \emph{health}, \emph{galaxy}; the most negative-leaning are \emph{issue}, \emph{problem}, \emph{bug}, \emph{fix}, \emph{tried}, \emph{storage}. The negative vocabulary is the vocabulary of \textbf{troubleshooting}: people are not debating taste, they are reporting things that stopped working.
+
+\subsection{Unsupervised topics}
+
+Non-negative matrix factorisation (6 topics) over the analysis set:
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{@{}rlrr@{}}
+\toprule
+\textbf{\#} & \textbf{Leading terms} & \textbf{Posts} & \textbf{Net} \\
+\midrule
+0 & ios, ios 27, iphone, ios 26, update & 392 & $-0.31$ \\
+1 & macos, macos 27, golden gate        & 299 & $-0.28$ \\
+5 & ios27, app, macos27, new, apps      & 233 & $+0.13$ \\
+3 & siri, ai, siri ai, new siri         & 207 & $-0.34$ \\
+2 & android, android 17, pixel, qpr1    & 141 & $-0.22$ \\
+4 & apple, intelligence, feature        & 131 & $-0.13$ \\
+\bottomrule
+\end{tabular}
+\caption{The Siri/AI cluster is the most negative; developer and app-ecosystem talk is the only positive cluster.}
+\end{table}
+
+\begin{figure}[H]\centering
+\includegraphics[width=\textwidth]{Entropy_r3_entity_sentiment_timeline.png}
+\caption{Net sentiment per entity over time. Apple Intelligence and macOS 27 deteriorate after launch while iPadOS 27 stays flat.}
+\end{figure}
+
+\section{Trigger explanations}
+
+Each spike and shift was matched against two independent kinds of evidence: news articles published in the same window, and the most-engaged posts written inside it. Nothing below is inferred from sentiment scores alone.
+
+\begin{table}[H]
+\centering\footnotesize
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}p{2.0cm}p{2.4cm}p{10.4cm}@{}}
+\toprule
+\textbf{When (UTC)} & \textbf{What happened} & \textbf{Evidence and interpretation} \\
+\midrule
+9 Sep 18:00 & Pre-launch spike (14 posts/h, $z = 14.9$) & The announcement, not the release. News: \emph{``Apple ushers in new, AI-powered era for Siri''} (Mashable). Sentiment is still positive here: anticipation, not experience. \\
+14 Sep 17:00 & Volume + engagement spike (36 posts/h, $z = 97$) & The release itself. News: \emph{``iOS 27 Available Now With These 8 New Features''} (MacRumors). Top post: the Hacker News release thread (714 points). \\
+15 Sep 00:00 & \textbf{Sentiment shift} ($+0.16 \to -0.26$, $p < 0.0001$) & The first night after release. Rising terms: \emph{beta}, \emph{photos}, \emph{feels}, \emph{experience}, \emph{new siri}. Representative posts: \emph{``Apple found a new way to sabotage and ruin PWAs in iOS 27''} (37 points) and \emph{``If you pressed `Upgrade to iOS 27' and are instead getting 26.7, congratulations: you are not alone''}. Ordinary users arrive, and installation and regressions dominate. \\
+18 Sep 19:00 & Engagement spike ($z = 183$) & Hacker News: \emph{``Android 17 is the first since 3.x to add new APIs without releasing to the AOSP''} (1,135 points). A governance story about the \emph{comparison} platform, not a consumer reaction to iOS. \\
+Throughout & Assistant scepticism & The Siri/AI cluster is the most negative topic ($-0.34$, 207 posts): \emph{``I do NOT understand the bullishness on Siri''}, \emph{``Siri is a really bad product''}. Apple Intelligence was the marketing centrepiece and is among the least-liked parts of the release. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Cross-platform behaviour}
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+\textbf{Platform} & \textbf{Posts} & \textbf{Authors} & \textbf{Positive} & \textbf{Net} \\
+\midrule
+Mastodon    & 513 & 320 & 33.9\% & $+0.10$ \\
+Hacker News & 138 & 120 & 13.8\% & $-0.32$ \\
+Lemmy       & 34  & 31  & 11.8\% & $-0.32$ \\
+Reddit      & 718 & 670 & 10.6\% & $-0.41$ \\
+\bottomrule
+\end{tabular}
+\caption{Sentiment differs sharply by platform ($\chi^2$, $p \approx 1.5\times10^{-30}$).}
+\end{table}
+
+\begin{figure}[H]\centering
+\includegraphics[width=\textwidth]{Entropy_r3_platform_engagement.png}
+\caption{Sentiment split by platform, and median engagement by sentiment class.}
+\end{figure}
+
+The gap is explainable rather than mysterious: Mastodon hashtag timelines carry announcements and enthusiast posts, whereas the subreddits searched here are where people go \emph{to ask for help}, so their baseline is complaints. \textbf{Negative posts also earn more engagement} (median 2 versus 1 for neutral and positive, Kruskal--Wallis $p = 0.046$, n = 584) -- the same ``outrage engagement'' pattern measured in Round 1.
+
+\section{Real-time behaviour}
+
+The pipeline is not a single snapshot. The collector ran twice, every row records the moment it was fetched, and the second run added \textbf{233 posts} to the analysis set (110 Negative, 91 Neutral, 32 Positive), moving the newest tracked post from 09:33 to 10:44 UTC. A live refresh executed at the end of the notebook then pulled a further \textbf{17 posts} published after the dataset was saved and scored them with the same model (9 Neutral, 6 Negative, 2 Positive), confirming the loop runs continuously rather than once.
+
+\section{Limitations}
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{No Reddit engagement.} The RSS interface omits scores, so engagement analysis rests on Hacker News, Mastodon and Lemmy (584 scored posts).
+  \item \textbf{Platform mix is not constant} across the window, which inflates the raw decline; section 4.5 is the correction, not a footnote.
+  \item \textbf{Model accuracy in this domain is 0.666 macro-F1}, below the 0.723 measured on tweets, and the 95\% interval is wide ([0.578, 0.745]) because 150 posts is a small validation set with only 15 Positive examples. Reported \emph{levels} are noisier than reported \emph{changes}.
+  \item \textbf{Validation labels are our own.} A single annotator labelled the 150 posts against the rubric above; there is no second annotator and therefore no inter-annotator agreement figure.
+  \item \textbf{English-only and public-only.} Non-English posts are excluded, and X, TikTok and YouTube are out of reach without paid API access.
+  \item \textbf{Keyword recall.} A post reacting to the update without naming it is not in the analysis set.
+\end{itemize}
+
+\section{Conclusion}
+
+The monitoring layer works end to end: it collected live public reaction with no paid APIs, scored it with the Round 2 model, and located the moment opinion turned, with statistical support and named causes.
+
+For this release the story is that \textbf{a mildly positive launch soured within three days, and reliability, not design, did the damage}. If Apple were reading this dashboard, the queue would be the PWA regression, macOS application compatibility, notification behaviour, and the distance between Apple Intelligence marketing and its reception. The redesign, which absorbed most of the press coverage, is the thing people mind least.
+
+Two methodological lessons carry beyond this dataset. First, \textbf{a single global sentiment line is misleading} when the source mix moves; per-platform baselines are mandatory, and negative content is amplified by engagement on every platform we measured. Second, \textbf{a model must be validated in the domain where it is deployed}: reusing the Round 2 ensemble unchanged was correct, but its accuracy here is six points lower than its training-domain score, and two inference details -- an unapplied operating point and silent truncation of two thirds of the corpus -- were worth more than any modelling change.
+
+\end{document}

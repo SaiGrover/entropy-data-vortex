@@ -2,7 +2,7 @@
 
 **Theme:** Rebuilding the Social Engine  
 **Event:** AARUUSH'26, SRM Institute of Science and Technology  
-**Dates:** September 13-18, 2026  
+**Dates:** September 13-23, 2026  
 **Team:** Entropy  
 **Members:** Saanvi Grover & Aditya Sharma
 
@@ -10,7 +10,7 @@
 
 ## Competition Overview
 
-Data Vortex is a multi-round data science competition centered around recovering and analyzing a corrupted social media platform dataset ("The Social Engine"). Round 1 covers the recovery of the dataset and its analytical foundation in two phases: data cleaning with exploratory analysis, followed by SQL-based analytical reasoning. Round 2, "Semantic Recovery," moves from structured recovery to the platform's comprehension layer: recovering the sentiment and topic carried by its posts using NLP.
+Data Vortex is a multi-round data science competition centered around recovering and analyzing a corrupted social media platform dataset ("The Social Engine"). Round 1 covers the recovery of the dataset and its analytical foundation in two phases: data cleaning with exploratory analysis, followed by SQL-based analytical reasoning. Round 2, "Semantic Recovery," moves from structured recovery to the platform's comprehension layer: recovering the sentiment and topic carried by its posts using NLP. Round 3, "Signal Tracking," takes the restored model live: collecting real public reaction to an assigned topic from public APIs and detecting behavioural shifts as they happen.
 
 ## Dataset
 
@@ -24,6 +24,9 @@ Retrieved from a simulated corrupted website (`datavortex-social-engine.vercel.a
 
 ### Round 2 — Dataset 2
 9,000 labelled social-media posts, separate from the Round 1 corpus, with two targets: `sentiment_label` (Negative / Neutral / Positive, perfectly balanced) and `topic_category` (4 classes, 86% one class). Only 7,900 of the 9,000 rows are unique text — see [Round 2 Key Findings](#round-2-semantic-recovery-1) below.
+
+### Round 3 — self-collected live data
+Public reaction to the **iOS 27 / iPadOS 27 / macOS 27** release (14 September 2026), with **Android 17** as a comparison, collected from Reddit, Hacker News, Mastodon and Lemmy with no paid APIs: **5,498 posts and comments** over a 295-hour window in two snapshots, of which **1,403** (1,132 distinct authors) explicitly mention a tracked release. Author names are stored only as salted hashes.
 
 ## Project Structure
 
@@ -97,6 +100,22 @@ Data Vortex/
 |   |
 |   |-- Entropy_README_Round2.md
 |
+|-- Round3-Signal-Tracking/           # Live collection + real-time analysis
+|   |-- Entropy_collect_data.py                 # Deliverable 2: key-less collector (Reddit/HN/Mastodon/Lemmy/news)
+|   |-- Entropy_02_Realtime_Analysis.ipynb      # Deliverable 3: real-time analysis notebook (executed)
+|   |-- data/
+|   |   |-- Entropy_round3_collected_posts.csv  # Deliverable 1: 5,498 collected posts and comments
+|   |   |-- Entropy_round3_news_timeline.csv    # 390 news articles used to date real events
+|   |   |-- Entropy_round3_collection_manifest.json
+|   |   |-- raw/request_log.json.gz             # every HTTP request with status
+|   |-- outputs/                                # scored dataset, metrics JSON, validation sample
+|   |-- images/                                 # 7 analysis figures
+|   |-- reports/
+|   |   |-- Entropy_round3_analytical_report.pdf  # Deliverable 4 (+ .tex source)
+|   |   |-- Entropy_r3_analysis_notebook.pdf      # notebook exported to PDF for submission
+|   |   |-- Entropy_r3_common.tex                 # shared LaTeX preamble
+|   |-- Entropy_README_Round3.md
+|
 |-- README.md                         # This file
 ```
 
@@ -114,6 +133,12 @@ Data Vortex/
 | Round | Status | Description |
 |-------|--------|-------------|
 | Round 2 - Semantic Recovery | Completed | Leakage-checked 70/15/15 split, preprocessing ablation, 8-model comparison, weighted 3-component ensemble (TF-IDF+LogReg, MiniLM embeddings+LogReg, 3-seed fine-tuned MiniLM), full error analysis, spurious topic-label rule recovery, Technical Report PDF, Evaluation Metrics Report PDF |
+
+### Round 3
+
+| Round | Status | Description |
+|-------|--------|-------------|
+| Round 3 - Signal Tracking | Completed | Key-less collector for 4 public platforms (Reddit Atom, HN Algolia, Mastodon, Lemmy) + news timeline, two snapshots, Round 2 model applied unchanged and validated in-domain on 150 hand-labelled posts, 3 significant sentiment shifts, 44 spike hours, entity/theme/NMF topic analysis, trigger table evidenced by news and named posts, Analytical Report PDF |
 
 ## Key Findings
 
@@ -156,12 +181,21 @@ Data Vortex/
 - **The ensemble is calibrated:** confidence buckets track observed accuracy closely across the board, so the model's own confidence score is trustworthy for routing low-confidence posts to human review
 - **The learning curve hasn't plateaued:** both fast candidate models were still improving at 100% of the training data — more labelled sentiment data would likely help further
 
+### Round 3: Signal Tracking
+- **The launch soured rather than failed:** net sentiment ran +0.05 before release, **-0.12 in the first 24 hours** and **-0.37 after 72 hours**; three shifts are significant after Holm correction, including a sharp 12-hour turn at 15 Sep 00:00 (+0.16 to -0.26, p < 0.0001)
+- **The decline is not a sampling artefact:** on Mastodon alone, positives fall 57% -> 24% (p = 0.0002) and negatives rise 14% -> 41% (p = 3.6e-8)
+- **Reliability, not design, drives complaints:** bugs/crashes -0.67, notifications -0.61, privacy -0.42, Siri -0.27, while UI/design is the *least* negative theme at -0.10
+- **Volume and engagement peak at different moments:** the release hour is the volume peak (36 posts/h, z = 97), while the largest engagement peak came 4 days later from one Hacker News thread about *Android 17* (1,135 points, z = 183)
+- **Reusing a model is not free:** the Round 2 ensemble scores **0.666 macro-F1 in this domain** versus 0.723 on tweets; applying its neutral bias (+0.021) and fixing silent truncation of 68% of posts (+0.013) mattered more than any modelling change
+- **Negative posts earn more engagement** (median 2 vs 1, Kruskal-Wallis p = 0.046), repeating the "outrage engagement" pattern from Round 1
+
 ## Tech Stack
 
 - **Languages:** Python 3.x, SQL
 - **Data Processing:** pandas, numpy, sqlite3
 - **Statistics:** scipy.stats (Kruskal-Wallis, Chi-square, Spearman, Mann-Whitney U, McNemar, bootstrap CIs)
 - **NLP / ML:** scikit-learn (TF-IDF, logistic regression, NB-SVM), sentence-transformers (MiniLM embeddings), transformers + torch (MiniLM fine-tuning), joblib
+- **Data collection:** urllib (no scraping framework), public Atom/JSON/RSS endpoints
 - **Visualization:** matplotlib, seaborn
 - **Reporting:** LaTeX (pdflatex)
 - **Notebooks:** Jupyter

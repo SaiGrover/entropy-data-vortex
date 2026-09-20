@@ -1,0 +1,125 @@
+{
+  "collected_by": "Team Entropy (Saanvi Grover, Aditya Sharma)",
+  "topic": "Public reaction to a major software update: iOS 27 / iPadOS 27 / macOS 27, with Android 17 as comparison",
+  "started_utc": "2026-09-20T10:33:04.228439+00:00",
+  "finished_utc": "2026-09-20T11:42:12.724645+00:00",
+  "queries": [
+    "iOS 27",
+    "iPadOS 27",
+    "macOS 27",
+    "Apple Intelligence",
+    "Android 17"
+  ],
+  "reddit_searches": [
+    [
+      "apple",
+      "iOS 27"
+    ],
+    [
+      "apple",
+      "Apple Intelligence"
+    ],
+    [
+      "ios",
+      "iOS 27"
+    ],
+    [
+      "iphone",
+      "iOS 27"
+    ],
+    [
+      "ipad",
+      "iPadOS 27"
+    ],
+    [
+      "macos",
+      "macOS 27"
+    ],
+    [
+      "technology",
+      "iOS 27"
+    ],
+    [
+      "android",
+      "Android 17"
+    ],
+    [
+      "GooglePixel",
+      "Android 17"
+    ],
+    [
+      null,
+      "iOS 27"
+    ],
+    [
+      null,
+      "Android 17"
+    ]
+  ],
+  "mastodon": {
+    "mastodon.social": [
+      "ios27",
+      "ipados27",
+      "macos27",
+      "appleintelligence",
+      "android17",
+      "iphone",
+      "apple"
+    ],
+    "mstdn.social": [
+      "ios27",
+      "macos27",
+      "android17",
+      "apple"
+    ],
+    "fosstodon.org": [
+      "ios27",
+      "android17",
+      "apple"
+    ],
+    "hachyderm.io": [
+      "ios27",
+      "android17",
+      "apple"
+    ]
+  },
+  "lemmy": [
+    "lemmy.world",
+    "lemmy.ml",
+    "programming.dev"
+  ],
+  "requests": 199,
+  "failed_requests": 19,
+  "rows_raw": 9861,
+  "rows_fetched_this_run": 6379,
+  "rows_final": 5498,
+  "append_mode": true,
+  "reddit_popularity_pass": 12,
+  "window_start": "2026-09-08T00:00:00+00:00",
+  "by_source_kind": {
+    "comment": {
+      "hackernews": 1919,
+      "lemmy": 29,
+      "mastodon": 0,
+      "reddit": 688
+    },
+    "post": {
+      "hackernews": 126,
+      "lemmy": 88,
+      "mastodon": 1594,
+      "reddit": 1054
+    }
+  },
+  "engagement_available": {
+    "reddit": false,
+    "hackernews": true,
+    "mastodon": true,
+    "lemmy": true
+  },
+  "time_span": {
+    "first": "2026-09-08 01:10:09+00:00",
+    "last": "2026-09-20 11:38:50+00:00"
+  },
+  "unique_authors": 3271,
+  "news_articles": 388
+}

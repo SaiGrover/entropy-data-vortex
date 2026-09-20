@@ -1,0 +1,98 @@
+% Shared preamble for the Round 3 report (compiled from inside reports/)
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{parskip}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{tabularx}
+\usepackage{needspace}
+\usepackage{etoolbox}
+\usepackage{hyperref}
+
+\graphicspath{{../images/}}
+
+\definecolor{primary}{RGB}{44,62,80}
+\definecolor{accent}{RGB}{52,152,219}
+\definecolor{insightbg}{RGB}{235,245,255}
+\definecolor{bodytext}{RGB}{50,50,50}
+
+\hypersetup{colorlinks=true, linkcolor=accent, urlcolor=accent,
+  pdfauthor={Saanvi Grover, Aditya Sharma}}
+
+\titleformat{\section}{\Large\bfseries\color{primary}}{\thesection}{0.6em}{}[\color{accent}\titlerule]
+\titleformat{\subsection}{\large\bfseries\color{primary}}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{primary}}{}{0em}{}
+
+% Keep a heading with the text that follows it: reserve space before every heading,
+% and forbid breaking immediately after one.
+% A heading is often followed by a subheading and a table, so reserve generously.
+\pretocmd{\section}{\Needspace*{10\baselineskip}}{}{}
+\pretocmd{\subsection}{\Needspace*{7\baselineskip}}{}{}
+\pretocmd{\subsubsection}{\Needspace*{5\baselineskip}}{}{}
+\titlespacing*{\section}{0pt}{3.2ex plus 1ex minus .2ex}{1.6ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{2.6ex plus 1ex minus .2ex}{1.2ex plus .2ex}
+
+% No single lines stranded at the top or bottom of a page
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\brokenpenalty=10000
+
+% Tables and figures stay near their text rather than drifting to the next page
+\setlength{\floatsep}{10pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{12pt plus 2pt minus 2pt}
+\setlength{\intextsep}{10pt plus 2pt minus 2pt}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.75}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+\newtcolorbox{insightbox}[1][KEY FINDING]{
+  colback=insightbg, colframe=accent, boxrule=0.5pt, arc=2pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  fonttitle=\bfseries\small, coltitle=white, title=#1,
+  before skip=8pt, after skip=8pt
+}
+
+\newcommand{\entropytitle}[2]{%
+\begin{titlepage}
+\centering
+\vspace*{3cm}
+{\Huge\bfseries\color{primary} #1\par}
+\vspace{0.6cm}
+{\Large\color{gray} #2\par}
+\vspace{1.2cm}
+{\color{accent}\rule{9cm}{1pt}\par}
+\vspace{1.2cm}
+{\large\color{gray} Round 3: Signal Tracking\par}
+\vspace{1.4cm}
+{\large
+\begin{tabular}{rl}
+\textbf{Competition:} & Data Vortex $|$ AARUUSH'26 \\
+\textbf{Theme:} & Rebuilding the Social Engine \\
+\textbf{Team:} & Entropy \\
+\textbf{Members:} & Saanvi Grover \& Aditya Sharma \\[0.4cm]
+\textbf{Assigned topic:} & Public Reaction to a Major Software Update \\
+\textbf{Event tracked:} & iOS 27 / iPadOS 27 / macOS 27 release \\
+\textbf{Comparison:} & Android 17 release \\
+\end{tabular}
+\par}
+\vfill
+\end{titlepage}
+}
