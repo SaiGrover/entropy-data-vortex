@@ -1,0 +1,25 @@
+# Streamlit Community Cloud installs this file automatically.
+# Pinned to the exact versions the dashboard was built and tested against.
+
+streamlit>=1.49
+plotly>=5.22
+pandas>=2.0
+numpy>=1.26
+scipy>=1.11
+scikit-learn==1.8.0      # the version that wrote the Round 2 pickles - loads them natively
+joblib>=1.4
+pypdfium2>=4.30
+groq>=0.11
+python-dotenv>=1.0
+
+# Live scoring (Round 2 and Round 4 demos).
+# torch is pulled from the CPU-only wheel directly: a plain "torch" line on Linux
+# installs the CUDA build, which drags in several GB of NVIDIA libraries for a
+# GPU this container does not have. The marker limits it to Python 3.12 on
+# Linux - pick 3.12 in the Cloud settings. All three carry the same marker,
+# because sentence-transformers depends on torch: without it, pip would
+# satisfy that dependency with the CUDA build and undo the point of the pin.
+# Anywhere else all three are skipped and the demos show a side note.
+torch @ https://download-r2.pytorch.org/whl/cpu/torch-2.12.0%2Bcpu-cp312-cp312-manylinux_2_28_x86_64.whl ; python_version == "3.12" and sys_platform == "linux"
+transformers==4.57.6 ; python_version == "3.12" and sys_platform == "linux"
+sentence-transformers==3.3.1 ; python_version == "3.12" and sys_platform == "linux"
