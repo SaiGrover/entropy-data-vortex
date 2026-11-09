@@ -93,17 +93,18 @@ def build_corpus() -> tuple[list[dict], TfidfVectorizer, "np.ndarray"]:
     docs: list[dict] = []
     for path in sorted(ROOT.rglob("*.md")):
         # "models" holds vendored weights whose model cards are not project docs
-        if {".git", "node_modules", "models"} & set(path.parts):
+        # "eval" contains gold answers and must never leak into the retrieval corpus.
+        if {".git", "node_modules", "models", "eval"} & set(path.parts):
             continue
         docs += _chunks(path.read_text(encoding="utf-8", errors="ignore"),
                         path.relative_to(ROOT).as_posix())
     for path in sorted(ROOT.rglob("*.tex")):
-        if ".git" in path.parts:
+        if {".git", "eval"} & set(path.parts):
             continue
         docs += _chunks(_clean_tex(path.read_text(encoding="utf-8", errors="ignore")),
                         path.relative_to(ROOT).as_posix())
     for path in sorted(ROOT.rglob("*.json")):
-        if ".git" in path.parts or path.stat().st_size > 400_000:
+        if {".git", "eval"} & set(path.parts) or path.stat().st_size > 400_000:
             continue
         if "metrics" in path.name or "robustness" in path.name or "manifest" in path.name:
             docs += _chunks(json.dumps(json.loads(path.read_text(encoding="utf-8")), indent=1),

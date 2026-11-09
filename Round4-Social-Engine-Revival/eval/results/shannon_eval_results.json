@@ -1,0 +1,1403 @@
+{
+  "generated_at_utc": "2026-11-09T15:30:56.936454+00:00",
+  "configuration": {
+    "top_k": 6,
+    "chunk_chars": 650,
+    "overlap": 130,
+    "answer_generation_run": false,
+    "models": [],
+    "gold_files_excluded_from_corpus": true
+  },
+  "metrics": {
+    "case_count": 30,
+    "answerable_count": 24,
+    "unanswerable_count": 6,
+    "retrieval_hit_at_6": 1.0,
+    "mean_reciprocal_rank": 1.0,
+    "mean_acceptable_source_precision": 0.5659722222222222,
+    "answer_correctness": null,
+    "unanswerable_abstention_rate": null
+  },
+  "cases": [
+    {
+      "id": "r1_clean_rows",
+      "round": 1,
+      "answerable": true,
+      "question": "How many original rows were reduced to how many clean rows, and how many duplicates were removed?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.5,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round1-Phase1-Data-Recovery/Entropy_README_Round1_Phase1.md",
+          "score": 0.203194
+        },
+        {
+          "rank": 2,
+          "source": "Round1-Phase1-Data-Recovery/Entropy_README_Round1_Phase1.md",
+          "score": 0.141879
+        },
+        {
+          "rank": 3,
+          "source": "README.md",
+          "score": 0.12323
+        },
+        {
+          "rank": 4,
+          "source": "Round1-Phase1-Data-Recovery/Entropy_README_Round1_Phase1.md",
+          "score": 0.09207
+        },
+        {
+          "rank": 5,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.091702
+        },
+        {
+          "rank": 6,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.085689
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r1_html_mojibake",
+      "round": 1,
+      "answerable": true,
+      "question": "How many HTML artifacts and mojibake occurrences were repaired in Round 1?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.5,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "README.md",
+          "score": 0.197613
+        },
+        {
+          "rank": 2,
+          "source": "Entropy_cleaning_log.txt",
+          "score": 0.180996
+        },
+        {
+          "rank": 3,
+          "source": "Round1-Phase1-Data-Recovery/Entropy_README_Round1_Phase1.md",
+          "score": 0.176264
+        },
+        {
+          "rank": 4,
+          "source": "Round1-Phase1-Data-Recovery/Entropy_README_Round1_Phase1.md",
+          "score": 0.144525
+        },
+        {
+          "rank": 5,
+          "source": "README.md",
+          "score": 0.102606
+        },
+        {
+          "rank": 6,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.08204
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r1_negative_likes",
+      "round": 1,
+      "answerable": true,
+      "question": "How many negative like values were corrected during cleaning?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.3333333333333333,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Entropy_cleaning_log.txt",
+          "score": 0.128739
+        },
+        {
+          "rank": 2,
+          "source": "README.md",
+          "score": 0.12869
+        },
+        {
+          "rank": 3,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.095891
+        },
+        {
+          "rank": 4,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.087187
+        },
+        {
+          "rank": 5,
+          "source": "Round 2 labelled training data",
+          "score": 0.083565
+        },
+        {
+          "rank": 6,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_evaluation_metrics_report.tex",
+          "score": 0.0699
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r1_scope",
+      "round": 1,
+      "answerable": true,
+      "question": "How many posts, users, and platforms are in the cleaned Round 1 corpus?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.5,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "README.md",
+          "score": 0.140225
+        },
+        {
+          "rank": 2,
+          "source": "Round1-Phase1-Data-Recovery/Entropy_README_Round1_Phase1.md",
+          "score": 0.110905
+        },
+        {
+          "rank": 3,
+          "source": "Round4-Social-Engine-Revival/Entropy_README_Round4.md",
+          "score": 0.1095
+        },
+        {
+          "rank": 4,
+          "source": "README.md",
+          "score": 0.10195
+        },
+        {
+          "rank": 5,
+          "source": "Round1-Phase2-Analytical-Core/Entropy_README_Round1_Phase2.md",
+          "score": 0.0973
+        },
+        {
+          "rank": 6,
+          "source": "Round1-Phase2-Analytical-Core/Entropy_README_Round1_Phase2.md",
+          "score": 0.097116
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r1_missingness",
+      "round": 1,
+      "answerable": true,
+      "question": "Did the reported missing-data test establish that the data were MCAR?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.5,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round1-Phase1-Data-Recovery/Entropy_README_Round1_Phase1.md",
+          "score": 0.200249
+        },
+        {
+          "rank": 2,
+          "source": "README.md",
+          "score": 0.15984
+        },
+        {
+          "rank": 3,
+          "source": "Round1-Phase1-Data-Recovery/Entropy_README_Round1_Phase1.md",
+          "score": 0.155878
+        },
+        {
+          "rank": 4,
+          "source": "Round1-Phase1-Data-Recovery/Entropy_README_Round1_Phase1.md",
+          "score": 0.099301
+        },
+        {
+          "rank": 5,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.079716
+        },
+        {
+          "rank": 6,
+          "source": "CONTRIBUTIONS.md",
+          "score": 0.072661
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r2_unique_text",
+      "round": 2,
+      "answerable": true,
+      "question": "How many Round 2 labelled rows were there, and how many had unique text?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.6666666666666666,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "README.md",
+          "score": 0.170348
+        },
+        {
+          "rank": 2,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.143628
+        },
+        {
+          "rank": 3,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.121751
+        },
+        {
+          "rank": 4,
+          "source": "README.md",
+          "score": 0.106788
+        },
+        {
+          "rank": 5,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.093159
+        },
+        {
+          "rank": 6,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.093015
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r2_leakage",
+      "round": 2,
+      "answerable": true,
+      "question": "What macro-F1 scores showed the duplicate leakage effect in naive versus grouped cross-validation?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.75,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.241632
+        },
+        {
+          "rank": 2,
+          "source": "README.md",
+          "score": 0.164524
+        },
+        {
+          "rank": 3,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.157445
+        },
+        {
+          "rank": 4,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.1461
+        },
+        {
+          "rank": 5,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.143314
+        },
+        {
+          "rank": 6,
+          "source": "Round2-Semantic-Recovery/MODEL_SELECTION.md",
+          "score": 0.104619
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r2_clean_score",
+      "round": 2,
+      "answerable": true,
+      "question": "What is the clean headline Round 2 test macro-F1 and its 95 percent confidence interval?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 1.0,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.178438
+        },
+        {
+          "rank": 2,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.163
+        },
+        {
+          "rank": 3,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_evaluation_metrics_report.tex",
+          "score": 0.158388
+        },
+        {
+          "rank": 4,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.131263
+        },
+        {
+          "rank": 5,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.129831
+        },
+        {
+          "rank": 6,
+          "source": "Round2-Semantic-Recovery/MODEL_SELECTION.md",
+          "score": 0.128533
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r2_test_informed",
+      "round": 2,
+      "answerable": true,
+      "question": "Which Round 2 score is test-informed, and what neutral probability multiplier produced it?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.5,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.273103
+        },
+        {
+          "rank": 2,
+          "source": "Round2-Semantic-Recovery/MODEL_SELECTION.md",
+          "score": 0.256989
+        },
+        {
+          "rank": 3,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.191668
+        },
+        {
+          "rank": 4,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.185998
+        },
+        {
+          "rank": 5,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.184049
+        },
+        {
+          "rank": 6,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_evaluation_metrics_report.tex",
+          "score": 0.170785
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r2_neutral_recall",
+      "round": 2,
+      "answerable": true,
+      "question": "What was Neutral-class recall in the clean Round 2 evaluation?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.5,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.174667
+        },
+        {
+          "rank": 2,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.126685
+        },
+        {
+          "rank": 3,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.117355
+        },
+        {
+          "rank": 4,
+          "source": "README.md",
+          "score": 0.114255
+        },
+        {
+          "rank": 5,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.113715
+        },
+        {
+          "rank": 6,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_evaluation_metrics_report.tex",
+          "score": 0.112963
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r2_seed",
+      "round": 2,
+      "answerable": true,
+      "question": "Which fine-tuning seed was selected, on which split, and what validation macro-F1 did it achieve?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.5,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round2-Semantic-Recovery/MODEL_SELECTION.md",
+          "score": 0.275464
+        },
+        {
+          "rank": 2,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.232011
+        },
+        {
+          "rank": 3,
+          "source": "Round2-Semantic-Recovery/MODEL_SELECTION.md",
+          "score": 0.17922
+        },
+        {
+          "rank": 4,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.161694
+        },
+        {
+          "rank": 5,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.153442
+        },
+        {
+          "rank": 6,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_evaluation_metrics_report.tex",
+          "score": 0.151424
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r2_weights",
+      "round": 2,
+      "answerable": true,
+      "question": "What probability weights were used for TF-IDF, frozen embeddings, and fine-tuned MiniLM in the selected ensemble?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.6666666666666666,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round2-Semantic-Recovery/MODEL_SELECTION.md",
+          "score": 0.338117
+        },
+        {
+          "rank": 2,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.303953
+        },
+        {
+          "rank": 3,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.261956
+        },
+        {
+          "rank": 4,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.220045
+        },
+        {
+          "rank": 5,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.218479
+        },
+        {
+          "rank": 6,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.187932
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r2_latency",
+      "round": 2,
+      "answerable": true,
+      "question": "What was the latency trade-off between the weighted ensemble and the best single seed?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.5,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round2-Semantic-Recovery/MODEL_SELECTION.md",
+          "score": 0.272238
+        },
+        {
+          "rank": 2,
+          "source": "Round2-Semantic-Recovery/MODEL_SELECTION.md",
+          "score": 0.230473
+        },
+        {
+          "rank": 3,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_evaluation_metrics_report.tex",
+          "score": 0.209171
+        },
+        {
+          "rank": 4,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.171654
+        },
+        {
+          "rank": 5,
+          "source": "Round2-Semantic-Recovery/MODEL_SELECTION.md",
+          "score": 0.154111
+        },
+        {
+          "rank": 6,
+          "source": "Round2-Semantic-Recovery/outputs/Entropy_r2_metrics.json",
+          "score": 0.139478
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r3_event",
+      "round": 3,
+      "answerable": true,
+      "question": "Which software release did Round 3 track, on what date, and what comparison release was used?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.75,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.189756
+        },
+        {
+          "rank": 2,
+          "source": "Round3-Signal-Tracking/reports/Entropy_r3_common.tex",
+          "score": 0.173175
+        },
+        {
+          "rank": 3,
+          "source": "Round3-Signal-Tracking/Entropy_README_Round3.md",
+          "score": 0.165012
+        },
+        {
+          "rank": 4,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.104019
+        },
+        {
+          "rank": 5,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.091588
+        },
+        {
+          "rank": 6,
+          "source": "README.md",
+          "score": 0.086166
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r3_collection_scope",
+      "round": 3,
+      "answerable": true,
+      "question": "How many posts and comments were collected, how many explicitly mentioned a tracked release, and how many distinct authors did those represent?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 1.0,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.228209
+        },
+        {
+          "rank": 2,
+          "source": "README.md",
+          "score": 0.22178
+        },
+        {
+          "rank": 3,
+          "source": "Round3-Signal-Tracking/Entropy_README_Round3.md",
+          "score": 0.163552
+        },
+        {
+          "rank": 4,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.154312
+        },
+        {
+          "rank": 5,
+          "source": "Round3-Signal-Tracking/Entropy_README_Round3.md",
+          "score": 0.126862
+        },
+        {
+          "rank": 6,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.115949
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r3_platforms",
+      "round": 3,
+      "answerable": true,
+      "question": "Which four public platforms supplied the Round 3 collection?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.6666666666666666,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "README.md",
+          "score": 0.170974
+        },
+        {
+          "rank": 2,
+          "source": "Round3-Signal-Tracking/Entropy_README_Round3.md",
+          "score": 0.14048
+        },
+        {
+          "rank": 3,
+          "source": "README.md",
+          "score": 0.113315
+        },
+        {
+          "rank": 4,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.09615
+        },
+        {
+          "rank": 5,
+          "source": "README.md",
+          "score": 0.093109
+        },
+        {
+          "rank": 6,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.089992
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r3_annotation",
+      "round": 3,
+      "answerable": true,
+      "question": "How many posts did both annotators label, how many consensus labels remained, and what was Cohen's kappa?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.5,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round3-Signal-Tracking/Entropy_README_Round3.md",
+          "score": 0.200158
+        },
+        {
+          "rank": 2,
+          "source": "Round3-Signal-Tracking/Entropy_README_Round3.md",
+          "score": 0.157265
+        },
+        {
+          "rank": 3,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.151725
+        },
+        {
+          "rank": 4,
+          "source": "README.md",
+          "score": 0.125444
+        },
+        {
+          "rank": 5,
+          "source": "CONTRIBUTIONS.md",
+          "score": 0.124677
+        },
+        {
+          "rank": 6,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.115811
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r3_vader",
+      "round": 3,
+      "answerable": true,
+      "question": "How did the reused ensemble compare with VADER on the Round 3 consensus set?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.75,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round3-Signal-Tracking/Entropy_README_Round3.md",
+          "score": 0.164729
+        },
+        {
+          "rank": 2,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.1594
+        },
+        {
+          "rank": 3,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.145474
+        },
+        {
+          "rank": 4,
+          "source": "README.md",
+          "score": 0.139462
+        },
+        {
+          "rank": 5,
+          "source": "Round3-Signal-Tracking/Entropy_README_Round3.md",
+          "score": 0.132893
+        },
+        {
+          "rank": 6,
+          "source": "Round4-Social-Engine-Revival/Entropy_README_Round4.md",
+          "score": 0.129591
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r3_adjustment",
+      "round": 3,
+      "answerable": true,
+      "question": "Did the shipped Round 3 adjustments significantly improve macro-F1 over the as-is model? Give the difference and confidence interval.",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.3333333333333333,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "README.md",
+          "score": 0.139321
+        },
+        {
+          "rank": 2,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.126148
+        },
+        {
+          "rank": 3,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.122986
+        },
+        {
+          "rank": 4,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.122887
+        },
+        {
+          "rank": 5,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.112735
+        },
+        {
+          "rank": 6,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.103815
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r3_author_concentration",
+      "round": 3,
+      "answerable": true,
+      "question": "Were negative posts driven by only a few accounts, and what counts support the answer?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.75,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.137676
+        },
+        {
+          "rank": 2,
+          "source": "Round3-Signal-Tracking/Entropy_README_Round3.md",
+          "score": 0.133719
+        },
+        {
+          "rank": 3,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.110795
+        },
+        {
+          "rank": 4,
+          "source": "README.md",
+          "score": 0.10632
+        },
+        {
+          "rank": 5,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.099741
+        },
+        {
+          "rank": 6,
+          "source": "Round4-Social-Engine-Revival/Entropy_README_Round4.md",
+          "score": 0.096193
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r3_monitoring",
+      "round": 3,
+      "answerable": true,
+      "question": "When would the simple monitoring rule have fired, and were there false alarms before release?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.5,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round4-Social-Engine-Revival/Entropy_README_Round4.md",
+          "score": 0.327679
+        },
+        {
+          "rank": 2,
+          "source": "README.md",
+          "score": 0.224646
+        },
+        {
+          "rank": 3,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.182876
+        },
+        {
+          "rank": 4,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.179947
+        },
+        {
+          "rank": 5,
+          "source": "Round3-Signal-Tracking/Entropy_README_Round3.md",
+          "score": 0.162653
+        },
+        {
+          "rank": 6,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.093764
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r4_corpus",
+      "round": 4,
+      "answerable": true,
+      "question": "What project material does SHANNON index as its retrieval corpus?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.3333333333333333,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round4-Social-Engine-Revival/Entropy_README_Round4.md",
+          "score": 0.16628
+        },
+        {
+          "rank": 2,
+          "source": "CONTRIBUTIONS.md",
+          "score": 0.141731
+        },
+        {
+          "rank": 3,
+          "source": "Round4-Social-Engine-Revival/Entropy_README_Round4.md",
+          "score": 0.139563
+        },
+        {
+          "rank": 4,
+          "source": "README.md",
+          "score": 0.129572
+        },
+        {
+          "rank": 5,
+          "source": "CONTRIBUTIONS.md",
+          "score": 0.127993
+        },
+        {
+          "rank": 6,
+          "source": "README.md",
+          "score": 0.117252
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r4_retrieval",
+      "round": 4,
+      "answerable": true,
+      "question": "What retrieval method does SHANNON use before asking the hosted model to answer?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.3333333333333333,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round4-Social-Engine-Revival/Entropy_README_Round4.md",
+          "score": 0.167622
+        },
+        {
+          "rank": 2,
+          "source": "Round4-Social-Engine-Revival/Entropy_README_Round4.md",
+          "score": 0.157708
+        },
+        {
+          "rank": 3,
+          "source": "CONTRIBUTIONS.md",
+          "score": 0.149339
+        },
+        {
+          "rank": 4,
+          "source": "CONTRIBUTIONS.md",
+          "score": 0.123553
+        },
+        {
+          "rank": 5,
+          "source": "Round4-Social-Engine-Revival/Entropy_README_Round4.md",
+          "score": 0.106732
+        },
+        {
+          "rank": 6,
+          "source": "README.md",
+          "score": 0.084605
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "r4_operating_point",
+      "round": 4,
+      "answerable": true,
+      "question": "What does the Round 4 neutral-bias slider recompute, and which value reproduces the submission?",
+      "retrieval_hit_at_6": true,
+      "reciprocal_rank": 1.0,
+      "acceptable_source_precision": 0.25,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round4-Social-Engine-Revival/Entropy_README_Round4.md",
+          "score": 0.202045
+        },
+        {
+          "rank": 2,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.118016
+        },
+        {
+          "rank": 3,
+          "source": "Round3-Signal-Tracking/Entropy_README_Round3.md",
+          "score": 0.094854
+        },
+        {
+          "rank": 4,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.093182
+        },
+        {
+          "rank": 5,
+          "source": "Round2-Semantic-Recovery/README.md",
+          "score": 0.092478
+        },
+        {
+          "rank": 6,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.092361
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "ood_capital",
+      "round": null,
+      "answerable": false,
+      "question": "What is the capital of France?",
+      "retrieval_hit_at_6": null,
+      "reciprocal_rank": null,
+      "acceptable_source_precision": null,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_evaluation_metrics_report.tex",
+          "score": 0.044681
+        },
+        {
+          "rank": 2,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_evaluation_metrics_report.tex",
+          "score": 0.03629
+        },
+        {
+          "rank": 3,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.035914
+        },
+        {
+          "rank": 4,
+          "source": "Round4-Social-Engine-Revival/Entropy_README_Round4.md",
+          "score": 0.032906
+        },
+        {
+          "rank": 5,
+          "source": "Round4-Social-Engine-Revival/Entropy_README_Round4.md",
+          "score": 0.032213
+        },
+        {
+          "rank": 6,
+          "source": "Round4-Social-Engine-Revival/Entropy_README_Round4.md",
+          "score": 0.030713
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "ood_weather",
+      "round": null,
+      "answerable": false,
+      "question": "What will the weather be in Delhi tomorrow?",
+      "retrieval_hit_at_6": null,
+      "reciprocal_rank": null,
+      "acceptable_source_precision": null,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round3-Signal-Tracking/outputs/Entropy_round3_metrics.json",
+          "score": 0.087755
+        },
+        {
+          "rank": 2,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.042251
+        },
+        {
+          "rank": 3,
+          "source": "Round3-Signal-Tracking/outputs/Entropy_round3_metrics.json",
+          "score": 0.040046
+        },
+        {
+          "rank": 4,
+          "source": "Round3-Signal-Tracking/outputs/Entropy_round3_metrics.json",
+          "score": 0.038635
+        },
+        {
+          "rank": 5,
+          "source": "Round3-Signal-Tracking/outputs/Entropy_round3_metrics.json",
+          "score": 0.03774
+        },
+        {
+          "rank": 6,
+          "source": "Round4-Social-Engine-Revival/Entropy_README_Round4.md",
+          "score": 0.035405
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "ood_recipe",
+      "round": null,
+      "answerable": false,
+      "question": "Give me a sourdough bread recipe.",
+      "retrieval_hit_at_6": null,
+      "reciprocal_rank": null,
+      "acceptable_source_precision": null,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.036754
+        },
+        {
+          "rank": 2,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_evaluation_metrics_report.tex",
+          "score": 0.035909
+        },
+        {
+          "rank": 3,
+          "source": "Round4-Social-Engine-Revival/Entropy_README_Round4.md",
+          "score": 0.032411
+        },
+        {
+          "rank": 4,
+          "source": "Round4-Social-Engine-Revival/Entropy_README_Round4.md",
+          "score": 0.031311
+        },
+        {
+          "rank": 5,
+          "source": "Round4-Social-Engine-Revival/Entropy_README_Round4.md",
+          "score": 0.027023
+        },
+        {
+          "rank": 6,
+          "source": "Round3-Signal-Tracking/reports/Entropy_round3_analytical_report.tex",
+          "score": 0.024698
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "ood_sports",
+      "round": null,
+      "answerable": false,
+      "question": "Who won the 2025 Super Bowl?",
+      "retrieval_hit_at_6": null,
+      "reciprocal_rank": null,
+      "acceptable_source_precision": null,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "README.md",
+          "score": 0.085494
+        },
+        {
+          "rank": 2,
+          "source": "README.md",
+          "score": 0.07736
+        },
+        {
+          "rank": 3,
+          "source": "Round1-Phase1-Data-Recovery/Entropy_README_Round1_Phase1.md",
+          "score": 0.076899
+        },
+        {
+          "rank": 4,
+          "source": "Round1-Phase1-Data-Recovery/Entropy_README_Round1_Phase1.md",
+          "score": 0.076651
+        },
+        {
+          "rank": 5,
+          "source": "Round1-Phase1-Data-Recovery/Entropy_README_Round1_Phase1.md",
+          "score": 0.072769
+        },
+        {
+          "rank": 6,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_technical_report.tex",
+          "score": 0.024751
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "ood_private",
+      "round": null,
+      "answerable": false,
+      "question": "What is Saanvi's home address?",
+      "retrieval_hit_at_6": null,
+      "reciprocal_rank": null,
+      "acceptable_source_precision": null,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round2-Semantic-Recovery/reports/Entropy_r2_common.tex",
+          "score": 0.100109
+        },
+        {
+          "rank": 2,
+          "source": "CONTRIBUTIONS.md",
+          "score": 0.094514
+        },
+        {
+          "rank": 3,
+          "source": "Round3-Signal-Tracking/outputs/Entropy_round3_metrics.json",
+          "score": 0.082035
+        },
+        {
+          "rank": 4,
+          "source": "Round3-Signal-Tracking/outputs/Entropy_round3_metrics.json",
+          "score": 0.072915
+        },
+        {
+          "rank": 5,
+          "source": "Round4-Social-Engine-Revival/Entropy_README_Round4.md",
+          "score": 0.0716
+        },
+        {
+          "rank": 6,
+          "source": "Round3-Signal-Tracking/outputs/Entropy_round3_metrics.json",
+          "score": 0.070169
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    },
+    {
+      "id": "ood_live_stock",
+      "round": null,
+      "answerable": false,
+      "question": "What is Apple's stock price today?",
+      "retrieval_hit_at_6": null,
+      "reciprocal_rank": null,
+      "acceptable_source_precision": null,
+      "retrieved": [
+        {
+          "rank": 1,
+          "source": "Round3-Signal-Tracking/outputs/Entropy_round3_metrics.json",
+          "score": 0.146495
+        },
+        {
+          "rank": 2,
+          "source": "Round3-Signal-Tracking/outputs/Entropy_round3_metrics.json",
+          "score": 0.134534
+        },
+        {
+          "rank": 3,
+          "source": "Round3-Signal-Tracking/outputs/Entropy_round3_metrics.json",
+          "score": 0.134359
+        },
+        {
+          "rank": 4,
+          "source": "Round3-Signal-Tracking/outputs/Entropy_round3_metrics.json",
+          "score": 0.07177
+        },
+        {
+          "rank": 5,
+          "source": "Round3-Signal-Tracking/outputs/Entropy_round3_metrics.json",
+          "score": 0.063666
+        },
+        {
+          "rank": 6,
+          "source": "Round3-Signal-Tracking/outputs/Entropy_round3_metrics.json",
+          "score": 0.06194
+        }
+      ],
+      "answer": null,
+      "answer_correct": null,
+      "abstained": null,
+      "answer_sources": null,
+      "answer_model": null
+    }
+  ]
+}
