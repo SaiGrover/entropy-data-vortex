@@ -1189,7 +1189,7 @@ if PAGE == 0:
          "every change logged"),
         ("Refuse to invent data",
          "1,784 missing platform values were left as NaN because nothing in the row implies the platform. The "
-         "missingness was tested first and behaves as missing completely at random (Mann-Whitney, p = 0.64).",
+         "reported Mann-Whitney check found no engagement difference (p = 0.64), but does not establish MCAR.",
          "nothing imputed"),
         ("Describe the corpus, do not assume it",
          "A twenty-section exploration with twenty-one figures and six hypothesis tests - which is how the "

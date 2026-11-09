@@ -150,7 +150,7 @@ Short posts (31.6\%) and posts containing a contrast word like \textit{but} or \
 
 \subsection{Neutral Bias Mitigation}
 
-A scalar bias on the ensemble's Neutral-class probability (multiply, renormalise, argmax) was swept over $[0.80, 1.60]$, selected by \textbf{validation} macro-F1 only, and applied to test exactly once.
+A scalar bias on the ensemble's Neutral-class probability (multiply, renormalise, argmax) was swept over $[0.80, 1.60]$ and its value was selected by validation macro-F1. The executed notebook then conditioned adoption on whether the observed test result improved, so the adjusted result is test-informed.
 
 \begin{table}[H]
 \centering
@@ -160,15 +160,15 @@ A scalar bias on the ensemble's Neutral-class probability (multiply, renormalise
 \textbf{Metric} & \textbf{Before} & \textbf{After ($\text{bias}=1.05$)} & \textbf{$\Delta$} \\
 \midrule
 Validation macro-F1 (selection metric) & 0.7111 & 0.7113 & $+0.0002$ \\
-Test macro-F1 & 0.7178 & \textbf{0.7227} & $+0.0049$ \\
+Test macro-F1 & \textbf{0.7178} (clean) & 0.7227 (test-informed) & $+0.0049$ \\
 Neutral recall (test) & 0.6117 & 0.6335 & $+0.0218$ \\
 \bottomrule
 \end{tabular}
-\caption{Effect of the validation-selected Neutral bias on the held-out test set.}
+\caption{Test-informed diagnostic for the validation-selected Neutral bias.}
 \end{table}
 
 \begin{insightbox}
-The validation delta that selected this bias ($+0.0002$) is $\sim$30$\times$ smaller than the test delta it produced ($+0.0049$), on a nearly flat validation curve. Not leakage --- test was touched once --- but the magnitude of the test gain should be treated as an upper bound rather than a guaranteed effect. See the Technical Report's Error Analysis for the full discussion. \texttt{bias=1.05} is folded into the shipped model (\texttt{neutral\_bias} in \texttt{Entropy\_sentiment\_model.json}).
+The validation delta that selected this bias ($+0.0002$) is $\sim$30$\times$ smaller than the test delta it produced ($+0.0049$), on a nearly flat validation curve. Because adoption was conditioned on the observed test improvement, 0.7227 is reported only as a test-informed diagnostic; 0.7178 remains the clean headline estimate. \texttt{bias=1.05} is folded into the shipped model (\texttt{neutral\_bias} in \texttt{Entropy\_sentiment\_model.json}).
 \end{insightbox}
 
 \subsection{Calibration}

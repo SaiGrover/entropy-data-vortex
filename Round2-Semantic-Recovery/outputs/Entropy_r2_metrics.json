@@ -10,6 +10,67 @@
     "bootstrap": 2000,
     "fast_mode": false
   },
+  "sentiment": {
+    "authoritative_headline": {
+      "model": "Weighted ensemble",
+      "selection_split": "validation",
+      "test_n": 1185,
+      "test_accuracy": 0.7173,
+      "test_macro_f1": 0.7178,
+      "test_macro_f1_ci_95": [
+        0.6913,
+        0.7414
+      ],
+      "test_weighted_f1": 0.7158,
+      "test_roc_auc_ovr": 0.8805,
+      "status": "clean estimate; use for headline reporting"
+    },
+    "per_class": {
+      "Negative": {
+        "precision": 0.7527,
+        "recall": 0.7753,
+        "f1": 0.7638,
+        "support": 365
+      },
+      "Neutral": {
+        "precision": 0.6545,
+        "recall": 0.6117,
+        "f1": 0.6324,
+        "support": 412
+      },
+      "Positive": {
+        "precision": 0.7429,
+        "recall": 0.7721,
+        "f1": 0.7572,
+        "support": 408
+      }
+    },
+    "test_informed_variant": {
+      "neutral_probability_multiplier": 1.05,
+      "test_macro_f1": 0.7227,
+      "status": "test-informed diagnostic; do not use as the clean headline",
+      "reason": "The multiplier was selected on validation, but the executed notebook conditioned adoption on the observed test improvement."
+    },
+    "selection": {
+      "fine_tune_seed_validation_macro_f1": {
+        "42": 0.7017,
+        "7": 0.6977,
+        "1234": 0.6881
+      },
+      "best_seed": 42,
+      "seed_selection_split": "validation",
+      "ensemble_weights": {
+        "tfidf_logreg": 0.25,
+        "embedding_logreg": 0.2,
+        "minilm_finetuned": 0.55
+      },
+      "ensemble_validation_macro_f1": 0.7111,
+      "single_seed_validation_macro_f1": 0.7017,
+      "ensemble_latency_ms_per_post": 26.0666,
+      "single_seed_latency_ms_per_post": 7.1452,
+      "decision": "Ship the ensemble because it was the strongest validation-selected system before test evaluation; retain the slower latency as an explicit trade-off."
+    }
+  },
   "topic": {
     "models": [
       {

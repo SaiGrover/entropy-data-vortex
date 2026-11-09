@@ -171,7 +171,7 @@ Data Vortex/
 ### Phase 1: Data Recovery
 - Identified and fixed **10 corruption patterns** including NULL strings, duplicates, HTML entities, mojibake, inconsistent timestamps, and negative values
 - Removed **360 duplicate rows**, corrected **509 negative likes**, decoded **974 HTML artifacts**, and recovered **306 mojibake instances** to their original Unicode characters
-- ~15% missing data across platform, text, and likes columns, confirmed **Missing Completely at Random** (Mann-Whitney U, p = 0.64)
+- ~15% missing data across platform, text, and likes columns. A Mann-Whitney check found no detectable engagement difference (p = 0.64), but a non-significant test does **not** establish MCAR.
 - The dataset is **structurally uniform**: platform volume, day-of-week patterns, brand mentions, and language distribution all show coefficient of variation below 10%
 - **5 of 6 statistical tests** return p > 0.05; the one significant signal is that **multi-platform users** show ~15% higher engagement
 - Contradictory sentiment phrases in the same post reveal **template-based text generation**
@@ -201,6 +201,8 @@ Data Vortex/
 | vs. best classical baseline | +0.0935 macro-F1 (McNemar p = 3.0×10⁻¹⁰) |
 | Topic labels (recovered substring rules) | 1.0000 accuracy / macro-F1 |
 
+The authoritative machine-readable record, per-class metrics, and the validation-only selection rationale are in [`Round2-Semantic-Recovery/outputs/Entropy_r2_metrics.json`](Round2-Semantic-Recovery/outputs/Entropy_r2_metrics.json) and [`Round2-Semantic-Recovery/MODEL_SELECTION.md`](Round2-Semantic-Recovery/MODEL_SELECTION.md). Team attribution evidence and unresolved ownership boundaries are recorded in [`CONTRIBUTIONS.md`](CONTRIBUTIONS.md).
+
 - **Deduplicate before splitting, or the score is a lie:** only 7,900 of 9,000 rows are unique text; a naive random split leaks duplicates across train/test and inflates macro-F1 by **7.7 points** (0.6605 naive vs. 0.5832 grouped 5-fold CV). Every model is trained/evaluated on the deduplicated set with an explicit no-leakage assertion
 - **Neutral is the hard class:** recall 61.2%, the lowest of the three, and involved in >87% of all test-set errors — it's defined by the *absence* of polarised vocabulary rather than by vocabulary of its own
 - **Topic labels are spurious, not semantic:** a fixed, ordered substring-match rule (`app`, `down`, `update`, ... → Technical_Issues; etc.) reproduces all 9,000 topic labels exactly, with 44-88% of triggers per class firing *inside* unrelated words (`happy` contains `app`). These labels should not be used for topic-based routing as-is
@@ -215,7 +217,7 @@ Data Vortex/
 - **The decline is not a sampling artefact:** on Mastodon alone, positives fall 57% -> 24% (p = 0.0002) and negatives rise 14% -> 41% (p = 3.6e-8)
 - **Reliability, not design, drives complaints:** bugs/crashes -0.67, notifications -0.61, privacy -0.42, Siri -0.27, while UI/design is the *least* negative theme at -0.10
 - **Volume and engagement peak at different moments:** the release hour is the volume peak (36 posts/h, z = 97), while the largest engagement peak came 4 days later from one Hacker News thread about *Android 17* (1,135 points, z = 183)
-- **Reusing a model is not free:** the Round 2 ensemble scores **0.699 macro-F1 in this domain** versus 0.723 on tweets; applying its neutral bias (+0.021) and fixing silent truncation of 68% of posts (+0.013) mattered more than any modelling change
+- **Reusing a model is not free:** the Round 2 ensemble scores **0.699 macro-F1 in this domain** versus the clean 0.7178 Round 2 estimate. It beats VADER's 0.4956 on the same 140-post consensus set, but the shipped adjustments do not show a distinguishable gain over the as-is model (difference -0.0125, 95% CI [-0.0715, 0.0454]).
 - **Negative posts earn more engagement** (median 2 vs 1, Kruskal-Wallis p = 0.046), repeating the "outrage engagement" pattern from Round 1
 
 ## Tech Stack

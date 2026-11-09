@@ -72,7 +72,7 @@ A standalone **PDF report** (`Entropy_Phase1_EDA_Report.pdf`) provides written e
 | 12 | Brand Analysis | 1 | 10 brands with ~1,000 mentions each; no brand drives more engagement |
 | 13 | Sentiment Indicators | 1 | Contradictory sentiment detected (template-based text generation) |
 | 14 | Anomaly Detection | 1 | Zero outliers by IQR method; no viral content exists |
-| 15 | Missing Data Analysis | 1 | MCAR confirmed; corruption was random, not systematic |
+| 15 | Missing Data Analysis | 1 | No engagement difference detected by the reported test; MCAR is not established |
 | 16 | Statistical Significance Tests | -- | 5 formal tests (Kruskal-Wallis, Chi-square, Spearman, Mann-Whitney U) |
 | 17 | Brand x Platform Cross-Analysis | 1 | No brand-platform affinity; uniform assignment |
 | 18 | Text Length Analysis | 1 | ~18-20 words/post; length does not predict engagement |
@@ -86,7 +86,7 @@ A standalone **PDF report** (`Entropy_Phase1_EDA_Report.pdf`) provides written e
 - **12,000 posts** from **1,500 users** across **5 platforms**
 - Date range: May 2024 -- April 2025 (364 days)
 - Average engagement: 2,492 likes | 1,007 shares | 504 comments
-- ~15% missing data across platform, text, and likes columns (confirmed MCAR)
+- ~15% missing data across platform, text, and likes columns; the reported non-significant test does not establish MCAR
 - Weak correlation between engagement metrics (semi-independent)
 - Top brands mentioned: Nike, Samsung, Amazon, Toyota, Google, Apple
 - **5 of 6 statistical tests return p > 0.05** -- conventional factors do not predict engagement

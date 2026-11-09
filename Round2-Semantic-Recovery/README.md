@@ -59,11 +59,12 @@ Validation analysis identified a small class-probability adjustment for the Neut
 
 - Selected neutral bias: **1.05**
 - Validation Macro-F1: **0.7111 → 0.7113**
-- Test Macro-F1: **0.7178 → 0.7227**
+- Clean test Macro-F1: **0.7178**
+- Test-informed bias-adjusted diagnostic: **0.7227**
 
 The `1.05` neutral bias is stored in the shipped sentiment-model configuration and is applied during inference.
 
-> **Important:** The 0.7178 score is the unbiased weighted-ensemble benchmark used for model comparison and the detailed statistical evaluation. The 0.7227 score is the resulting test Macro-F1 after the validation-selected Neutral probability adjustment.
+> **Important:** The 0.7178 score is the clean weighted-ensemble estimate and the only headline test result. The 0.7227 result is labelled test-informed because the executed notebook conditioned adoption of the validation-selected bias on whether it improved the already-observed test result. It is retained as a diagnostic, not a replacement estimate.
 
 ---
 
@@ -320,11 +321,11 @@ Weighted-F1   : 0.7158
 ROC-AUC       : 0.8805
 ```
 
-After applying the validation-selected Neutral probability adjustment:
+Applying the validation-selected Neutral probability adjustment produced this test-informed diagnostic:
 
 ```text
 Neutral Bias          : 1.05
-Adjusted Test Macro-F1: 0.7227
+Test-informed Macro-F1: 0.7227
 ```
 
 Detailed evaluation statistics, confidence intervals, confusion matrices and error analysis are documented in the reports directory.
@@ -354,11 +355,11 @@ Before : 0.7111 Macro-F1
 After  : 0.7113 Macro-F1
 ```
 
-The same fixed value was then applied to the held-out test predictions:
+The same fixed value was then applied to the test predictions. Because the executed workflow considered whether this result improved before adopting the rule, this comparison is test-informed:
 
 ```text
 Before : 0.7178 Macro-F1
-After  : 0.7227 Macro-F1
+After (test-informed): 0.7227 Macro-F1
 ```
 
 The adjustment is stored in:
@@ -636,13 +637,13 @@ Macro-F1 = 0.7178
 and:
 
 ```text
-Shipped Bias-Adjusted Model
-Macro-F1 = 0.7227
+Shipped Bias-Adjusted Model (test-informed diagnostic)
+Macro-F1 = 0.7227 (test-informed diagnostic)
 ```
 
 refer to the same underlying ensemble with different final decision rules.
 
-The neutral bias was selected using the validation set and then applied to the held-out test set without further tuning.
+The neutral bias value was selected using validation. However, the executed notebook's adoption message depended on the observed test improvement, so 0.7227 is not treated as a clean held-out estimate.
 
 ---
 
@@ -662,10 +663,10 @@ Combining lexical, embedding-based and fine-tuned transformer predictions provid
 
 ### 4. Neutral-class calibration matters
 
-A small validation-selected probability adjustment improved the held-out test Macro-F1 from:
+A small validation-selected probability adjustment produced the following test-informed comparison:
 
 ```text
-0.7178 → 0.7227
+0.7178 clean → 0.7227 test-informed
 ```
 
 ### 5. Duplicate analysis is important
@@ -681,7 +682,7 @@ The dataset contains substantial textual duplication, making duplicate-aware spl
 * Topic classification relies on recovered semantic rules.
 * Transformer inference requires significantly more computational resources than traditional ML.
 * Large transformer checkpoints are not packaged into a single GitHub archive because of repository file-size constraints.
-* The post-processing improvement should be interpreted cautiously because the final 0.7227 score is based on a validation-selected decision-rule adjustment rather than a newly trained model.
+* The 0.7227 post-processing result is test-informed and must not replace the clean 0.7178 headline estimate.
 
 ---
 

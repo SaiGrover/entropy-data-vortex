@@ -368,18 +368,18 @@ Since 87\% of errors involve Neutral on one side of the confusion (Table above),
 \textbf{Metric} & \textbf{Before} & \textbf{After ($\text{bias}=1.05$)} & \textbf{$\Delta$} \\
 \midrule
 Validation macro-F1 (selection metric) & 0.7111 & 0.7113 & $+0.0002$ \\
-Test macro-F1 & 0.7178 & \textbf{0.7227} & $+0.0049$ \\
+Test macro-F1 & \textbf{0.7178} (clean) & 0.7227 (test-informed) & $+0.0049$ \\
 Neutral recall (test) & 0.6117 & 0.6335 & $+0.0218$ \\
 \bottomrule
 \end{tabular}
-\caption{Effect of the validation-selected Neutral bias on the held-out test set. Neutral recall improves without degrading Negative or Positive F1.}
+\caption{Test-informed diagnostic for the validation-selected Neutral bias. Neutral recall improves without degrading Negative or Positive F1.}
 \end{table}
 
 \begin{insightbox}
-\textbf{Honesty check on this result.} The validation improvement that justified choosing $\text{bias}=1.05$ was tiny ($+0.0002$), on a validation macro-F1 curve that is nearly flat across the 17 swept values --- while the resulting test improvement is roughly 30$\times$ larger ($+0.0049$). This is \emph{not} test-set leakage: the bias was selected on validation only, and test was touched exactly once. But the gap is large enough that the size of the test gain should be read as an upper bound rather than a fully robust effect --- part of it is plausibly favorable test-set noise rather than a guaranteed improvement that would replicate on a fresh test split. The direction (helps Neutral recall, doesn't hurt the other classes) is credible; the exact magnitude ($+0.0049$) is less certain than a single number suggests.
+\textbf{Honesty check on this result.} The validation improvement at $\text{bias}=1.05$ was tiny ($+0.0002$), on a validation macro-F1 curve that is nearly flat across the 17 swept values, while the resulting test improvement is roughly 30$\times$ larger ($+0.0049$). The multiplier value came from validation, but the executed notebook conditioned adoption on whether the observed test result improved. Therefore 0.7227 is test-informed and is not used as the headline estimate; the clean result remains 0.7178.
 \end{insightbox}
 
-$\text{bias}=1.05$ is folded into the shipped decision rule (\texttt{SentimentEnsemble.predict()} in \texttt{Entropy\_nlp\_utils.py}, config field \texttt{neutral\_bias} in \texttt{Entropy\_sentiment\_model.json}), so the deployed model now produces 0.7227 test macro-F1 rather than the 0.7178 reported for the unbiased ensemble in Section~\ref{sec:evaluation}. The confidence interval, McNemar comparison, and confusion matrix in that section were computed on the unbiased ensemble and have not been recomputed against the biased predictions --- that recomputation is flagged as outstanding, not silently assumed unchanged.
+$\text{bias}=1.05$ is folded into the shipped decision rule (\texttt{SentimentEnsemble.predict()} in \texttt{Entropy\_nlp\_utils.py}, config field \texttt{neutral\_bias} in \texttt{Entropy\_sentiment\_model.json}). Its 0.7227 test macro-F1 is a test-informed diagnostic, not a replacement for the clean 0.7178 estimate in Section~\ref{sec:evaluation}: although the multiplier value was selected on validation, the executed notebook conditioned adoption on seeing the test improvement. The confidence interval, McNemar comparison, and confusion matrix in that section belong to the unbiased ensemble.
 
 \subsection{Calibration}
 
